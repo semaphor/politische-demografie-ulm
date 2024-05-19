@@ -1,0 +1,79 @@
+---
+title: "Datenvisualisierung zur Ulmer Gemeinderatswahl am 09.06.24"
+output:
+  html_document:
+    toc: TRUE
+    code_folding: hide
+    
+---
+
+```{r echo=FALSE, message=FALSE}
+library(ggridges)
+library(ggplot2)
+library(viridis)
+library(hrbrthemes)
+library(dplyr)
+library(DT)
+
+
+data <- read.csv('kandidat_innen.csv')
+colnames(data) <- c('Nr', 'Name', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Partei')
+data$Stadtteil <- as.factor(data$Stadtteil)
+data$Partei <- as.factor(data$Partei)
+data <- data %>% mutate(Alter = 2024 - Geburtsjahr)
+
+```
+
+# Kandidat:innen für den XX. Ulmer Gemeinderat
+
+Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf `r length(levels(data$Partei))` Listen für den Ulmer Gemeinderat.
+
+```{r}
+
+data %>%
+  group_by(Partei) %>%
+  summarise(Kandidat_innen = n()) %>%
+  datatable(style = 'bootstrap')
+
+```
+
+## Altersverteilung
+
+```{r}
+
+plotAge <- ggplot(data, aes(x = Alter, y = Partei, fill = after_stat(x))) +
+  geom_density_ridges_gradient(scale = 2, rel_min_height = 0.01, bandwidth = 4) +
+  scale_fill_viridis() +
+  labs(title = 'Altersanteil je Liste') +
+  theme_ipsum() +
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 8)
+    )
+plotAge
+```
+
+
+## Top Berufe
+
+```{r}
+
+berufe <- data %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Arzt" | Beruf == 'Ärztin', "Ärzt_in")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Architekt" | Beruf == 'Architektin', "Architekt_in")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Fraktionsgeschäftsführer" | Beruf == 'Fraktionsgeschäftsführerin', "Fraktionsgeschäftsführer_in")) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Lehrer" | Beruf == 'Lehrerin', "Lehrer_in")) %>%
+            group_by(Beruf) %>%
+            mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin', "Psycholog_in")) %>%
+            group_by(Beruf) %>%
+            summarise(n = n()) %>%
+            arrange(desc(n))
+
+berufe %>%
+  datatable(style = 'bootstrap', filter = 'top')
+```
+
