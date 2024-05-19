@@ -1,2 +1,2 @@
-# politische-demografie-ulm
-Altersverteilungen zur Kommunalwahl 2024
+# work in progress
+https://semaphor.github.io/politische-demografie-ulm/
