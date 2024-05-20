@@ -22,12 +22,10 @@ library(DT)
 # Lokal wird/wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
 
 # KANDIDATENLISTE:
-#TODO/Frage Jakob Was ist eigentlich mit der ersten Spalte in der CSV, die nochmal einfach hochzählt?
 data <- read.csv('daten/kandidat_innen-2024-09-06.csv')
-#TODO Jakob 'Partei' durch 'Liste' ersetzen:
-colnames(data) <- c('Nr', 'Name', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Partei')
+colnames(data) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
 data$Stadtteil <- as.factor(data$Stadtteil)
-data$Partei <- as.factor(data$Partei)
+data$Partei <- as.factor(data$Liste)
 data <- data %>% mutate(Alter = 2024 - Geburtsjahr)
 
 # ALTER ULM:
@@ -45,7 +43,10 @@ names(demografieUlm) <- names(demografieUlmGenderBi)[2:3]
 # Altersgruppen in Schritten von zehn Jahren:
 demografieUlm <- demografieUlm %>% mutate(AltersgruppeZehner = cut(Altersgruppe, breaks = seq(from = 0, to = 80, by = 10), right = FALSE))
 levels(demografieUlm$AltersgruppeZehner)[levels(demografieUlm$AltersgruppeZehner) == "[70,80)"]  <- "[70,...)" 
-demografieUlmZehner <- demografieUlm %>% select(any_of(c("AltersgruppeZehner", "Personen"))) %>% group_by(AltersgruppeZehner) %>% summarise(across(everything(), sum))
+demografieUlmZehner <- demografieUlm %>% select(any_of(c("AltersgruppeZehner", "Personen"))) %>%
+  group_by(AltersgruppeZehner) %>% 
+  summarise(across(everything(), sum))
+
 rm(pos,demografieUlmMtx)
 
 ```
@@ -62,13 +63,12 @@ Total wild.
 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl am 9.6.2024
 
-Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf
-`r length(levels(data$Partei))` Listen für den Ulmer Gemeinderat.
+Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf `r length(levels(data$Partei))` Listen für den Ulmer Gemeinderat.
 
 ```{r}
 
 data %>%
-  group_by(Partei) %>%
+  group_by(Liste) %>%
   summarise(Kandidat_innen = n()) %>%
   datatable(style = 'bootstrap')
 
@@ -78,7 +78,7 @@ data %>%
 
 ```{r}
 
-plotAgeListen <- ggplot(data, aes(x = Alter, y = Partei, fill = after_stat(x))) +
+plotAgeListen <- ggplot(data, aes(x = Alter, y = Liste, fill = after_stat(x))) +
   geom_density_ridges_gradient(scale = 2, rel_min_height = 0.01, bandwidth = 4) +
   scale_fill_viridis() +
   labs(title = 'Altersverteilung Listen') +
