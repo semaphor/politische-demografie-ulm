@@ -2,10 +2,12 @@
 title: "Demografisches zur Ulmer Gemeinderatswahl 2024 (Arbeitstitel)"
 output:
   html_document:
-    toc: TRUE
+    toc: true
     code_folding: hide
-editor_options: 
-  markdown: 
+  pdf_document:
+    toc: true
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -17,8 +19,9 @@ library(hrbrthemes)
 library(dplyr)
 library(DT)
 
+# Lokal wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
 
-data <- read.csv('kandidat_innen.csv')
+data <- read.csv('daten/kandidat_innen-2024-09-06.csv')
 colnames(data) <- c('Nr', 'Name', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Partei')
 data$Stadtteil <- as.factor(data$Stadtteil)
 data$Partei <- as.factor(data$Partei)
@@ -36,7 +39,7 @@ Total wild.
 
 ## Bericht
 
-### Kandidat:innen für den XX. Ulmer Gemeinderat
+### Kandidat:innen zur Ulmer Gemeinderatswahl am 9.6.2024
 
 Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf
 `r length(levels(data$Partei))` Listen für den Ulmer Gemeinderat.
@@ -91,7 +94,7 @@ berufe %>%
 
 ## Vorgehensweise und Begriffe
 
-Statistiksoftware R, inbes. R Markdown, GitHub Actions
+Statistiksoftware R, inbes. R Markdown, GitHub Actions, ...
 
 -   [Demografie](https://www.bpb.de/kurz-knapp/lexika/das-junge-politik-lexikon/320066/demografie)
 
