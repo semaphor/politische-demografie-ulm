@@ -76,11 +76,26 @@ data %>%
 
 #### Altersverteilung
 
-```{r}
+Altersverteilung als Dichtefunktion. Grauer Strich jeweils Median.
+
+```{r fig.width=7, fig.height=8}
+
+listenLabels <- data %>% group_by(Liste) %>%
+    summarise(n = n()) %>%
+    mutate(text = paste0(Liste, ' (n=', n, ')'))
 
 plotAgeListen <- ggplot(data, aes(x = Alter, y = Liste, fill = after_stat(x))) +
-  geom_density_ridges_gradient(scale = 2, rel_min_height = 0.01, bandwidth = 4) +
+  geom_density_ridges_gradient(
+    scale = 2, 
+    rel_min_height = 0.01, 
+    bandwidth = 3,
+    quantile_lines = TRUE,
+    vline_color = c("lightgray"),
+    quantile_fun = median
+    ) +
   scale_fill_viridis() +
+  scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(15,85), breaks=seq(5, 85, by=5)) +
   labs(title = 'Altersverteilung Listen') +
   theme_ipsum() +
     theme(
