@@ -19,13 +19,34 @@ library(hrbrthemes)
 library(dplyr)
 library(DT)
 
-# Lokal wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
+# Lokal wird/wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
 
+# KANDIDATENLISTE:
+#TODO/Frage Jakob Was ist eigentlich mit der ersten Spalte in der CSV, die nochmal einfach hochzählt?
 data <- read.csv('daten/kandidat_innen-2024-09-06.csv')
+#TODO Jakob 'Partei' durch 'Liste' ersetzen:
 colnames(data) <- c('Nr', 'Name', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Partei')
 data$Stadtteil <- as.factor(data$Stadtteil)
 data$Partei <- as.factor(data$Partei)
 data <- data %>% mutate(Alter = 2024 - Geburtsjahr)
+
+# ALTER ULM:
+demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31.csv')
+demografieUlmGenderBi$Geschlecht <- as.factor(demografieUlmGenderBi$Geschlecht)
+# Gender rausnehmen:
+demografieUlmAnzAltersgruppen <- length(unique(demografieUlmGenderBi$Altersgruppe))
+demografieUlmMtx <- matrix(nrow = demografieUlmAnzAltersgruppen, ncol = 2)
+demografieUlmMtx[,1] <- sort(unique(demografieUlmGenderBi$Altersgruppe))
+for (pos in seq(demografieUlmAnzAltersgruppen)) {
+  demografieUlmMtx[pos,2] <- sum(demografieUlmGenderBi$Personen[demografieUlmGenderBi$Altersgruppe == demografieUlmMtx[pos,1]])
+}
+demografieUlm <- data.frame(demografieUlmMtx)
+names(demografieUlm) <- names(demografieUlmGenderBi)[2:3]
+# Altersgruppen in Schritten von zehn Jahren:
+demografieUlm <- demografieUlm %>% mutate(AltersgruppeZehner = cut(Altersgruppe, breaks = seq(from = 0, to = 80, by = 10), right = FALSE))
+levels(demografieUlm$AltersgruppeZehner)[levels(demografieUlm$AltersgruppeZehner) == "[70,80)"]  <- "[70,...)" 
+demografieUlmZehner <- demografieUlm %>% select(any_of(c("AltersgruppeZehner", "Personen"))) %>% group_by(AltersgruppeZehner) %>% summarise(across(everything(), sum))
+rm(pos,demografieUlmMtx)
 
 ```
 
@@ -57,17 +78,24 @@ data %>%
 
 ```{r}
 
-plotAge <- ggplot(data, aes(x = Alter, y = Partei, fill = after_stat(x))) +
+plotAgeListen <- ggplot(data, aes(x = Alter, y = Partei, fill = after_stat(x))) +
   geom_density_ridges_gradient(scale = 2, rel_min_height = 0.01, bandwidth = 4) +
   scale_fill_viridis() +
-  labs(title = 'Altersanteil je Liste') +
+  labs(title = 'Altersverteilung Listen') +
   theme_ipsum() +
     theme(
       legend.position="none",
       panel.spacing = unit(0.1, "lines"),
       strip.text.x = element_text(size = 8)
     )
-plotAge
+plotAgeListen
+
+plotAgeUlm <- ggplot(demografieUlmZehner, aes(x = AltersgruppeZehner, y = Personen)) + 
+  geom_point() +
+  geom_smooth() +
+  ylim(0,NA)
+
+plotAgeUlm
 ```
 
 #### Top Berufe
@@ -96,7 +124,8 @@ berufe %>%
 
 Statistiksoftware R, inbes. R Markdown, GitHub Actions, ...
 
-Daten und nachvollziehbare Aufbereitung auf GitHub: <https://github.com/semaphor/politische-demografie-ulm>
+Daten und nachvollziehbare Aufbereitung auf GitHub:
+<https://github.com/semaphor/politische-demografie-ulm>
 
 -   [Demografie](https://www.bpb.de/kurz-knapp/lexika/das-junge-politik-lexikon/320066/demografie)
 
@@ -119,6 +148,7 @@ Quellen:
     -   Webseiten der Stadt Ulm,
         [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
 
-    -   Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor*innen)
+    -   Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den
+        Autor\*innen)
 
 Von: Jakob Pietron, Simon Lüke

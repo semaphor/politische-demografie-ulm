@@ -1,5 +1,6 @@
 library(dplyr)
 
+
 data <- read.csv('daten/raw_kandidat_innen.csv')
 
 cleaned_data <- data %>% select(-any_of(c('Name')))
