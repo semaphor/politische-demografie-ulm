@@ -69,7 +69,14 @@ Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf `r length(levels(data$Pa
 
 data %>%
   group_by(Liste) %>%
-  summarise(Kandidat_innen = n()) %>%
+  summarise(
+    Kandidat_innen = n(),
+    AlterMean = round(mean(Alter),1),
+    AlterSD = round(sd(Alter)),
+    AlterMedian = median(Alter),
+    AlterMax = max(Alter),
+    AlterMin = min(Alter)
+    ) %>%
   datatable(style = 'bootstrap')
 
 ```
