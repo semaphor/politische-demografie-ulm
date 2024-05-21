@@ -90,10 +90,12 @@ plotAgeListen <- ggplot(data, aes(x = Alter, y = Partei, fill = after_stat(x))) 
     )
 plotAgeListen
 
-plotAgeUlm <- ggplot(demografieUlmZehner, aes(x = AltersgruppeZehner, y = Personen)) + 
+demografieUlmZehnerNumeric <- as.matrix(demografieUlmZehner)
+demografieUlmZehnerNumeric[,1] <-  seq(from = 0, to = 70, by = 10)
+plotAgeUlm <- ggplot(demografieUlmZehnerNumeric, aes(x = AltersgruppeZehner, y = Personen)) + 
   geom_point() +
-  geom_smooth() +
-  ylim(0,NA)
+  geom_smooth() #+
+  #ylim(0,NA)
 
 plotAgeUlm
 ```
