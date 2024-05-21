@@ -89,7 +89,7 @@ Altersverteilung als Dichtefunktion. Grauer Strich jeweils Median.
 
 demografieUlmDistr <- vector()
 for (i in seq_along(demografieUlm$Personen)) {
-  mittleresAlter <- demografieUlm$Altersgruppe[i] + (demografieUlm$Altersgruppe[i+1] - demografieUlm$Altersgruppe[i+1]) / 2
+  mittleresAlter <- demografieUlm$Altersgruppe[i] + (demografieUlm$Altersgruppe[i+1] - demografieUlm$Altersgruppe[i]) / 2
   if (is.na(mittleresAlter)) mittleresAlter <- 75
   demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i]/200)))
 }
@@ -97,13 +97,11 @@ demografieUlmDistr <- as.data.frame(demografieUlmDistr)
 demografieUlmDistr <- cbind(NA, NA, NA, 'Bevölkerung Ulm', 'Bevölkerung Ulm', demografieUlmDistr)
 names(demografieUlmDistr) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Partei', 'Alter')
 
-data <- rbind(data,demografieUlmDistr)
-
-listenLabels <- data %>% group_by(Liste) %>%
+listenLabels <- rbind(data,demografieUlmDistr) %>% group_by(Liste) %>%
     summarise(n = n()) %>%
     mutate(text = paste0(Liste, ' (n=', n, ')'))
 
-plotAgeListen <- ggplot(data, aes(x = Alter, y = Liste, fill = after_stat(x))) +
+plotAgeListen <- ggplot(rbind(data,demografieUlmDistr), aes(x = Alter, y = Liste, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 2, 
     rel_min_height = 0.01, 
@@ -114,7 +112,7 @@ plotAgeListen <- ggplot(data, aes(x = Alter, y = Liste, fill = after_stat(x))) +
     ) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(15,85), breaks=seq(5, 85, by=5)) +
+  scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
   labs(title = 'Altersverteilung Listen') +
   theme_ipsum() +
     theme(
