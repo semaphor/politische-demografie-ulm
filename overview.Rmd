@@ -93,7 +93,7 @@ for (i in seq_along(demografieUlm$Personen)) {
   if (is.na(mittleresAlter)) mittleresAlter <- 75
   demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i]/200)))
 }
-demografieUlmDistr <- as.data.frame(dfU)
+demografieUlmDistr <- as.data.frame(demografieUlmDistr)
 demografieUlmDistr <- cbind(NA, NA, NA, 'Bevölkerung Ulm', 'Bevölkerung Ulm', demografieUlmDistr)
 names(demografieUlmDistr) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Partei', 'Alter')
 
