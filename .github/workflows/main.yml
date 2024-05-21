@@ -6,28 +6,29 @@ name: Render documents and upload
   pull_request:
     branches:
       - main
+      
 jobs:
-  render_document:
+  render-rmarkdown:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Set up Git repository
-        uses: actions/checkout@v2
-      - name: Render HTML
-        uses: lc5415/rmarkdown-action@v1
+      - name: Checkout repo
+        uses: actions/checkout@v4
         with:
-          input_file: overview.Rmd
-          output_format: html_document
-      - name: Commit files
+          fetch-depth: 0
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - uses: r-lib/actions/setup-renv@v2
+
+      - name: Render Rmarkdown files and Commit Results
         run: |
-          git config --local core.autocrlf false
-          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
-          git config --local user.name "${{ github.actor }}"
-          git add . && git add --renormalize .
-          git pull origin ${{ github.head_ref }} --autostash --rebase -X ours
-          git commit --allow-empty -am "AUTO-GH ACTION: ${{ github.workflow }}"
-          NO_PAGER=1 git --no-pager diff HEAD^
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: ${{ github.head_ref }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          RMD_PATH=($(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '[.]Rmd$'))
+          Rscript -e 'for (f in commandArgs(TRUE)) if (file.exists(f)) rmarkdown::render(f)' ${RMD_PATH[*]}
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit ${RMD_PATH[*]/.Rmd/.md} -m 'Re-build Rmarkdown files' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
