@@ -1,3 +1,7 @@
+## Evtl. TODO für später
+
+* Aktuellere feiner aufgelöste Altersverteilung für Ulm, https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf
+
 ## Interaktive Visualisierung mit...?
 
 r-markdown + html-widgets
