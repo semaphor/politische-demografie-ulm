@@ -19,7 +19,10 @@ library(hrbrthemes)
 library(dplyr)
 library(DT)
 library(forcats)
+library(ggpubr)
 
+# DATEN EINLESEN UND AUFBEREITEN
+# ==============================
 
 # Lokal wird/wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
 
@@ -29,7 +32,13 @@ listen <- read.csv('daten/kandidat_innen-2024-09-06.csv')
 colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
 listen$Stadtteil <- as.factor(listen$Stadtteil)
 listen$Liste <- as.factor(listen$Liste)
+# Alter aus Geburtsjahr errechnen:
 listen <- listen %>% mutate(Alter = 2024 - Geburtsjahr)
+# Urspr. Berufsangabe in neue Spalte sichern:
+listenHelper <- cbind(listen$Beruf, listen)
+names(listenHelper) <- c("BerufAngabe",names(listen))
+listen <- listenHelper
+rm(listenHelper)
 
 # ALTER ULM:
 demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31.csv')
@@ -58,8 +67,10 @@ for (i in seq_along(demografieUlm$Personen)) {
   demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i])))
 }
 demografieUlmDistr <- as.data.frame(demografieUlmDistr)
-demografieUlmDistr <- cbind(NA, NA, NA, 'BEVÖLKERUNG', demografieUlmDistr)
-names(demografieUlmDistr) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Alter')
+demografieUlmDistr <- cbind(NA, NA, NA, NA, 'BEVÖLKERUNG', demografieUlmDistr)
+names(demografieUlmDistr) <- c('BerufAngabe', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Alter')
+# Extra data.fram listen, der auch die Ulmer Bevölkerung enthält:
+listenMitDemografieUlm <- rbind(demografieUlmDistr, listen)
 
 ```
 
@@ -125,7 +136,7 @@ Grafische Darstellung:
 
 ```{r fig.width=8, fig.height=12}
 
-listenMitDemografieUlm <- rbind(demografieUlmDistr, listen) %>% 
+listenMitDemografieUlm <- listenMitDemografieUlm %>% 
   mutate(Liste = fct_reorder(Liste, Alter, .fun='median'))
 
 listenLabels <- listenMitDemografieUlm %>%
@@ -136,12 +147,16 @@ listenLabels <- listenMitDemografieUlm %>%
 plotAgeListen <- listenMitDemografieUlm %>%
   ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
   geom_density_ridges_gradient(
-    scale = 2, 
+    scale = 1.8, 
     rel_min_height = 0.01, 
     bandwidth = 3,
     quantile_lines = TRUE,
-    vline_color = c("lightgray"),
-    quantile_fun = median
+    vline_color = c("darkgray"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 1, height = 0),
+    point_shape = 'x', point_size = 4, point_alpha = 1, alpha = 0.7
     ) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -154,6 +169,34 @@ plotAgeListen <- listenMitDemografieUlm %>%
       strip.text.x = element_text(size = 8)
     )
 plotAgeListen
+# plotDemografieUlmDistr <- demografieUlmDistr %>%
+#   ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
+#   geom_density_ridges_gradient(
+#     scale = 1.8, 
+#     rel_min_height = 0.01, 
+#     bandwidth = 3,
+#     quantile_lines = TRUE,
+#     vline_color = c("darkgray"),
+#     vline_width = 1.5,
+#     quantile_fun = median
+#     ) +
+#   scale_fill_viridis() +
+#   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+#   scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
+#   labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+#   theme_ipsum() +
+#     theme(
+#       legend.position="none",
+#       panel.spacing = unit(0.1, "lines"),
+#       strip.text.x = element_text(size = 8)
+#     )
+#
+#ggarrange(plotAgeListen, plotDemografieUlmDistr,
+#          heights = c(16, 5),
+#          nrow = 2, ncol = 1)
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+
+
 ```
 
 ### Aktueller Gemeinderat (Wahlperiode 2019-2024)
@@ -165,37 +208,102 @@ TODO
 
 Quelle: [2] (wobei wir später noch [3] gefunden haben, was aktueller und feiner aufgeläste Daten bietet).
 
-```{r fig.width=4, fig.height=3}
-demografieUlmZehnerNumeric <- as.matrix(demografieUlmZehner)
-demografieUlmZehnerNumeric[,1] <-  seq(from = 0, to = 70, by = 10)
+```{r fig.width=4, fig.height=2}
+
 plotAgeUlm <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
   geom_col()
+
 plotAgeUlm
+
 ```
 
 
 ## Beruflicher Hintergrund und Tätigkeiten
 
-Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
+Skizze:
+
+* Hier kommt wesentlich mehr Interpretation rein, z.B. die Zusammenfassung der Berufsangaben "Einzelunternehmer", "selbst. Unternehmer", "selbst. Unternehmerin" und "	Unternehmer IT-Services" zu "Unternehmer_in".
+* Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
 
 ```{r}
 
+# Berufsangaben redaktionell bereinigen:
+#  * gegenderte Bezeichnungen
+#  * rausschmeißen "i.R." "selbst." 
+
+listen <- listen %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Arzt" | Beruf == 'Ärztin', "Ärzt_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Architekt" | Beruf == 'Architektin' | Beruf == "Freie Architektin", "Architekt_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Fraktionsgeschäftsführer" | Beruf == 'Fraktionsgeschäftsführerin', "Fraktionsgeschäftsführer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Lehrer" | Beruf == 'Lehrerin' | Beruf == "Lehrer i.R." | Beruf == "Gymnasiallehrer" | Beruf == "Gymnasiallehrerin" | Beruf == "Kunstlehrerin", "Lehrer_in")) %>%
+    mutate(Beruf = replace(Beruf,Beruf == "techn. Oberlehrer i.R." | Beruf == "techn. Oberlehrerin", "Berufsschullehrer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Dipl. Betriebswirt (BA)" | Beruf == 'Dipl.- Betriebswirt (BA)' | Beruf == "	Dipl.-Betriebswirt (BA)", "Dipl. Betriebswirt_in (BA)")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "selbst. Dipl.-Informatiker" | Beruf == 'Dipl.-Informatikerin', "Dipl.-Informatiker_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "selbständig", "selbstständig")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Unternehmer" | Beruf == "Einzelunternehmer" | Beruf == "selbst. Unternehmer" | Beruf == "selbst. Unternehmerin" | Beruf == "Unternehmer IT-Services", "Unternehmer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Geschäftsführer" | Beruf == "Geschäftsführerin", "Geschäftsführer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Bankkaufmann" | Beruf == "Bankkauffrau", "Bankkaufleute")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwalt" | Beruf == "Rechtsanwältin" | Beruf == "Rechtsanwältin i.R.", "Rechtsanwält_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwaltsfach- angestellte", "Rechtsanwaltsfachangestellte")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "kaufm. Angestellter", "kaufm. Angestellte_r")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Kaufmann" | Beruf == "IT-Systemkaufmann" | Beruf == "Speditionskaufmann" | Beruf == "selbst. Kaufmann", "Kaufleute")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin' | Beruf == "Sportpsychologe" | Beruf == "Psychologin (B.sc.)", "Psycholog_in"))
+#Psychologische Beraterin i.R.? Psychologische Psychotherapeutin?
+
+# Neue Spalte Tätigkeit:
+listenHelper <- cbind(listen$Beruf, listen)
+names(listenHelper) <- c("Tätigkeit",names(listen))
+listen <- listenHelper
+rm(listenHelper)
+
+# Über Tätigkeiten stärker zusammenfassen:
+listen <- listen %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Lehrer_in" | Tätigkeit == "techn. Oberlehrer i.R." | Tätigkeit == "techn. Oberlehrerin", "Lehrer_in")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Augenoptikerin" | Tätigkeit == "Augenoptikermeister", "Augenoptiker_in")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Dipl.-Ingenieur" | Tätigkeit == "Wirtschaftsingenieur" | Tätigkeit == "Dipl.-Ingenieur (FH)" | Tätigkeit == "Ingenieur" | Tätigkeit == "Dipl.-Ingenieur (BA)" | Tätigkeit == "Dipl.-Ingenieur agr." | Tätigkeit == "Entwicklungsingenieur" | Tätigkeit == "selbst. Bauingenieurin", "Ingenieur_in")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Dipl.-Informatiker_in" | Tätigkeit == "Informatiker" | Tätigkeit == "Informatikkauffrau" | Tätigkeit == "selbst. Wirtschaftsinformatiker (B.Sc.)", "Informatiker_in")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Bankkaufleute" | Tätigkeit == "Bankbetriebswirt" | Tätigkeit == "Bankfachwirtin", "Bankkaufleute u. -(fach-)wirtin")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Bürokauffrau" | Tätigkeit == "kaufm. Angestellte" | Tätigkeit == "Dipl.-Kaufmann" | Tätigkeit == "" | Tätigkeit == "" | Tätigkeit == "" | Tätigkeit == "", "Kaufleute")) %>%
+  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
+  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
+  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
+  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
+  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Psycholog_in" | Tätigkeit == 'Psychologische Beraterin i.R.' | Tätigkeit == "Psychologische Psychotherapeutin", "Psycholog_in"))
+# So, gut jetzt für heute, bei Kaufleuten und Betriebswirten.
+
+# Zur Refrenez beim Durcharbeiten erstmal eine Tabelle mit den Originalanageben:
+berufeAngabe <- listen %>%
+            group_by(BerufAngabe) %>%
+            summarise(n = n()) %>%
+            arrange(desc(n))
+
+berufeAngabe %>%
+  datatable(style = 'bootstrap', filter = 'top')
+
+# Redaktionelle Zusammenfassung:
 berufe <- listen %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Arzt" | Beruf == 'Ärztin', "Ärzt_in")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Architekt" | Beruf == 'Architektin', "Architekt_in")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Fraktionsgeschäftsführer" | Beruf == 'Fraktionsgeschäftsführerin', "Fraktionsgeschäftsführer_in")) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Lehrer" | Beruf == 'Lehrerin', "Lehrer_in")) %>%
-            group_by(Beruf) %>%
-            mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin', "Psycholog_in")) %>%
             group_by(Beruf) %>%
             summarise(n = n()) %>%
             arrange(desc(n))
 
 berufe %>%
   datatable(style = 'bootstrap', filter = 'top')
+
+# Zusammenfassung Tätigkeit:
+taetigkeiten <- listen %>%
+            group_by(Tätigkeit) %>%
+            summarise(n = n()) %>%
+            arrange(desc(n))
+
+taetigkeiten %>%
+  datatable(style = 'bootstrap', filter = 'top')
+
 ```
 
 
@@ -209,7 +317,7 @@ Quellen:
 
 * [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
 * [2] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für 08421 "Ulm, kreisfreie Stadt", per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
-  * [3] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
+* [3] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
 * [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
   * Webseiten der Stadt Ulm, [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
   * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
