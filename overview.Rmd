@@ -128,6 +128,7 @@ listen %>%
 ```
 
 Grafische Darstellung:
+
 * Eintrag "BEVÖLKERUNG": stellt zum Vergleich die gesamte Ulmer Bevölkerung dar [2].
 * Histogram: TODO.
 * Kurve: Annährung zur bessere Darstellung. Normierung auf Fläche unter der Kurve.
