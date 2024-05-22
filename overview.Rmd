@@ -1,14 +1,14 @@
 ---
-title: "Demografisches zur Ulmer Gemeinderatswahl 2024 (Arbeitstitel)"
+title: "(Arbeitstitel) Kleine Datenanalyse/Demografisches zur Ulmer Gemeinderatswahl 2024"
+author: "Jakob Pietron, Simon Lüke"
 output:
   html_document:
     toc: true
     code_folding: hide
+    number_sections: true
   pdf_document:
     toc: true
-editor_options:
-  markdown:
-    wrap: 72
+    number_sections: true
 ---
 
 ```{r echo=FALSE, message=FALSE}
@@ -51,15 +51,34 @@ rm(pos,demografieUlmMtx)
 
 ```
 
-## Einleitung
 
-Diesdas.
+# Einleitung
 
-## Überblick und Highlights
+Skizze:
 
-Total wild.
+* Wir halten für unsere Wahlentscheidungen Inhalte und Ziele der Listen als am wichtigsten. Dazu leider dieses Jahr kein Wahl-o-Mat, aber Websites der Listen, Diksussionsrunden, ggf. Presse.
+* Für die Entscheidungen und Arbeit der Gemeinderät:innen aber auch wichtig sind die persönlichen Perspektiven und Erfahrungen. Jeder ist inidviudell, aber ein Blick auf die Statistik kann auch beitragen, um sich zur Stimmangabe ein Bild zu verschaffen.
+* Deshalb hier ein Blick auf die Altersstrukturen und beruflichen Hintergründe/Tätigkeiten.
+* Darunter dann ein ausführlichere/detaillierte Zusammenstellung der Daten und Informationen zur Vorgehensweise und den Quellen.
+  * Zum selber blättern/tiefer reinschauen
+  * Und ggf. selber weitermachen: offen z.B. noch Asuwertung mit Blick auf die Stadtteile; evtl. ist auch eine Auswertung nach Geschlechtern möglich.
 
-## Bericht
+
+# Auf einen Blick
+
+Skizze:
+
+1. Altersstruktur
+   a. Kandidati:innen der Listen versus Bevölkerung
+   a. aktueller Gemeinderat versus Bevölkerung
+1. Beruflicher Hintergrund und Tätigkeiten
+   a. Berufsgruppen
+   a. aktuelle Tätigkeiten (da müssen wir wohl etwas mutmaßen, könnte man ja aber in einem Absatz erklären)
+
+
+# Ausführlicher Bericht
+
+## Altersstruktur
 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl am 9.6.2024
 
@@ -80,8 +99,6 @@ data %>%
   datatable(style = 'bootstrap')
 
 ```
-
-#### Altersverteilung
 
 Altersverteilung als Dichtefunktion. Grauer Strich jeweils Median.
 
@@ -121,8 +138,18 @@ plotAgeListen <- ggplot(rbind(data,demografieUlmDistr), aes(x = Alter, y = Liste
       strip.text.x = element_text(size = 8)
     )
 plotAgeListen
+```
+
+### Aktueller Gemeinderat (Wahlperiode 2019-2024)
+
+TODO
 
 
+### Bevölkerung Ulms
+
+Quelle: [2] (wobei wir später noch [3] gefunden haben, was aktueller und feiner aufgeläste Daten bietet).
+
+```{r fig.width=7, fig.height=8}
 demografieUlmZehnerNumeric <- as.matrix(demografieUlmZehner)
 demografieUlmZehnerNumeric[,1] <-  seq(from = 0, to = 70, by = 10)
 plotAgeUlm <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
@@ -130,7 +157,10 @@ plotAgeUlm <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) +
 plotAgeUlm
 ```
 
-#### Top Berufe
+
+## Beruflicher Hintergrund und Tätigkeiten
+
+Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie in dieser Datei auf [GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
 
 ```{r}
 
@@ -152,35 +182,23 @@ berufe %>%
   datatable(style = 'bootstrap', filter = 'top')
 ```
 
-## Vorgehensweise und Begriffe
 
-Statistiksoftware R, inbes. R Markdown, GitHub Actions, ...
+# Vorgehensweise, Quellen und Autor_innen
 
-Daten und nachvollziehbare Aufbereitung auf GitHub:
-<https://github.com/semaphor/politische-demografie-ulm>
+Datenverarbeitung und Visualisierung mit der Statistiksoftware R. Automatisierte Erstellung des reproduzier- und nachvollziehbaren Berichts mit R Markdown. Veröffentlichung im Web mit GitHub (Actions). Tausend  Dank an alle Autor_innen der unzähligen genutzten Softwarepakte!
 
--   [Demografie](https://www.bpb.de/kurz-knapp/lexika/das-junge-politik-lexikon/320066/demografie)
-
-## Quellen und Autor_innen
+Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/semaphor/politische-demografie-ulm>
 
 Quellen:
 
--   Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des
-    Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm,
-    04.04.2024,
-    [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
-
--   Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht,
-    Altersgruppen" für 08421 "Ulm, kreisfreie Stadt", per 31.12.2022,
-    Statistisches Bundesamt,
-    [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
-
--   Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
-
-    -   Webseiten der Stadt Ulm,
-        [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
-
-    -   Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den
-        Autor\*innen)
+* [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
+* [2] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für 08421 "Ulm, kreisfreie Stadt", per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
+  * [3] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
+* [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
+  * Webseiten der Stadt Ulm, [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
+  * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
 
 Von: Jakob Pietron, Simon Lüke
+
+Kontakt:
+TODO
