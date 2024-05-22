@@ -18,20 +18,23 @@ library(viridis)
 library(hrbrthemes)
 library(dplyr)
 library(DT)
+library(forcats)
+
 
 # Lokal wird/wurde zur Datenminimierung einmalig clean.R auf unseren Ausgangsdaten ausgeführt.
 
-# KANDIDATENLISTE:
-data <- read.csv('daten/kandidat_innen-2024-09-06.csv')
-colnames(data) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
-data$Stadtteil <- as.factor(data$Stadtteil)
-data$Partei <- as.factor(data$Liste)
-data <- data %>% mutate(Alter = 2024 - Geburtsjahr)
+
+# KANDIDAT_INNEN/LISTEN:
+listen <- read.csv('daten/kandidat_innen-2024-09-06.csv')
+colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
+listen$Stadtteil <- as.factor(listen$Stadtteil)
+listen$Liste <- as.factor(listen$Liste)
+listen <- listen %>% mutate(Alter = 2024 - Geburtsjahr)
 
 # ALTER ULM:
 demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31.csv')
 demografieUlmGenderBi$Geschlecht <- as.factor(demografieUlmGenderBi$Geschlecht)
-# Gender rausnehmen:
+# Nur zwei Geschlechter? Raus damit:
 demografieUlmAnzAltersgruppen <- length(unique(demografieUlmGenderBi$Altersgruppe))
 demografieUlmMtx <- matrix(nrow = demografieUlmAnzAltersgruppen, ncol = 2)
 demografieUlmMtx[,1] <- sort(unique(demografieUlmGenderBi$Altersgruppe))
@@ -46,8 +49,17 @@ levels(demografieUlm$AltersgruppeZehner)[levels(demografieUlm$AltersgruppeZehner
 demografieUlmZehner <- demografieUlm %>% select(any_of(c("AltersgruppeZehner", "Personen"))) %>%
   group_by(AltersgruppeZehner) %>% 
   summarise(across(everything(), sum))
-
-rm(pos,demografieUlmMtx)
+rm(pos, demografieUlmMtx, demografieUlmAnzAltersgruppen)
+# Upsampling, so irgendwie (das geht sicher besser?)
+demografieUlmDistr <- vector()
+for (i in seq_along(demografieUlm$Personen)) {
+  mittleresAlter <- demografieUlm$Altersgruppe[i] + (demografieUlm$Altersgruppe[i+1] - demografieUlm$Altersgruppe[i]) / 2
+  if (is.na(mittleresAlter)) mittleresAlter <- 75
+  demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i])))
+}
+demografieUlmDistr <- as.data.frame(demografieUlmDistr)
+demografieUlmDistr <- cbind(NA, NA, NA, 'BEVÖLKERUNG', demografieUlmDistr)
+names(demografieUlmDistr) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Alter')
 
 ```
 
@@ -82,43 +94,47 @@ Skizze:
 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl am 9.6.2024
 
-Insgesamt kandidieren `r nrow(data)` Kandidat_innen auf `r length(levels(data$Partei))` Listen für den Ulmer Gemeinderat.
+Insgesamt kandidieren für die Wahl am 9.6.2024 `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029).
+
 
 ```{r}
 
-data %>%
+# TODO/VERBESSERUNG Eintrag für Ulmer Bevölkerung in Tabelle aufnehmen.
+#rbind(DiesDas, listen) %>%
+
+listen %>%
   group_by(Liste) %>%
   summarise(
-    Kandidat_innen = n(),
-    AlterMean = round(mean(Alter),1),
-    AlterSD = round(sd(Alter)),
-    AlterMedian = median(Alter),
-    AlterMax = max(Alter),
-    AlterMin = min(Alter)
+    "Kandidat_innen" = n(),
+    "min. Alter" = min(Alter),
+    "max. Alter" = max(Alter),
+    "Alter, Median" = median(Alter),
+    "Alter, Durchschnitt" = round(mean(Alter),1),
+    "Alter, Standardabw." = round(sd(Alter))
     ) %>%
   datatable(style = 'bootstrap')
 
 ```
 
-Altersverteilung als Dichtefunktion. Grauer Strich jeweils Median.
+Grafische Darstellung:
+* Eintrag "BEVÖLKERUNG": stellt zum Vergleich die gesamte Ulmer Bevölkerung dar [2].
+* Histogram: TODO.
+* Kurve: Annährung zur bessere Darstellung. Normierung auf Fläche unter der Kurve.
+  * Da es sich um eine Annäherung und nicht um eine exakt Reprästentazion der Alterswerte handelt, verläuft die Kurz bspw. teilw. in Bereiche < 16 Jahre, also unter das Wahlalter.
+* Grauer Strich: Median als Mittelwert.
 
-```{r fig.width=7, fig.height=8}
+```{r fig.width=8, fig.height=12}
 
-demografieUlmDistr <- vector()
-for (i in seq_along(demografieUlm$Personen)) {
-  mittleresAlter <- demografieUlm$Altersgruppe[i] + (demografieUlm$Altersgruppe[i+1] - demografieUlm$Altersgruppe[i]) / 2
-  if (is.na(mittleresAlter)) mittleresAlter <- 75
-  demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i]/200)))
-}
-demografieUlmDistr <- as.data.frame(demografieUlmDistr)
-demografieUlmDistr <- cbind(NA, NA, NA, 'Bevölkerung Ulm', 'Bevölkerung Ulm', demografieUlmDistr)
-names(demografieUlmDistr) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Partei', 'Alter')
+listenMitDemografieUlm <- rbind(demografieUlmDistr, listen) %>% 
+  mutate(Liste = fct_reorder(Liste, Alter, .fun='median'))
 
-listenLabels <- rbind(data,demografieUlmDistr) %>% group_by(Liste) %>%
-    summarise(n = n()) %>%
-    mutate(text = paste0(Liste, ' (n=', n, ')'))
+listenLabels <- listenMitDemografieUlm %>%
+  group_by(Liste) %>%
+  summarise(n = n()) %>%
+  mutate(text = paste0(Liste, ' (n=', n, ')'))
 
-plotAgeListen <- ggplot(rbind(data,demografieUlmDistr), aes(x = Alter, y = Liste, fill = after_stat(x))) +
+plotAgeListen <- listenMitDemografieUlm %>%
+  ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 2, 
     rel_min_height = 0.01, 
@@ -149,7 +165,7 @@ TODO
 
 Quelle: [2] (wobei wir später noch [3] gefunden haben, was aktueller und feiner aufgeläste Daten bietet).
 
-```{r fig.width=7, fig.height=8}
+```{r fig.width=4, fig.height=3}
 demografieUlmZehnerNumeric <- as.matrix(demografieUlmZehner)
 demografieUlmZehnerNumeric[,1] <-  seq(from = 0, to = 70, by = 10)
 plotAgeUlm <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
@@ -160,11 +176,11 @@ plotAgeUlm
 
 ## Beruflicher Hintergrund und Tätigkeiten
 
-Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie in dieser Datei auf [GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
+Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
 
 ```{r}
 
-berufe <- data %>%
+berufe <- listen %>%
             mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
             mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
             mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
@@ -199,6 +215,8 @@ Quellen:
   * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
 
 Von: Jakob Pietron, Simon Lüke
+
+Lizenz:
 
 Kontakt:
 TODO
