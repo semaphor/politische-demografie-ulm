@@ -41,7 +41,7 @@ listen <- listenHelper
 rm(listenHelper)
 
 # ALTER ULM:
-demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31.csv')
+demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31-statistisches_bundesamt.csv')
 demografieUlmGenderBi$Geschlecht <- as.factor(demografieUlmGenderBi$Geschlecht)
 # Nur zwei Geschlechter? Raus damit:
 demografieUlmAnzAltersgruppen <- length(unique(demografieUlmGenderBi$Altersgruppe))
