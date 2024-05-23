@@ -40,7 +40,11 @@ names(listenHelper) <- c("BerufAngabe",names(listen))
 listen <- listenHelper
 rm(listenHelper)
 
-# ALTER ULM:
+# ALTER ULM, Ulmer Statisitik 2023:
+demografieUlm2023 <- read.csv('daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
+names(demografieUlm2023)[11] <- "Wohnbevölkerung"
+
+# ALTER ULM, DESTATIS:
 demografieUlmGenderBi <- read.csv('daten/demografie_ulm-2022-12-31-statistisches_bundesamt.csv')
 demografieUlmGenderBi$Geschlecht <- as.factor(demografieUlmGenderBi$Geschlecht)
 # Nur zwei Geschlechter? Raus damit:
@@ -241,14 +245,22 @@ TODO
 
 ### Bevölkerung Ulms
 
-Quelle: [2] (wobei wir später noch [3] gefunden haben, was aktueller und feiner aufgeläste Daten bietet).
+Quelle: [2], Daten per 31.12.2023
 
 ```{r fig.width=4, fig.height=2}
 
-plotAgeUlm <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
+plotAgeUlm2023 <- ggplot(demografieUlm2023, aes(Alter.von, Wohnbevölkerung)) + 
   geom_col()
 
-plotAgeUlm
+plotAgeUlm2023
+```
+Quelle: [3], Daten per 31.12.2022
+```{r fig.width=4, fig.height=2}
+plotAgeUlm2022DES <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
+  geom_col()
+
+plotAgeUlm2022DES
+
 
 ```
 
@@ -351,8 +363,8 @@ Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/sem
 Quellen:
 
 * [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
-* [2] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
-* [3] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
+* [2] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
+* [3] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
 * [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
   * Webseiten der Stadt Ulm, [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
   * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
