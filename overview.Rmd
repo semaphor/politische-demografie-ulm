@@ -168,7 +168,7 @@ plotAgeListen <- listen %>%
     rel_min_height = 0.01, 
     bandwidth = 1.5,
     quantile_lines = TRUE,
-    vline_color = c("#0072B2"),
+    vline_color = c("#56B4E9"),
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
@@ -177,7 +177,7 @@ plotAgeListen <- listen %>%
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#0072B2", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,85), breaks=seq(15, 85, by=5)) +
@@ -200,12 +200,12 @@ plotDemografieUlmDistr <- demografieUlmDistr %>%
     rel_min_height = 0.01,
     bandwidth = 3,
     quantile_lines = TRUE,
-    vline_color = c("#0072B2"),
+    vline_color = c("#56B4E9"),
     vline_width = 1.5,
     quantile_fun = median
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#0072B2", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
