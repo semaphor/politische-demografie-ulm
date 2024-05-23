@@ -67,7 +67,7 @@ for (i in seq_along(demografieUlm$Personen)) {
   demografieUlmDistr <- c(demografieUlmDistr, rep(mittleresAlter ,round(demografieUlm$Personen[i])))
 }
 demografieUlmDistr <- as.data.frame(demografieUlmDistr)
-demografieUlmDistr <- cbind(NA, NA, NA, NA, 'BEVÖLKERUNG', demografieUlmDistr)
+demografieUlmDistr <- cbind(NA, NA, NA, NA, 'Ulm', demografieUlmDistr)
 names(demografieUlmDistr) <- c('BerufAngabe', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Alter')
 # Extra data.fram listen, der auch die Ulmer Bevölkerung enthält:
 listenMitDemografieUlm <- rbind(demografieUlmDistr, listen)
@@ -135,33 +135,52 @@ Grafische Darstellung:
   * Da es sich um eine Annäherung und nicht um eine exakt Reprästentazion der Alterswerte handelt, verläuft die Kurz bspw. teilw. in Bereiche < 16 Jahre, also unter das Wahlalter.
 * Grauer Strich: Median als Mittelwert.
 
-```{r fig.width=8, fig.height=12}
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide',fig.keep='all'}
 
-listenMitDemografieUlm <- listenMitDemografieUlm %>% 
+#http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+# The palette with grey:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# The palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# To use for fills, add
+#scale_fill_manual(values=cbbPalette)
+
+# To use for line and point colors, add
+#scale_colour_manual(values=cbbPalette)
+```
+
+```{r fig.width=8, fig.height=10}
+
+listen <- listen %>% 
   mutate(Liste = fct_reorder(Liste, Alter, .fun='median'))
 
-listenLabels <- listenMitDemografieUlm %>%
+listenLabels <- listen %>%
   group_by(Liste) %>%
   summarise(n = n()) %>%
   mutate(text = paste0(Liste, ' (n=', n, ')'))
 
-plotAgeListen <- listenMitDemografieUlm %>%
+plotAgeListen <- listen %>%
   ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
   geom_density_ridges_gradient(
-    scale = 1.8, 
+    scale = 2.1, 
     rel_min_height = 0.01, 
-    bandwidth = 3,
+    bandwidth = 1.5,
     quantile_lines = TRUE,
-    vline_color = c("darkgray"),
+    vline_color = c("#0072B2"),
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
     position = position_points_jitter(width = 1, height = 0),
-    point_shape = 'x', point_size = 4, point_alpha = 1, alpha = 0.7
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
+  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#0072B2", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
+  scale_x_continuous(limits=c(0,85), breaks=seq(15, 85, by=5)) +
   labs(title = 'Altersverteilung Listen') +
   theme_ipsum() +
     theme(
@@ -169,35 +188,50 @@ plotAgeListen <- listenMitDemografieUlm %>%
       panel.spacing = unit(0.1, "lines"),
       strip.text.x = element_text(size = 8)
     )
-plotAgeListen
-# plotDemografieUlmDistr <- demografieUlmDistr %>%
-#   ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
-#   geom_density_ridges_gradient(
-#     scale = 1.8, 
-#     rel_min_height = 0.01, 
-#     bandwidth = 3,
-#     quantile_lines = TRUE,
-#     vline_color = c("darkgray"),
-#     vline_width = 1.5,
-#     quantile_fun = median
-#     ) +
-#   scale_fill_viridis() +
-#   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-#   scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
-#   labs(title = 'Altersverteilung Ulmer Bevölkerung') +
-#   theme_ipsum() +
-#     theme(
-#       legend.position="none",
-#       panel.spacing = unit(0.1, "lines"),
-#       strip.text.x = element_text(size = 8)
-#     )
-#
-#ggarrange(plotAgeListen, plotDemografieUlmDistr,
-#          heights = c(16, 5),
-#          nrow = 2, ncol = 1)
+#plotAgeListen
+```
+
+```{r fig.width=6, fig.height=2.3}
+#options(repr.plot.width = 5, repr.plot.height = 2) 
+plotDemografieUlmDistr <- demografieUlmDistr %>%
+  ggplot(aes(x = Alter, y = Liste, fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    scale = 45,
+    rel_min_height = 0.01,
+    bandwidth = 3,
+    quantile_lines = TRUE,
+    vline_color = c("#0072B2"),
+    vline_width = 1.5,
+    quantile_fun = median
+    ) +
+  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = median(demografieUlmDistr$Alter), colour="#0072B2", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,85), breaks=seq(0, 85, by=5)) +
+  labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  theme_ipsum() +
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 8)
+    )
+#plotDemografieUlmDistr
+```
+
+```{r fig.width=8, fig.height=18, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
+plotUnten <- ggarrange(NA, plotDemografieUlmDistr,
+         #heights = c(12, 1.6),
+         widths = c(0.27, 1),
+         nrow = 1, ncol = 2)
+
+suppressWarnings(
+  ggarrange(plotAgeListen, plotUnten,
+         heights = c(12, 1.6),
+         #widths = c(1, 0.5),
+         nrow = 2, ncol = 1)
+)
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
-
-
 ```
 
 ### Aktueller Gemeinderat (Wahlperiode 2019-2024)
@@ -317,7 +351,7 @@ Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/sem
 Quellen:
 
 * [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
-* [2] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für 08421 "Ulm, kreisfreie Stadt", per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
+* [2] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
 * [3] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
 * [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
   * Webseiten der Stadt Ulm, [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
