@@ -245,19 +245,20 @@ TODO
 
 ### Bevölkerung Ulms
 
-Quelle: [2], Daten per 31.12.2023
+* Quelle: [2], Daten per 31.12.2023
+* Letzter Datenpunkt: 90 Jahre und älter.
 
-```{r fig.width=4, fig.height=2}
+```{r fig.width=6, fig.height=2}
 
 plotAgeUlm2023 <- ggplot(demografieUlm2023, aes(Alter.von, Wohnbevölkerung)) + 
-  geom_col()
+  geom_col(width = 0.5)
 
 plotAgeUlm2023
 ```
 Quelle: [3], Daten per 31.12.2022
-```{r fig.width=4, fig.height=2}
+```{r fig.width=5.4, fig.height=2}
 plotAgeUlm2022DES <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
-  geom_col()
+  geom_col(width = 0.8)
 
 plotAgeUlm2022DES
 
