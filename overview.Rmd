@@ -13,6 +13,9 @@ output:
 
 ```{r echo=FALSE, message=FALSE}
 library(ggridges)
+extrafont::loadfonts(device="win") # Fix, für ausführung auf Windows.#
+extrafont::loadfonts(device="pdf")
+extrafont::loadfonts(device="postscript")
 library(ggplot2)
 library(viridis)
 library(hrbrthemes)
@@ -29,6 +32,7 @@ library(ragg)
 
 
 # KANDIDAT_INNEN/LISTEN:
+#TODO Lfd.-Nr. wieder reinnehmen?
 listen <- read.csv('daten/kandidat_innen-2024-09-06.csv')
 colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
 listen$Stadtteil <- as.factor(listen$Stadtteil)
@@ -41,11 +45,13 @@ names(listenHelper) <- c("BerufAngabe",names(listen))
 listen <- listenHelper
 rm(listenHelper)
 
+# WAHLBERECHTIGTE
+#TODO offizielle Quelle finden/anfragen
+wahlberechtigte=92000 # SWP-Artikel [6]
+
 #AKTUELLER GEMEINDERAT:
 aktRat <- read.csv('daten/aktueller_gemeinderat_2024-03.csv')
 aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
-
-demografieUlmMedian = 40
 
 # ALTER ULM, Ulmer Statisitik 2023:
 demografieUlm2023 <- read.csv('daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
@@ -61,6 +67,9 @@ demografieUlm2023Distr <- as.data.frame(demografieUlm2023Distr)
 demografieUlm2023Distr <- cbind(demografieUlm2023Distr,'Ulm')
 #demografieUlmDistr <- cbind(NA, NA, NA, NA, 'Ulm', demografieUlmDistr)
 names(demografieUlm2023Distr) <- c('Alter', 'Liste')
+
+# TODO
+demografieUlm2023Median = median(demografieUlm2023Distr$Alter)
 
 
 # ALTER ULM, DESTATIS:
@@ -203,7 +212,7 @@ plotAgeListen <- listen %>%
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  geom_vline(xintercept = demografieUlmMedian, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
@@ -233,7 +242,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     quantile_fun = median
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlmMedian, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
@@ -253,7 +262,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 ```{r fig.width=6, fig.height=2.3}
 #options(repr.plot.width = 5, repr.plot.height = 2) 
 plotAktRat <- aktRat %>%
-  mutate(Fraktion = "Gemeinderat\n2019-2024") %>%
+  mutate(Fraktion = "Gemeinderat 2019-2024") %>%
   ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -269,7 +278,7 @@ plotAktRat <- aktRat %>%
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlmMedian, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
@@ -301,7 +310,7 @@ plotAktRatMinus5 <- aktRat %>%
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlmMedian, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
@@ -345,6 +354,7 @@ suppressWarnings(
 ### Aktueller Gemeinderat (Wahlperiode 2019-2024)
 
 ```{r fig.width=6, fig.height=2.5}
+
 ggplot(aktRat,  aes(x = Alter, y = NA)) + 
   #geom_histogram(width = 0.5, binwidth = 1)
   geom_density_ridges_gradient(
@@ -360,6 +370,7 @@ ggplot(aktRat,  aes(x = Alter, y = NA)) +
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
+  #TODO x-Achsen-Marker für Wahlalter und Bevölkerungsmedian.
   scale_x_continuous(limits=c(25, 85), breaks=seq(30, 80, by=10)) +
   theme_ipsum() +
   theme(
@@ -370,23 +381,54 @@ ggplot(aktRat,  aes(x = Alter, y = NA)) +
     axis.text.y=element_blank(),
     #axis.title.x=element_blank()
   )
+
 ```
 
 
-### Bevölkerung Ulms
+### Ulmer Bevölkerung und Wahlberechtigte
 
-Die in diesem Bricht verwendetetn Daten zur Altersverteilung der Ulmer Bevölkerung stammen aus der  Ulmer Statistik 2023 [2], die Daten mit dem Stand vom 31.12.2023 enthält.
 
-* Gesamtzahl Wohnbevölkerung: n = TODO
-* Auflösung: Altersgruppen von je 1 Jahr, ab 0 Jahren.
-* Letzter Datenpunkt: 90 Jahre und älter, deshalb ein Ausreißer nach oben.
+<!-- #TODO Dezimalpunkte in der Zahlenausgabe -->
+
+
+Wohnbevölkerung:
+
+  * Gesamt: `r if (sum(demografieUlm2023$Wohnbevölkerung) == length(demografieUlm2023Distr$Alter)) {gesamt = sum(demografieUlm2023$Wohnbevölkerung); gesamt} else print("FEHLER: Ups, da ist was schief gegangen.")`
+  * unter dem Wahlalter von 16 Jahren : `r { unterWahlalter = sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von <= 15]); unterWahlalter }` (`r round(( unterWahlalter / gesamt )*100, 1)` %)
+  * über 16 Jahre: `r { imWahlalter = gesamt - unterWahlalter; imWahlalter }` (`r round(( imWahlalter/gesamt )*100, 1)` %), von diesen:
+    * Anteil bis unter Median-Alter der Gesamtbevölkerung (16 bis unter `r demografieUlm2023Median` Jahre): `r sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= 16 & demografieUlm2023$Alter.von < demografieUlm2023Median])` (`r round(( sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= 16 & demografieUlm2023$Alter.von < demografieUlm2023Median]) / gesamt )*100, 1)` % der Gesamtbevölkerung bzw.  `r round(( sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= 16 & demografieUlm2023$Alter.von < demografieUlm2023Median]) / imWahlalter )*100, 1)` % der ab 16-jährigen).
+    * Anteil ab Median-Alter Gesamtbevölkerung (ab `r demografieUlm2023Median` Jahre): `r sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= demografieUlm2023Median])` (`r round(( sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= demografieUlm2023Median]) / gesamt )*100, 1)` % der Gesamtbevölkerung bzw. `r round(( sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= demografieUlm2023Median]) / imWahlalter )*100, 1)` % der ab 16-jährigen).
+    * Von 16 bis unter 18 Jahren: `r sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= 16 & demografieUlm2023$Alter.von < 18])` (`r round(( sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von >= 16 & demografieUlm2023$Alter.von < 18]) / imWahlalter )*100, 1)` %).
+
+
+Wahlberechtigte:
+
+* Gesamt: `r wahlberechtigte`, wodurch sich folgende Anteile ergeben:
+  * `r round(( wahlberechtigte/gesamt )*100, 1)` % der gesamten Wohnbevölkerung sind wahlberechtigt.
+  * Von der Wohnbevölkerung ab 16 Jahren/im Wahlalter sind `r round(( wahlberechtigte / imWahlalter )*100, 1)` % wahlberechtigt.
+
+
+Vergleich mit Baden-Württemberg, nach Schätzungen des Statistischen Landesamtes [5] (Werte also ungefähr):
+
+* Gesamtbevölkerung: 11,3 Millionen [6]
+* Wahlberechtigte: 8,6 Millionen (`r round(( 8.6 / 11.3 )*100, 1)` %; 7,8 Mio. Deutsche, 0,8 Mio. Unionsbürger_innen).
+* Wahlberechtigte unter 18 Jahren: 190.000 (2,3 % der Wahlberechtigten).
+* "Insgesamt sind ca. 10,9 % der wahlberechtigten Bevölkerung Baden-Württembergs zwischen 16 und 24 Jahren. In den Parlamenten ist diese Altersgruppe allerdings kaum vertreten, so sind derzeit im Landtag nur 0,6 % und im Bundestag nur 0,8 % der Abgeordneten unter 25 Jahren."
+
+
+Zum Datensatz:
+
+* Quelle Wohnbevölkerung: Ulmer Statistik 2023 [2], mit Stichtag 31.12.2023.
+  * Auflösung der Daten: Altersgruppen von je 1 Jahr, ab 0 Jahren.
+  * Letzter Datenpunkt enthält alle Personen 90 Jahre und älter, deshalb sieht man hier ein Ausreißer nach oben.
+* Quelle Anzahl Wahlberechtigten: SWP [6].
 
 
 ```{r fig.width=6, fig.height=2}
 
-
 plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) + 
-  geom_histogram(binwidth = 1)
+  geom_histogram(binwidth = 1) +
+  scale_x_continuous(breaks=seq(0, 90, by=10))
 
 plotAgeUlm2023Distr
 
@@ -399,9 +441,11 @@ plotAgeUlm2023Distr
 
 ```
 
-Alternativ stellt das Statstische Bundesamt auch noch folgende Altersdaten mit akttuell letztem Stand vom 31.12.2022 [3] zur Verfügung. Diese sind etwas älter und vor allem weniger fein aufgelöst; damit hier nur eine ergänzende Darstellung.
+Alternativ stellt das Statstische Bundesamt (DESTATIS) in der GENESIS-Datenbank folgende Altersdaten mit akttuell letztem Stand vom 31.12.2022 [3] zur Verfügung. Diese Daten sind also etwas älter und vor allem weniger fein aufgelöst. Alle Auswertungen in diesem Bericht basieren auf den Daten der Ulmer Statistik 2023, für Interessierte dennoch eine kurze Vorstellung:
 
-* Gesamtzahl Wohnbevölkerung: n = TODO
+Wohnbevölkerung DESTATIS:
+
+* Gesamtzahl: `r sum(demografieUlmZehner$Personen)`
 
 ```{r fig.width=5.4, fig.height=2}
 plotAgeUlm2022DES <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
@@ -413,10 +457,10 @@ plotAgeUlm2022DES
 ```
 
 
-## Beruflicher Hintergrund und Tätigkeiten
+## Beruflicher Hintergrund
 
 Skizze:
-
+* Angabe im Feld "Beruf oder Stand".
 * Hier kommt wesentlich mehr Interpretation rein, z.B. die Zusammenfassung der Berufsangaben "Einzelunternehmer", "selbst. Unternehmer", "selbst. Unternehmerin" und "	Unternehmer IT-Services" zu "Unternehmer_in".
 * Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
 
@@ -504,22 +548,31 @@ taetigkeiten %>%
 
 # Vorgehensweise, Quellen und Autor_innen
 
+
 Datenverarbeitung und Visualisierung mit der Statistiksoftware R. Automatisierte Erstellung des reproduzier- und nachvollziehbaren Berichts mit R Markdown. Veröffentlichung im Web mit GitHub (Actions). Tausend  Dank an alle Autor_innen der unzähligen genutzten Softwarepakte!
+
 
 Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/semaphor/politische-demografie-ulm>
 
+
 Quellen:
 
-* [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [Link](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
-* [2] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [Link](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
-* [3] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Link](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
+* [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [PDF](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
+* [2] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [PDF](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
+* [3] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Website](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
 * [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
-  * Webseiten der Stadt Ulm, [Link](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
+  * Webseiten der Stadt Ulm, [Website](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
   * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
+* [5] Baden-Württemberg vor den Kommunalwahlen 2024, Monja Rinderle, Dirk Eisenreich, 
+Statistisches Monatsheft Februar 2024, Statistisches Landesam Baden-Württemberg, [PDF](https://www.statistik-bw.de/Service/Veroeff/Monatshefte/PDF/Beitrag24_02_01.pdf)/ [Website](https://www.statistik-bw.de/Service/Veroeff/Monatshefte/20240201)
+* [6] Es geht los! Die Unterlagen werden verschickt, 10.5.2024, Chirin Kolb, SWP, [Website](https://www.swp.de/lokales/ulm/kommunalwahl-in-ulm-es-geht-los-mit-der-wahl-73755939.html?refreshSession=1)
+* [7] Bevölkerung nach Nationalität – vierteljährlich, Statistisches Landesam Baden-Württemberg, [Website](https://www.statistik-bw.de/BevoelkGebiet/Bevoelkerung/01035055.tab?R=LA)
+
 
 Von: Jakob Pietron, Simon Lüke
 
-Lizenz:
 
-Kontakt:
-TODO
+Lizenz: TODO
+
+
+Kontakt: TODO
