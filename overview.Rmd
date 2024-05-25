@@ -13,9 +13,6 @@ output:
 
 ```{r echo=FALSE, message=FALSE}
 library(ggridges)
-extrafont::loadfonts(device="win") # Fix, für ausführung auf Windows.#
-extrafont::loadfonts(device="pdf")
-extrafont::loadfonts(device="postscript")
 library(ggplot2)
 library(viridis)
 library(hrbrthemes)
@@ -231,6 +228,7 @@ plotAgeListen <- listen %>%
 ```{r fig.width=6, fig.height=2.3}
 #options(repr.plot.width = 5, repr.plot.height = 2) 
 plotDemografieUlmDistr <- demografieUlm2023Distr %>%
+  mutate(Liste = "Ulm\n(n = TODO)") %>%
   ggplot(aes(x = Alter, y = Liste)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -262,7 +260,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 ```{r fig.width=6, fig.height=2.3}
 #options(repr.plot.width = 5, repr.plot.height = 2) 
 plotAktRat <- aktRat %>%
-  mutate(Fraktion = "Gemeinderat 2019-2024") %>%
+  mutate(Fraktion = "Gemeinderat\n2019-2024\n(n = TODO)") %>%
   ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -460,6 +458,7 @@ plotAgeUlm2022DES
 ## Beruflicher Hintergrund
 
 Skizze:
+
 * Angabe im Feld "Beruf oder Stand".
 * Hier kommt wesentlich mehr Interpretation rein, z.B. die Zusammenfassung der Berufsangaben "Einzelunternehmer", "selbst. Unternehmer", "selbst. Unternehmerin" und "	Unternehmer IT-Services" zu "Unternehmer_in".
 * Die vollständige Liste, die alle angegebenen Berufe enthält, finden Sie der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
@@ -549,7 +548,7 @@ taetigkeiten %>%
 # Vorgehensweise, Quellen und Autor_innen
 
 
-Datenverarbeitung und Visualisierung mit der Statistiksoftware R. Automatisierte Erstellung des reproduzier- und nachvollziehbaren Berichts mit R Markdown. Veröffentlichung im Web mit GitHub (Actions). Tausend  Dank an alle Autor_innen der unzähligen genutzten Softwarepakte!
+Datenverarbeitung und Visualisierung mit der Statistiksoftware R. Automatisierte Erstellung des reproduzier- und nachvollziehbaren Berichts (diese Website) mit R Markdown. Veröffentlichung im Web mit GitHub (Actions). Tausend  Dank an alle Autor_innen der unzähligen genutzten freien Softwarepakte!
 
 
 Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/semaphor/politische-demografie-ulm>
