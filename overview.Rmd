@@ -375,24 +375,33 @@ ggplot(aktRat,  aes(x = Alter, y = NA)) +
 
 ### Bevölkerung Ulms
 
-Quelle: [2], Daten per 31.12.2023
+Die in diesem Bricht verwendetetn Daten zur Altersverteilung der Ulmer Bevölkerung stammen aus der  Ulmer Statistik 2023 [2], die Daten mit dem Stand vom 31.12.2023 enthält.
 
-Letzter Datenpunkt: 90 Jahre und älter.
+* Gesamtzahl Wohnbevölkerung: n = TODO
+* Auflösung: Altersgruppen von je 1 Jahr, ab 0 Jahren.
+* Letzter Datenpunkt: 90 Jahre und älter, deshalb ein Ausreißer nach oben.
+
 
 ```{r fig.width=6, fig.height=2}
 
-plotAgeUlm2023 <- ggplot(demografieUlm2023, aes(Alter.von, Wohnbevölkerung)) + 
-  geom_col(width = 0.5)
 
 plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) + 
-  geom_histogram(binwidth = 5)
-
-plotAgeUlm2023
+  geom_histogram(binwidth = 1)
 
 plotAgeUlm2023Distr
+
+# Zum Vergleich hier optional eine Darstellung der ursprünglichen Daten aus [2]:
+#plotAgeUlm2023 <- ggplot(demografieUlm2023, aes(Alter.von, Wohnbevölkerung)) + 
+#  geom_col(width = 0.5)
+#
+#plotAgeUlm2023
+
+
 ```
 
-Quelle: [3], Daten per 31.12.2022
+Alternativ stellt das Statstische Bundesamt auch noch folgende Altersdaten mit akttuell letztem Stand vom 31.12.2022 [3] zur Verfügung. Diese sind etwas älter und vor allem weniger fein aufgelöst; damit hier nur eine ergänzende Darstellung.
+
+* Gesamtzahl Wohnbevölkerung: n = TODO
 
 ```{r fig.width=5.4, fig.height=2}
 plotAgeUlm2022DES <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
