@@ -2,7 +2,7 @@
 title: "Datenanalyse zur Ulmer Gemeinderatswahl 2024"
 subtitle: "ENTWURF | Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat im Vergleich."
 author: "Jakob Pietron, Simon Lüke"
-date: "26.5.2024"
+date: "28.5.2024"
 output:
   html_document:
     toc: true
@@ -134,7 +134,7 @@ Skizze:
   * Und ggf. selber weitermachen: offen z.B. noch Asuwertung mit Blick auf die Stadtteile; evtl. ist auch eine Auswertung nach Geschlechtern möglich.
 
 
-# Auf einen Blick
+# Zusammenfassung
 
 Skizze:
 
@@ -150,11 +150,16 @@ Skizze:
 
 ## Altersstruktur
 
+Skizze:
+
+* Ulmer Bevölkerung zum Vergleich. Rat soll vertreten = wie bildet er ab/repräsentiert er?
+* Unten ggf.(?) mehr, v.a. Median; Quantile; kein Durchschnittsalter.
+
+ 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl
 
 Insgesamt kandidieren für die Wahl am 9.6.2024 `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029).
 
-TODO Ausformulieren: Ulmer Bevölkerung zum Vergleich, mit Median; kein Durchschnittsalter Quantile; unten (evlt.? Details dazu).
 
 ```{r}
 
@@ -185,6 +190,10 @@ Grafische Darstellung:
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide',fig.keep='all'}
+
+# NOTIZEN ZUM CODE
+# ================
+
 # Knittr Options für Chunks:
 # https://yihui.org/knitr/options/
 
@@ -227,8 +236,8 @@ plotAgeListenAlle <- listen %>%
     #fill = "#E69F00"
     #aes(colour = factor(Liste))
     ) +
-  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -264,7 +273,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     vline_width = 1.5,
     quantile_fun = median
     ) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -283,6 +292,8 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 ```
 
 
+#### Vergleich Bevölkerung und alle Kanditat_innen
+
 ```{r fig.width=10, warning=FALSE}
 
 # PLOT ULMER BEVÖLKERUNG VS ALLE KANDIDAT_INNEN
@@ -298,6 +309,7 @@ plotAlterBevoelkerungVSKandidatinnen <- listen %>%
   geom_density_ridges_gradient(
     scale = 0.9, 
     bandwidth = 1.5,
+    #fill="grey80",
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -307,9 +319,9 @@ plotAlterBevoelkerungVSKandidatinnen <- listen %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
   theme_ipsum() +
   theme(
     legend.position="none",
@@ -351,7 +363,10 @@ plotUnten <- ggarrange(NA, plotAgeListenAlle,
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
-```{r fig.width=10, fig.height=10}
+
+#### Vergleich der Listen
+
+```{r fig.width=10, fig.asp=1.5, warning=FALSE}
 
 # PLOT LISTEN EINZELN
 
@@ -369,12 +384,10 @@ plotAgeListen <- listen %>%
     position = position_points_jitter(width = 0.7, height = 0),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
-    #fill = "#E69F00"
-    #aes(colour = factor(Liste))
     ) +
-  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
@@ -387,7 +400,49 @@ plotAgeListen <- listen %>%
     axis.title.y=element_blank(),
     axis.title.x=element_blank()
   )
-plotAgeListen
+#plotAgeListen
+
+```
+
+
+
+```{r fig.width=10, fig.asp=1.5, warning=FALSE}
+
+# PLOT LISTEN EINZELN VS BEVOELKERUNG
+
+plotAgeListenVSBevoelkerung <- listen %>%
+  rbind(demografieUlm2023Distr %>%
+          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ' )'))) %>%
+  ggplot(aes(x = Alter, y = Liste)) +
+  geom_density_ridges_gradient(
+    scale = 2.1, 
+    rel_min_height = 0.01, 
+    bandwidth = 1.5,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.7, height = 0),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7#,
+    ) +
+  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  scale_fill_viridis() +
+  scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilungen') +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank()
+  )
+plotAgeListenVSBevoelkerung
 
 ```
 
@@ -418,6 +473,11 @@ suppressWarnings(
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
+
+### Aktueller Gemeinderat
+
+Der aktuelle Gemeinderat mit der Wahlperiode 2019-2024 setzt sich aus 41 Mitgliedern zusammen (40 + 1 OB).
+
 ```{r fig.width=6, fig.height=2.3}
 #options(repr.plot.width = 5, repr.plot.height = 2) 
 plotAktRat <- aktRat %>%
@@ -436,7 +496,7 @@ plotAktRat <- aktRat %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -468,7 +528,7 @@ plotAktRatMinus5 <- aktRat %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
