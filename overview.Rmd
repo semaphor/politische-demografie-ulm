@@ -1,8 +1,8 @@
 ---
 title: "Datenanalyse zur Ulmer Gemeinderatswahl 2024"
 subtitle: "ENTWURF | Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat im Vergleich."
-author: "Jakob Pietron, Simon Lüke"
 date: "28.5.2024"
+author: "Jakob Pietron, Simon Lüke"
 output:
   html_document:
     toc: true
@@ -13,7 +13,7 @@ output:
     number_sections: true
 ---
 
-```{r echo=FALSE, message=FALSE}
+```{r message=FALSE}
 
 # DIE SCHULTERN VIELER ANDERER, DANKE
 # ===================================
@@ -121,7 +121,6 @@ names(demografieUlmDistr) <- c('BerufAngabe', 'Beruf', 'Geburtsjahr', 'Stadtteil
 
 ```
 
-
 # Einleitung
 
 Skizze:
@@ -148,6 +147,9 @@ Skizze:
 
 # Ausführlicher Bericht
 
+
+
+
 ## Altersstruktur
 
 Skizze:
@@ -167,6 +169,7 @@ Insgesamt kandidieren für die Wahl am 9.6.2024 `r nrow(listen)` Kandidat_innen 
 
 listen %>%
   group_by(Liste) %>%
+  #TODO (nice to have) Nicht nach Median, z.B. alphabetisch sortieren? mutate(Liste = fct_reorder(Liste, Liste, .fun='sort(unique())')) %>%
   summarise(
     "Kandidat_innen" = n(),
     "min. Alter" = min(Alter),
@@ -175,7 +178,9 @@ listen %>%
     "Alter, Durchschnitt" = round(mean(Alter),1),
     "Alter, Standardabw." = round(sd(Alter))
     ) %>%
-  datatable(style = 'bootstrap')
+  datatable(style = 'bootstrap', options = list(pageLength = 16))
+  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
+  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
 
 ```
 
@@ -189,7 +194,8 @@ Grafische Darstellung:
 * Grüner Strich: Wahlalter 16 Jahre.
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide',fig.keep='all'}
+```{r echo=FALSE}
+#, message=FALSE, warning=FALSE, results='hide',fig.keep='all'} TODO Zeile könnte evtl. gelöscht werden?
 
 # NOTIZEN ZUM CODE
 # ================
@@ -212,6 +218,8 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 ```
 
+#### Vergleich Bevölkerung und alle Kanditat_innen
+
 ```{r fig.width=10}
 
 # PLOT ALLE KANDIDAT_INNEN
@@ -219,7 +227,7 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 #TODO Verbesserung: Quantile einzeichnen.
 
 plotAgeListenAlle <- listen %>%
-  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ' )')) %>%
+  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ')')) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
     scale = 45, 
@@ -233,16 +241,12 @@ plotAgeListenAlle <- listen %>%
     position = position_points_jitter(width = 0.7, height = 0),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
-    #fill = "#E69F00"
-    #aes(colour = factor(Liste))
     ) +
-  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
   geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
-  scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
-  #labs(title = 'Altersverteilungen') +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   theme_ipsum() +
   theme(
     legend.position="none",
@@ -263,7 +267,7 @@ plotAgeListenAlle <- listen %>%
 #TODO Verbesserung: Quantile einzeichnen.
 
 plotDemografieUlmDistr <- demografieUlm2023Distr %>%
-  mutate(Liste = "Ulm\n(n = TODO)") %>%
+  mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ')')) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -277,7 +281,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
   theme_ipsum() +
   theme(
@@ -291,20 +295,17 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 
 ```
 
-
-#### Vergleich Bevölkerung und alle Kanditat_innen
-
 ```{r fig.width=10, warning=FALSE}
 
-# PLOT ULMER BEVÖLKERUNG VS ALLE KANDIDAT_INNEN
+# PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: in einem Plot)
 
 #TODO Verbesserung: Quantile einzeichnen.
 #TODO badwidth = checken, für gesamtes Projekt.
 
 plotAlterBevoelkerungVSKandidatinnen <- listen %>%
-  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ' )')) %>%
+  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ')')) %>%
   rbind(demografieUlm2023Distr %>%
-          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ' )'))) %>%
+          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ')'))) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
     scale = 0.9, 
@@ -321,7 +322,7 @@ plotAlterBevoelkerungVSKandidatinnen <- listen %>%
     ) +
   geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
-  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   theme_ipsum() +
   theme(
     legend.position="none",
@@ -330,35 +331,37 @@ plotAlterBevoelkerungVSKandidatinnen <- listen %>%
     axis.title.y=element_blank(),
     axis.title.x=element_blank()
   )
-plotAlterBevoelkerungVSKandidatinnen
+#plotAlterBevoelkerungVSKandidatinnen
 
 ```
 
-```{r fig.width=11, fig.height=5, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
+```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
 
-# PLOT ULMER BEVÖLKERUNG VS ALLE KANDIDAT_INNEN, EINZELNE DIAGRAMME
+# PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
 
-plotOben <- ggarrange(NA, plotDemografieUlmDistr,
-          labels = c("(A)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0.11, 1),
-         nrow = 1, ncol = 2)
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c("(A)", NA),
+  nrow = 1, ncol = 2,
+  widths = c(0.062, 1) #TODO (nice to have) Verhältnis berechnen.
+  )
 
-plotUnten <- ggarrange(NA, plotAgeListenAlle,
-                       labels = c("(B)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0, 1),
-         nrow = 1, ncol = 2)
+plotUnten <- ggarrange(
+  NA, plotAgeListenAlle,
+  labels = c("(B)", NA),
+  nrow = 1, ncol = 2,
+  widths = c(0, 1)
+  )
 
-# suppressWarnings(
-#   ggarrange(plotOben, plotUnten,
-#             
-#             vjust = 0,
-#             #widths = c(0.5, 1),
-#             nrow = 2, ncol = 1,
-#             heights = c(1,1)
-#   )
-# )
+suppressWarnings(
+ggarrange(
+  plotOben,
+  plotUnten,
+  nrow = 2, ncol = 1,
+  heights = c(1,1),
+  vjust = 0
+  )
+)
 
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
@@ -390,7 +393,7 @@ plotAgeListen <- listen %>%
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilungen') +
   theme_ipsum() +
   theme(
@@ -404,15 +407,13 @@ plotAgeListen <- listen %>%
 
 ```
 
-
-
 ```{r fig.width=10, fig.asp=1.5, warning=FALSE}
 
 # PLOT LISTEN EINZELN VS BEVOELKERUNG
 
 plotAgeListenVSBevoelkerung <- listen %>%
   rbind(demografieUlm2023Distr %>%
-          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ' )'))) %>%
+          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ')'))) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
     scale = 2.1, 
@@ -432,7 +433,7 @@ plotAgeListenVSBevoelkerung <- listen %>%
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilungen') +
   theme_ipsum() +
   theme(
@@ -442,46 +443,55 @@ plotAgeListenVSBevoelkerung <- listen %>%
     axis.title.y=element_blank(),
     axis.title.x=element_blank()
   )
-plotAgeListenVSBevoelkerung
+#plotAgeListenVSBevoelkerung
 
 ```
 
-```{r fig.width=11, fig.height=18, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
 
-plotOben <- ggarrange(NA, plotDemografieUlmDistr,
-          labels = c("(A)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0.11, 1),
-         nrow = 1, ncol = 2)
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
 
-plotUnten <- ggarrange(NA, plotAgeListen,
-                       labels = c("(B)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0, 1),
-         nrow = 1, ncol = 2)
+```{r fig.width=10, fig.asp=1.6, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
 
-suppressWarnings(
-  ggarrange(plotOben, plotUnten,
-            
-            vjust = 0,
-            #widths = c(0.5, 1),
-            nrow = 2, ncol = 1,
-            heights = c(2,12)
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c("(A)", NA),
+  widths = c(0.1, 1),
+  nrow = 1, ncol = 2
+  )
+
+plotUnten <- ggarrange(
+  NA, plotAgeListen,
+  labels = c("(B)", NA),
+  widths = c(0, 1),
+  nrow = 1, ncol = 2
+  )
+
+suppressWarnings( #TODO Wird das noch benötigt?
+ggarrange(
+  plotOben, plotUnten,
+  vjust = 0,
+  heights = c(2,12),
+  nrow = 2, ncol = 1
   )
 )
 
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
+
 
 ### Aktueller Gemeinderat
 
 Der aktuelle Gemeinderat mit der Wahlperiode 2019-2024 setzt sich aus 41 Mitgliedern zusammen (40 + 1 OB).
 
-```{r fig.width=6, fig.height=2.3}
+```{r fig.width=10, fig.asp=1}
 #options(repr.plot.width = 5, repr.plot.height = 2) 
 plotAktRat <- aktRat %>%
-  mutate(Fraktion = "Gemeinderat\n2019-2024\n(n = TODO)") %>%
+  mutate(Fraktion = paste0('Gemeinderat\n2019-2024\n(n = ', length(aktRat$Alter), ')')) %>%
   ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -500,7 +510,7 @@ plotAktRat <- aktRat %>%
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
   theme_ipsum() +
   theme(
@@ -513,7 +523,8 @@ plotAktRat <- aktRat %>%
 #plotAktRat
 
 plotAktRatMinus5 <- aktRat %>%
-  mutate(Fraktion = "Gemeinderat\n2019-2024\n-5 Jahre\n(n = TODO)", Alter = Alter - 5) %>%
+  mutate(Fraktion = paste0('Gemeinderat\n2019-2024\n-5 Jahre\n(n = ', length(aktRat$Alter), ')')) %>%
+  mutate(Alter = Alter - 5) %>%
   ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
     scale = 45,
@@ -532,7 +543,7 @@ plotAktRatMinus5 <- aktRat %>%
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,91), breaks=seq(0, 90, by=5)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
   theme_ipsum() +
   theme(
@@ -545,32 +556,37 @@ plotAktRatMinus5 <- aktRat %>%
 #plotAktRatMinus5
 ```
 
-```{r fig.width=11, fig.height=6, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
+```{r fig.width=10, fig.asp=0.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
 
-plotOben <- ggarrange(NA, plotDemografieUlmDistr,
-          labels = c("(A)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0, 1),
-         nrow = 1, ncol = 2)
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c("(A)", NA),
+  nrow = 1, ncol = 2,
+  widths = c(0, 1)
+  )
 
-plotUnten <- ggarrange(NA, plotAktRat,
-                       labels = c("(B)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0, 1),
-         nrow = 1, ncol = 2)
+plotUnten <- ggarrange(
+  NA, plotAktRat,
+  labels = c("(B)", NA),
+  widths = c(0.007, 1),
+  nrow = 1, ncol = 2
+  )
 
-plotGanzUnten <- ggarrange(NA, plotAktRatMinus5,
-                       labels = c("(C)", NA),
-         #heights = c(12, 1.6),
-         widths = c(0, 1),
-         nrow = 1, ncol = 2)
+plotGanzUnten <- ggarrange(
+  NA, plotAktRatMinus5,
+  labels = c("(C)", NA),
+  widths = c(0.007, 1),
+  nrow = 1, ncol = 2
+  )
 
 suppressWarnings(
-  ggarrange(plotOben, plotUnten, plotGanzUnten,
-            vjust = 0,
-            #widths = c(0.5, 1),
-            nrow = 3, ncol = 1,
-            heights = c(2,2,2)
+ggarrange(
+  plotOben,
+  plotUnten,
+  plotGanzUnten,
+  nrow = 3, ncol = 1,
+  vjust = 0,
+  heights = c(2,2,2)
   )
 )
 
@@ -620,7 +636,7 @@ Zum Datensatz:
 * Quelle Anzahl Wahlberechtigten: SWP [6].
 
 
-```{r fig.width=6, fig.height=2}
+```{r fig.width=10, fig.asp=0.33}
 
 plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) + 
   geom_histogram(binwidth = 1) +
@@ -643,7 +659,7 @@ Wohnbevölkerung DESTATIS:
 
 * Gesamtzahl: `r sum(demografieUlmZehner$Personen)`
 
-```{r fig.width=5.4, fig.height=2}
+```{r fig.width=10, fig.asp=0.4}
 plotAgeUlm2022DES <- ggplot(demografieUlmZehner, aes(AltersgruppeZehner, Personen)) + 
   geom_col(width = 0.8)
 
