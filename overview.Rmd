@@ -257,6 +257,8 @@ plotAgeListenAlle <- listen %>%
 
 # PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
 
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
@@ -281,7 +283,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt, der Alters-Median liegt bei `r demografieUlm2023Median`.
@@ -350,7 +351,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 Wäre dieser Rat nicht 2019, sondern in in diesem Jahr worden, müsste man 5 Jahre vom Alter abziehen, wodurch sich ein theoretischer Median von `r median(aktRat$Alter) - 5` Jahren ergibt.
@@ -446,7 +446,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 
@@ -523,8 +522,6 @@ listen %>%
     "Alter, Standardabw." = round(sd(Alter))
     ) %>%
   kable(style = 'bootstrap')
-  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
-  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
 
 ```
 
@@ -561,7 +558,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 
@@ -586,9 +582,9 @@ listen %>%
     "Alter, Durchschnitt" = round(mean(Alter),1),
     "Alter, Standardabw." = round(sd(Alter))
     ) %>%
+  #TODO Statt hart gecodetem pageLength = 16 wäre eine Funktion schöner, https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
   datatable(style = 'bootstrap', options = list(pageLength = 16))
-  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
-  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
+
 
 ```
 
@@ -619,7 +615,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 
@@ -644,8 +639,6 @@ aktRat %>%
     "Alter, Standardabw." = round(sd(Alter))
     ) %>%
   kable(style = 'bootstrap')
-  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
-  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
 
 ```
 
@@ -721,7 +714,6 @@ ggarrange(
   )
 )
 
-# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
 
