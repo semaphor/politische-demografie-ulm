@@ -145,9 +145,8 @@ Skizze:
    a. aktuelle Tätigkeiten (da müssen wir wohl etwas mutmaßen, könnte man ja aber in einem Absatz erklären)
 
 
+
 # Ausführlicher Bericht
-
-
 
 
 ## Altersstruktur
@@ -166,6 +165,7 @@ Insgesamt kandidieren für die Wahl am 9.6.2024 `r nrow(listen)` Kandidat_innen 
 ```{r}
 
 # TABELLE ALTERSSTATISTIK LISTEN
+# ==============================
 
 listen %>%
   group_by(Liste) %>%
@@ -218,11 +218,13 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 ```
 
+
 #### Vergleich Bevölkerung und alle Kanditat_innen
 
 ```{r fig.width=10}
 
 # PLOT ALLE KANDIDAT_INNEN
+# ========================
 
 #TODO Verbesserung: Quantile einzeichnen.
 
@@ -262,6 +264,7 @@ plotAgeListenAlle <- listen %>%
 ```{r fig.width=10, fig.height=2.3}
 
 # PLOT ULMER BEVÖLKERUNG
+# ======================
 
 #TODO Hohen leeren Bereich unterhalb x-Achse verkleinern.
 #TODO Verbesserung: Quantile einzeichnen.
@@ -720,6 +723,8 @@ berufe %>%
 
 ```
 
+
+<!-- TODO Evtl. noch ein Abschnitt zu "Future Work" -->
 
 
 # Vorgehensweise, Quellen und Autor_innen
