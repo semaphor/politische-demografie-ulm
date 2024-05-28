@@ -298,46 +298,6 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 
 ```
 
-```{r fig.width=10, warning=FALSE}
-
-# PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: in einem Plot)
-
-#TODO Verbesserung: Quantile einzeichnen.
-#TODO badwidth = checken, für gesamtes Projekt.
-
-plotAlterBevoelkerungVSKandidatinnen <- listen %>%
-  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ')')) %>%
-  rbind(demografieUlm2023Distr %>%
-          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ')'))) %>%
-  ggplot(aes(x = Alter, y = Liste)) +
-  geom_density_ridges_gradient(
-    scale = 0.9, 
-    bandwidth = 1.5,
-    #fill="grey80",
-    quantile_lines = TRUE,
-    vline_color = c("#56B4E9"),
-    vline_width = 1.5,
-    quantile_fun = median,
-    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
-    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7
-    ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
-  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
-  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
-  theme_ipsum() +
-  theme(
-    legend.position="none",
-    panel.spacing = unit(0.1, "lines"),
-    strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    axis.title.x=element_blank()
-  )
-#plotAlterBevoelkerungVSKandidatinnen
-
-```
-
 ```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
 
 # PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
@@ -371,6 +331,10 @@ ggarrange(
 
 
 #### Vergleich der Listen
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+
+Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
 
 ```{r fig.width=10, fig.asp=1.5, warning=FALSE}
 
@@ -450,11 +414,7 @@ plotAgeListenVSBevoelkerung <- listen %>%
 
 ```
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
-
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,
-
-```{r fig.width=10, fig.asp=1.6, echo=FALSE, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
+```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all'}
 
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
