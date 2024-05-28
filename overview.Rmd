@@ -156,18 +156,20 @@ Unsere direkten Kontaktdaten findst Du ganz unten.
 
 Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleichen zu können bietet sich als Alters-Mittelwert der Median an.
 Diesen Median erhält man, wenn man alle Personen der gewünschten Gruppe dem Alter nach in einer Reihe aufstellt und die Person genau in der Mitte nach ihrem Alter fragt.
-Die **mittlere Ulmerin ist somit `r demografieUlm2023Median` Jahre alt**.
+**Die mittlere Ulmerin ist aktuell `r demografieUlm2023Median` Jahre alt**.
 Ein weiterer wichtiger Wert ist natürlich das Wahlalter von 16 Jahren, ab dem man bei dieser Wahl in Baden-Württemberg wählen gehen darf und gewählt werden kann.
 (Baden-Württemberg geht mit diesem neidrigen Wahlater übrigens bundesweit voran [5].)
 
-Die **`r nrow(listen)` zur Wahl stehenden Kandidat_innen sind zwischen `r min(listen$Alter)` und `r max(listen$Alter)` Jahre** alt bzw. im Mittel `r max(listen$Alter)` Jahre.
-In der folgenden Grafik ist im unteren Diagramm für jede Kandidat_in auf der x-Achse ein schwarzer Punkt eingetragen.
-Die Kurve darüber fasst die Verteilung des Alters annäherungsweise zusammen.
+Die **`r nrow(listen)` zur Wahl stehenden Kandidat_innen sind im Mittel `r median(listen$Alter)` Jahre alt** bzw. `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung.
+Die Jüngste(n) sind `r min(listen$Alter)`, die Älteste(n) `r max(listen$Alter)`.
+Die folgenden Grafik zeigt die Altersverteilung der Kandidat_innen (unten) im Vergleich mit der Ulmer Bevölkerung (oben).
+Im unteren Diagramm ist für jede Kandidat_in auf der x-Achse ein schwarzer Punkt eingetragen.
+Die Kurven fassen die Verteilung des Alters annäherungsweise zusammen.
 Hier und in allen weiteren Grafiken zeigen die farbigen Linien außerdem folgendes an:
 
-* Blaue Linien stellen die Medianwerte dar.
-* Die gestrichelte blaue Linie liegt auf dem Medianwert der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
-* Die etwas dickeren blauen Linien zeigen immer den Medianwert für die jeweilige Kurve/Gruppe an.
+* Blaue Linien stellen Medianwerte dar.
+* Die gestrichelte blaue Linie markiert immer das Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
+* Die etwas dickeren blauen Linien zeigen jeweils den Medianwert für die jeweilige Kurve/Gruppe an.
 * Die orangen Linie markiert das Wahlalter 16.
 
 ```{r fig.width=10, fig.height=2.3, fig.align = 'center'}
@@ -191,7 +193,7 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     vline_width = 1.5,
     quantile_fun = median
     ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -234,7 +236,7 @@ plotAgeListenAlle <- listen %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
     ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -282,11 +284,9 @@ ggarrange(
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
-Im Median sind die **Kandidat_innen `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung**.
-
 Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt, der Alters-Median liegt bei `r demografieUlm2023Median`.
-Also ist **der aktuelle Rat im Median um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**.
-Die Altersverteilung stellt die folgende Grafik dar:
+Also ist **der aktuelle Gemeinderat im Mittel um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**.
+Die Altersverteilung ist in der folgenden Grafik dargestellt:
 
 ```{r fig.width=10, fig.asp=1, fig.align = 'center'}
 
@@ -306,7 +306,7 @@ plotAktRat <- aktRat %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -353,7 +353,7 @@ ggarrange(
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
-Wäre dieser Rat nicht 2019, sondern in in diesem Jahr worden, müsste man 5 Jahre vom Alter abziehen. Damit ergibt sich ein theoretischer Median von `r median(aktRat$Alter) - 5` Jahren.
+Wäre dieser Rat nicht 2019, sondern in in diesem Jahr worden, müsste man 5 Jahre vom Alter abziehen, wodurch sich ein theoretischer Median von `r median(aktRat$Alter) - 5` Jahren ergibt.
 Damit wäre der aktuelle Rat immer noch `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahre älter als die Ulmer Bevölkerung.
 
 Zwischenfazit zur Altersstruktur:
@@ -363,10 +363,11 @@ Zwischenfazit zur Altersstruktur:
 
 Interessant wäre an dieser Stelle noch ein Vergleich der Alterststruktur der Kandidat:innen bei einer Ulmer Gemeinderatswahl mit den den dann in dieser Wahl gewählten Vertreter:innen. Leider liegen uns aktuell die Wahlvorschläge von 2019 nicht inklusive Angabe des Geburtsjahres vor, um diesen Vergleich anhand der letzten Wahl hier vorzustellen.
 
-Welches Bild ergibt sich nun, wenn man auf die **Alterststruktur der  `r length(levels(listen$Liste))` Listen** schaut?
-**Im Median sind nur zwei der sechzehn Listen jünger also die Ulmer Bevölkerung**:
+Welches Bild ergibt sich nun, wenn man auf die Alterststruktur der  `r length(levels(listen$Liste))` Listen schaut?
+**Im Median sind nur 2 der 16 Listen jünger also die Ulmer Bevölkerung**:
 Die Junge Ulmer Liste (JUL) mit `r median(listen$Alter[listen$Liste == "JUL"])` und die Tierschutzpartei mit `r median(listen$Alter[listen$Liste == "Tierschutzpartei"])` Jahren (relativ zur Bevölkerung sind sie `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "JUL"]))` bzw. `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "Tierschutzpartei"]))` Jahre jünger).
-Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen: die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`.
+Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen:
+die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`).
 Austeigend nach Median-Alter sotiert sind das die Listen BLO, ... TODO, ... UfA.
 Auch mit einem um fünf Jahr nach unten korrgierten Median-Alter von 57 Jahren liegt der aktuelle Gemeindrat über dem  Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
 
@@ -380,7 +381,7 @@ Beide haben also eine sehr weite Bandbreit beim Alter ihrer Kandidat:innen, aber
 Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester ist damit aber auch noch nichts gesagt.
 An diesem Gedankenexperiment erkannt man wie einfach es ist mit "Statsitiken zu lügen" (wie das Sprichwort sagt), wenn man nur ganz bestimmte Werte auswählt und wiedergibt.]
  betrachten.
-In der folgenden Grafik sind die Altersverteilungen aller Listen dargestellt, aufsteigend nach Median sortiert und im Verlgeich zur Ulmer Bevölkerung (oben).
+In der folgenden Grafik sind die Altersverteilungen aller Listen dargestellt, aufsteigend nach Median sortiert und im Verlgeich mit der Ulmer Bevölkerung (oben).
 
 ```{r fig.width=10, fig.asp=1.5, warning=FALSE, fig.align = 'center'}
 
@@ -402,7 +403,7 @@ plotAgeListen <- listen %>%
     point_size = 2, point_alpha = .5, alpha = 0.7#,
     ) +
   #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 1, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
   scale_fill_viridis() +
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
@@ -669,7 +670,7 @@ plotAktRatMinus5 <- aktRat %>%
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
   #scale_fill_viridis() +
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
