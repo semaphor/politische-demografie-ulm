@@ -20,10 +20,10 @@
   </info>
   <locale>
     <terms>
-      <term name="no date">[o.J.]</term>
+      <term name="no date">[ohne Datum]</term>
       <term name="in">in</term>
       <term name="online">online</term>
-      <term name="accessed">Online im Internet</term>
+      <term name="accessed"></term>
       <term name="retrieved">URL</term>
       <term name="from"/>
       <term name="and">und</term>
@@ -151,11 +151,6 @@
         <text variable="title" font-style="italic"/>
       </else>
     </choose>
-    <choose>
-      <if variable="URL">
-        <text term="online" prefix=" [" suffix="]"/>
-      </if>
-    </choose>
   </macro>
   <macro name="number">
     <text variable="number"/>
@@ -224,7 +219,7 @@
   <macro name="accessed">
     <choose>
       <if variable="URL">
-        <group prefix="" suffix=":">
+        <group prefix="" suffix="">
           <text term="accessed" text-case="capitalize-first"/>
         </group>
       </if>
@@ -260,7 +255,7 @@
       <if variable="URL">
         <text variable="URL" suffix=" "/>
         <group>
-          <text term="from" suffix=": "/>
+          <text term="from" suffix=""/>
           <date variable="accessed">
             <date-part name="day" prefix="("/>
             <date-part name="month" form="numeric" prefix="."/>
@@ -347,7 +342,7 @@
             <text macro="publisher-group" suffix=", "/>
             <text macro="date" suffix=", "/>
             <text macro="page" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="url"/>
           </group>
         </else-if>
@@ -361,7 +356,7 @@
             <text macro="page" suffix=", "/>
             <text macro="collection" suffix=", "/>
             <text macro="isbn" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="url"/>
           </group>
         </else-if>
@@ -372,7 +367,7 @@
             <text macro="genre" suffix=", "/>
             <text macro="publisher-group" suffix=", "/>
             <text macro="date" suffix=", "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="page" suffix=". "/>
             <text macro="url"/>
           </group>
@@ -386,7 +381,7 @@
             <text macro="date" suffix=", "/>
             <text macro="isbn" suffix=", "/>
             <text macro="page" suffix=", "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="url"/>
           </group>
@@ -398,7 +393,7 @@
             <text macro="genre" suffix=", "/>
             <text macro="publisher-group" suffix=", "/>
             <text macro="year-date" suffix=", "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="url"/>
           </group>
         </else-if>
@@ -407,7 +402,7 @@
             <text macro="responsability" suffix=": "/>
             <text macro="title" suffix=", "/>
             <text macro="date" suffix=", "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="url"/>
           </group>
         </else-if>
@@ -418,7 +413,7 @@
             <text macro="medium" suffix=". "/>
             <text macro="publisher-group" suffix=", "/>
             <text macro="date" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="isbn" suffix=". "/>
             <text macro="url"/>
@@ -432,7 +427,7 @@
             <text macro="edition" suffix=". "/>
             <text macro="publisher-group" suffix=", "/>
             <text macro="year-date" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="url"/>
           </group>
@@ -445,7 +440,7 @@
             <text macro="edition" suffix=". "/>
             <text macro="publisher-group" suffix=", "/>
             <text macro="year-date" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="url"/>
           </group>
@@ -457,7 +452,7 @@
             <text macro="number" suffix=". "/>
             <text macro="date" suffix=". "/>
             <text macro="publisher-group" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="url"/>
             <text macro="archive"/>
@@ -476,7 +471,7 @@
             <text macro="edition" suffix=", "/>
             <text macro="publisher-group" suffix=". "/>
             <text macro="number" suffix=". "/>
-            <text macro="accessed" suffix=". "/>
+            <text macro="accessed" suffix=""/>
             <text macro="collection" suffix=". "/>
             <text macro="page" suffix=". "/>
             <text macro="isbn" suffix=". "/>
