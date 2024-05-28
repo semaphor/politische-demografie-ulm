@@ -679,7 +679,7 @@ Skizze:
 
 ```{r}
 
-# Berufsangaben redaktionell bereinigen:
+# BERUFSANGABEN REDAKTIONELL BEREINIGEN:
 #  * gegenderte Bezeichnungen
 #  * rausschmeißen "i.R." "selbst." 
 
@@ -708,7 +708,11 @@ listen <- listen %>%
   mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin' | Beruf == "Sportpsychologe" | Beruf == "Psychologin (B.sc.)", "Psycholog_in"))
 #Psychologische Beraterin i.R.? Psychologische Psychotherapeutin?
 
-# Spalte Tätigkeit erstmal mit Beruf füllen
+
+
+## BETRACHTUNG TÄTIGKEITEN
+
+# Spalte Tätigkeit erstmal mit Beruf füllen:
 listen$Tätigkeit <- listen$Beruf
 
 # Über Tätigkeiten stärker zusammenfassen:
