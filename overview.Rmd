@@ -370,7 +370,7 @@ Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen: die Median-Wert
 Austeigend nach Median-Alter sotiert sind das die Listen BLO, ... TODO, ... UfA.
 Auch mit einem um fünf Jahr nach unten korrgierten Median-Alter von 57 Jahren liegt der aktuelle Gemeindrat über dem  Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
 
-Um ein runderes Bild zu bekommen, sollte man neben den Mittlwerten, auch die Altersverteilung betrachten. ^[
+Um ein runderes Bild zu bekommen, sollte man neben den Mittlwerten, auch die Altersverteilung^[
 Zur Veranschaulitung des Themas Verteilungen ein Gedankenexperiment:
 Zuerst sortiert man die Listen nach per Median und dabei den jüngsten zuerst nach Alter und merkt sich aus dieser die ersten fünf Plätze.
 Dann nochmal umgekehrt sortieren, also mit den ältesten Listen zuerst.
@@ -379,6 +379,7 @@ Schaut man wiederum auf den Median sieht man dass GRÜNE mit `r median(listen$Al
 Beide haben also eine sehr weite Bandbreit beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert.
 Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester ist damit aber auch noch nichts gesagt.
 An diesem Gedankenexperiment erkannt man wie einfach es ist mit "Statsitiken zu lügen" (wie das Sprichwort sagt), wenn man nur ganz bestimmte Werte auswählt und wiedergibt.]
+ betrachten.
 In der folgenden Grafik sind die Altersverteilungen aller Listen dargestellt, aufsteigend nach Median sortiert und im Verlgeich zur Ulmer Bevölkerung (oben).
 
 ```{r fig.width=10, fig.asp=1.5, warning=FALSE, fig.align = 'center'}
@@ -893,5 +894,7 @@ Kontakt: datenanalyse-gemeinderat ÄTT resolution1.net
 
 TODO Können wir hier die Anschrift vom temporärhaus oder die vn der Open Knowledge Foundation Deutschland e.V. (wie beim https://www.ulmapi.de/mobil-o-mat/#impressum) angeben?
 
-
+\
+\
+\
 **Fußnoten**
