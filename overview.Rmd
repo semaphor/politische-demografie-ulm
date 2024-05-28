@@ -709,36 +709,6 @@ listen <- listen %>%
 #Psychologische Beraterin i.R.? Psychologische Psychotherapeutin?
 
 
-
-## BETRACHTUNG TÄTIGKEITEN
-
-# Spalte Tätigkeit erstmal mit Beruf füllen:
-listen$Tätigkeit <- listen$Beruf
-
-# Über Tätigkeiten stärker zusammenfassen:
-listen <- listen %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Lehrer_in" | Tätigkeit == "techn. Oberlehrer i.R." | Tätigkeit == "techn. Oberlehrerin", "Lehrer_in")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Augenoptikerin" | Tätigkeit == "Augenoptikermeister", "Augenoptiker_in")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Dipl.-Ingenieur" | Tätigkeit == "Wirtschaftsingenieur" | Tätigkeit == "Dipl.-Ingenieur (FH)" | Tätigkeit == "Ingenieur" | Tätigkeit == "Dipl.-Ingenieur (BA)" | Tätigkeit == "Dipl.-Ingenieur agr." | Tätigkeit == "Entwicklungsingenieur" | Tätigkeit == "selbst. Bauingenieurin", "Ingenieur_in")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Dipl.-Informatiker_in" | Tätigkeit == "Informatiker" | Tätigkeit == "Informatikkauffrau" | Tätigkeit == "selbst. Wirtschaftsinformatiker (B.Sc.)", "Informatiker_in")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Bankkaufleute" | Tätigkeit == "Bankbetriebswirt" | Tätigkeit == "Bankfachwirtin", "Bankkaufleute u. -(fach-)wirtin")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Bürokauffrau" | Tätigkeit == "kaufm. Angestellte" | Tätigkeit == "Dipl.-Kaufmann" | Tätigkeit == "" | Tätigkeit == "" | Tätigkeit == "" | Tätigkeit == "", "Kaufleute")) %>%
-  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
-  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
-  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
-  #mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "" | Tätigkeit == "", "")) %>%
-  mutate(Tätigkeit = replace(Tätigkeit, Tätigkeit == "Psycholog_in" | Tätigkeit == 'Psychologische Beraterin i.R.' | Tätigkeit == "Psychologische Psychotherapeutin", "Psycholog_in"))
-# So, gut jetzt für heute, bei Kaufleuten und Betriebswirten.
-
-# Zur Refrenez beim Durcharbeiten erstmal eine Tabelle mit den Originalanageben:
-berufeAngabe <- listen %>%
-            group_by(BerufAngabe) %>%
-            summarise(n = n()) %>%
-            arrange(desc(n))
-
-berufeAngabe %>%
-  datatable(style = 'bootstrap', filter = 'top')
-
 # Redaktionelle Zusammenfassung:
 berufe <- listen %>%
             group_by(Beruf) %>%
@@ -748,16 +718,8 @@ berufe <- listen %>%
 berufe %>%
   datatable(style = 'bootstrap', filter = 'top')
 
-# Zusammenfassung Tätigkeit:
-taetigkeiten <- listen %>%
-            group_by(Tätigkeit) %>%
-            summarise(n = n()) %>%
-            arrange(desc(n))
-
-taetigkeiten %>%
-  datatable(style = 'bootstrap', filter = 'top')
-
 ```
+
 
 
 # Vorgehensweise, Quellen und Autor_innen
