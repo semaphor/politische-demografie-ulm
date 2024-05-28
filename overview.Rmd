@@ -14,6 +14,10 @@ output:
 ---
 
 ```{r echo=FALSE, message=FALSE}
+
+# DIE SCHULTERN VIELER ANDERER, DANKE
+# ===================================
+
 library(ggridges)
 library(ggplot2)
 library(viridis)
@@ -23,6 +27,7 @@ library(DT)
 library(forcats)
 library(ggpubr)
 library(ragg)
+
 
 # DATEN EINLESEN UND AUFBEREITEN
 # ==============================
@@ -53,8 +58,7 @@ listenLabels <- listen %>%
   mutate(text = paste0(Liste, ' (n=', n, ')'))
 
 
-
-# WAHLBERECHTIGTE
+# WAHLBERECHTIGTE:
 #TODO offizielle Quelle finden/anfragen
 wahlberechtigte=92000 # SWP-Artikel [6]
 
@@ -62,6 +66,7 @@ wahlberechtigte=92000 # SWP-Artikel [6]
 #AKTUELLER GEMEINDERAT:
 aktRat <- read.csv('daten/aktueller_gemeinderat_2024-03.csv')
 aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
+
 
 # ALTER ULM, Ulmer Statisitik 2023:
 demografieUlm2023 <- read.csv('daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
@@ -114,8 +119,6 @@ demografieUlmDistr <- as.data.frame(demografieUlmDistr)
 demografieUlmDistr <- cbind(NA, NA, NA, NA, 'Ulm', demografieUlmDistr)
 names(demografieUlmDistr) <- c('BerufAngabe', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste', 'Alter')
 
-
-
 ```
 
 
@@ -155,6 +158,8 @@ TODO Ausformulieren: Ulmer Bevölkerung zum Vergleich, mit Median; kein Durchsch
 
 ```{r}
 
+# TABELLE ALTERSSTATISTIK LISTEN
+
 listen %>%
   group_by(Liste) %>%
   summarise(
@@ -180,6 +185,9 @@ Grafische Darstellung:
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide',fig.keep='all'}
+# Knittr Options für Chunks:
+# https://yihui.org/knitr/options/
+
 
 # Fabenblindenfreundliche Farbpaletten:
 
@@ -195,7 +203,7 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 ```
 
-```{r fig.width=10, fig.height=2}
+```{r fig.width=10}
 
 # PLOT ALLE KANDIDAT_INNEN
 
@@ -251,7 +259,6 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
   geom_density_ridges_gradient(
     scale = 45,
     rel_min_height = 0.01,
-    bandwidth = 1,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -276,20 +283,20 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
 ```
 
 
-```{r fig.width=10, fig.height=2}
+```{r fig.width=10, warning=FALSE}
 
 # PLOT ULMER BEVÖLKERUNG VS ALLE KANDIDAT_INNEN
 
 #TODO Verbesserung: Quantile einzeichnen.
+#TODO badwidth = checken, für gesamtes Projekt.
 
-plotAlterBevoelkerungKandidatinnen <- listen %>%
-  mutate(Liste = "Alle Kandidat_innen") %>%
+plotAlterBevoelkerungVSKandidatinnen <- listen %>%
+  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ' )')) %>%
   rbind(demografieUlm2023Distr %>%
-          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr), ' )'))) %>%
+          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ' )'))) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
-    scale = 45, 
-    rel_min_height = 0.01, 
+    scale = 0.9, 
     bandwidth = 1.5,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
@@ -298,17 +305,11 @@ plotAlterBevoelkerungKandidatinnen <- listen %>%
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
     position = position_points_jitter(width = 0.7, height = 0),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7#,
-    #fill = "#E69F00"
-    #aes(colour = factor(Liste))
+    point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
-  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
   geom_vline(xintercept = 16, colour="#009E73", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
   geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
-  scale_fill_viridis() +
-  scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,90), breaks=seq(0, 90, by=5)) +
-  #labs(title = 'Altersverteilungen') +
   theme_ipsum() +
   theme(
     legend.position="none",
@@ -317,7 +318,7 @@ plotAlterBevoelkerungKandidatinnen <- listen %>%
     axis.title.y=element_blank(),
     axis.title.x=element_blank()
   )
-plotAlterBevoelkerungKandidatinnen
+plotAlterBevoelkerungVSKandidatinnen
 
 ```
 
@@ -425,7 +426,7 @@ plotAktRat <- aktRat %>%
   geom_density_ridges_gradient(
     scale = 45,
     rel_min_height = 0.01,
-    bandwidth = 1,
+    bandwidth = 1.5,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -457,7 +458,7 @@ plotAktRatMinus5 <- aktRat %>%
   geom_density_ridges_gradient(
     scale = 45,
     rel_min_height = 0.01,
-    bandwidth = 1,
+    bandwidth = 1.5,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
