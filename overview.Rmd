@@ -156,12 +156,12 @@ Unsere direkten Kontaktdaten findst Du ganz unten.
 
 Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleichen zu können bietet sich als Alters-Mittelwert der Median an.
 Diesen Median erhält man, wenn man alle Personen der gewünschten Gruppe dem Alter nach in einer Reihe aufstellt und die Person genau in der Mitte nach ihrem Alter fragt.
-Damit ist die mittlere Ulmerin bspw. `r demografieUlm2023Median` Jahre alt.
+Die **mittlere Ulmerin ist somit `r demografieUlm2023Median` Jahre alt**.
 Ein weiterer wichtiger Wert ist natürlich das Wahlalter von 16 Jahren, ab dem man bei dieser Wahl in Baden-Württemberg wählen gehen darf und gewählt werden kann.
 (Baden-Württemberg geht mit diesem neidrigen Wahlater übrigens bundesweit voran [5].)
 
-Alle `r nrow(listen)` Kandidat_innen, die sich zur Wahl stellen sind zwischen `r min(listen$Alter)` und `r max(listen$Alter)` Jahre alt.
-In der folgenden Grafik ist im untere Diagramm für jede Kandidat_in auf der x-Achse ein schwarzer Punkt eingetragen.
+Die **`r nrow(listen)` zur Wahl stehenden Kandidat_innen sind zwischen `r min(listen$Alter)` und `r max(listen$Alter)` Jahre** alt bzw. im Mittel `r max(listen$Alter)` Jahre.
+In der folgenden Grafik ist im unteren Diagramm für jede Kandidat_in auf der x-Achse ein schwarzer Punkt eingetragen.
 Die Kurve darüber fasst die Verteilung des Alters annäherungsweise zusammen.
 Hier und in allen weiteren Grafiken zeigen die farbigen Linien außerdem folgendes an:
 
@@ -169,84 +169,6 @@ Hier und in allen weiteren Grafiken zeigen die farbigen Linien außerdem folgend
 * Die gestrichelte blaue Linie liegt auf dem Medianwert der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
 * Die etwas dickeren blauen Linien zeigen immer den Medianwert für die jeweilige Kurve/Gruppe an.
 * Die orangen Linie markiert das Wahlalter 16.
-
-TODO Plot
-
-Im Median sind die Kandidat_innen `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung.
-
-Die 41 Mitglieder des aktuellen Gemeinderat (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt, der Alters-Median liegt bei `r demografieUlm2023Median`.
-Im Median ist der aktuelle Rat also um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen.
-Die Altersverteilung stellt die folgende Grafik dar:
-
-TODO Plot
-
-Würde dieser Rat in diesem Jahr gewählt werden, zieht man also 5 Jahre vom Alter ab, ergibt sich ein Median von `r median(aktRat$Alter) - 5` Jahren.
-Damit wäre der Rat immer noch `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahre älter als die Ulmer Bevölkerung.
-
-Zwischenfazit:
-* Rat aktuell 22 bzw. 17 Jahre älter als Bevölkerung.
-* Zur Wahl stehende Kandidat_innen sind im Median etwas junger, nämlich nur 11 Jahre Älter als die Ulmer:innen.
-* Interssant wäre noch ein Vergleich der Alterststruktur der Kandidat:innen, die sich zu Wahl aufstellen, mit den dann gewählten Vertreter:innen. Leider liegen uns aktuell die Wahlvorschläge von 2019 nicht inklusive Angabe des Geburtsjahrs vor.
-
-Welches Bild ergibt sich nun, wenn man auf die Alterststruktur der  `r length(levels(listen$Liste))` Listen schaut?
-Im Median sind nur zwei Listen jünger also die Ulmer Bevölkerung:
-Die Junge Ulmer Liste (JUL) mit `r median(listen$Alter[listen$Liste == "JUL"])` und die Tierschutzpartei mit `r median(listen$Alter[listen$Liste == "Tierschutzpartei"])` Jahren (relativ zur Bevölkerung sind sie `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "JUL"]))` bzw. `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "Tierschutzpartei"]))` Jahre jünger).
-Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen: die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`.
-Austeigend nach Median-Alter sotiert sind das die Listen BLO, ... TODO, ... UfA.
-Auch mit einem um fünf Jahr nach unten korrgierten Median-Alter von 57 Jahren liegt der aktuelle Gemeindrat über dem  Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
-
-Um ein runderes Bild zu bekommen, sollte man neben Mittlwerten, aber auch die Altersverteilung betrachten.
-Sotiert man die Listen per Median mit den jüngsten zuerst nach Alter und nimmt aus dieser Liste die erste fünf Plätze und macht man das dann umgekehrt mit den ältesten Listen zuerst, sieht man das FIXME (GRÜNE) und Ulm für Alle (UfA) beides mal in diesen ersten fünf Plätzen enthalten sind.
-Schaut man wiederum auf den Median-Wert sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren (relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre älter) sehr "mittig" sind, UfA aber die "älteste" Liste im Feld stellt.
-Beide haben also eine sehr weite Bandbreit im Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert.
-An diesem Beispiel erkannt man wie einfach es ist mit "Statsitik zu lügen" (wie das Sprichwort sagt), indem man ganz bestimmte Werte auswählt und wiedergibt.
-Deshalb finden sich in der folgenden Grafik eine vergleichende Darstellung der Altersverteilung aller Listen Liste aufsteigend nach Median sortiert und im Verlgeich zur Ulmer Bevölkerung (oben).
-
-TODO Plot
-
-
-Beruflicher Hintergrund/Tätigkeit
-
-  * ...
-
-
-
-# Ausführlicher Bericht
-
-
-## Altersstruktur
-
-Da der Gemeinderat uns Ulmer:innen vertreten soll, ziehen wir die Bevölkerungsdaten aus der Ulmer Statistik 2023 [2] zum Vergleich heran.
-Diese enthält Daten mit dem Stichtag 31.12.2023 mit den folgenden Eckpunkten (weiter unten findest du noch etwas mehr Analyse).
-
-* Personen insgesamt: `r length(demografieUlm2023Distr$Alter)`
-* Median-Alter: `r demografieUlm2023Median`
-
-Grafisch dargestellt ergibt sich folgendes Bild für die Altersverteilung:
-
-```{r echo=FALSE}
-#, message=FALSE, warning=FALSE, results='hide',fig.keep='all'} TODO Zeile könnte evtl. gelöscht werden?
-
-# NOTIZEN ZUM CODE
-# ================
-
-# Knittr Options für Chunks:
-# https://yihui.org/knitr/options/
-
-
-# Fabenblindenfreundliche Farbpaletten:
-
-#http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
-# The palette with grey:
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-# The palette with black:
-cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-#https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/#set-custom-color-palettes
-anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
-
-```
 
 ```{r fig.width=10, fig.height=2.3, fig.align = 'center'}
 
@@ -283,45 +205,9 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     axis.title.y=element_blank(),
     axis.title.x=element_blank()
   )
-plotDemografieUlmDistr
+#plotDemografieUlmDistr
 
 ```
-
-TODO Bildunterschrift: orange = Wahlalter 16; blau = Medianalter `r demografieUlm2023Median`
-
-
-### Kandidat:innen zur Ulmer Gemeinderatswahl
-
-Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029).
-
-<!-- TODO evtl. off by one, da keine Geburtstage, sondern nur -jahre vorliegen. -->
-
-Tabelle mit statistischen Altersangaben **über alle Kandidat_innen**:
-
-```{r}
-
-# TABELLE ALTERSSTATISTIK ALLE KANDIDAT_INNEN
-# ===========================================
-
-listen %>%
- summarise(
-    "Kandidat_innen" = n(),
-    "min. Alter" = min(Alter),
-    "max. Alter" = max(Alter),
-    "Alter, Median" = median(Alter),
-    "Alter, Durchschnitt" = round(mean(Alter),1),
-    "Alter, Standardabw." = round(sd(Alter))
-    ) %>%
-  kable(style = 'bootstrap')
-  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
-  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
-
-```
-
-
-#### Vergleich Bevölkerung und alle Kanditat_innen
-
-Grafische Darstellung der Alterstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
 
 ```{r fig.width=10, fig.align = 'center'}
 
@@ -396,36 +282,104 @@ ggarrange(
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 ```
 
+Im Median sind die **Kandidat_innen `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung**.
 
-#### Vergleich der Listen
+Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt, der Alters-Median liegt bei `r demografieUlm2023Median`.
+Also ist **der aktuelle Rat im Median um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**.
+Die Altersverteilung stellt die folgende Grafik dar:
 
+```{r fig.width=10, fig.asp=1, fig.align = 'center'}
 
-Tabelle mit Anzahl der Kandidatin_innen und statistischen Altersangaben **je Liste**:
-
-```{r}
-
-# TABELLE ALTERSSTATISTIK LISTEN
-# ==============================
-
-listen %>%
-  group_by(Liste) %>%
-  #TODO (nice to have) Nicht nach Median, z.B. alphabetisch sortieren? mutate(Liste = fct_reorder(Liste, Liste, .fun='sort(unique())')) %>%
-  summarise(
-    "Kandidat_innen" = n(),
-    "min. Alter" = min(Alter),
-    "max. Alter" = max(Alter),
-    "Alter, Median" = median(Alter),
-    "Alter, Durchschnitt" = round(mean(Alter),1),
-    "Alter, Standardabw." = round(sd(Alter))
-    ) %>%
-  datatable(style = 'bootstrap', options = list(pageLength = 16))
-  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
-  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
+plotAktRat <- aktRat %>%
+  mutate(Fraktion = paste0('Gemeinderat\n2019-2024\n(n = ', length(Alter), ',\nMedian = ', median(Alter), ')')) %>%
+  ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    scale = 45,
+    rel_min_height = 0.01,
+    bandwidth = 1.5,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.7, height = 0),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  #scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
+  )
+#plotAktRat
 
 ```
 
-Grafische Darstellung je Liste (unten, `r length(levels(listen$Liste))` Kurven) im Vergleich mit der Ulmer Bevölkerung (oberes Diagramm). *TODO beschreiben, ausformulieren: Kurve -> Annährung zur bessere Darstellung. Normierung auf Fläche unter der Kurve. Da es sich um eine Annäherung und nicht um eine exakt Reprästentazion der Alterswerte handelt, verläuft die Kurz bspw. teilw. in Bereiche < 16 Jahre, also unter das Wahlalter.*
+```{r fig.width=10, fig.asp=0.4, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c(NA, NA),
+  nrow = 1, ncol = 2,
+  widths = c(0, 1)
+  )
+
+plotUnten <- ggarrange(
+  NA, plotAktRat,
+  labels = c(NA, NA),
+  widths = c(0, 1),
+  nrow = 1, ncol = 2
+  )
+
+suppressWarnings(
+ggarrange(
+  plotOben,
+  plotUnten,
+  nrow = 2, ncol = 1,
+  vjust = 0,
+  heights = c(1,1)
+  )
+)
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+```
+
+Wäre dieser Rat nicht 2019, sondern in in diesem Jahr worden, müsste man 5 Jahre vom Alter abziehen. Damit ergibt sich ein theoretischer Median von `r median(aktRat$Alter) - 5` Jahren.
+Damit wäre der aktuelle Rat immer noch `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahre älter als die Ulmer Bevölkerung.
+
+Zwischenfazit zur Altersstruktur:
+
+* Der aktuelle Rat ist 22 bzw. 17 Jahre älter als die Ulmer Bevölkerung.
+* Die zur Wahl stehenden Kandidat_innen sind im Median jünger und nur 11 Jahre älter als die Ulmer:innen.
+
+Interessant wäre an dieser Stelle noch ein Vergleich der Alterststruktur der Kandidat:innen bei einer Ulmer Gemeinderatswahl mit den den dann in dieser Wahl gewählten Vertreter:innen. Leider liegen uns aktuell die Wahlvorschläge von 2019 nicht inklusive Angabe des Geburtsjahres vor, um diesen Vergleich anhand der letzten Wahl hier vorzustellen.
+
+Welches Bild ergibt sich nun, wenn man auf die **Alterststruktur der  `r length(levels(listen$Liste))` Listen** schaut?
+**Im Median sind nur zwei der sechzehn Listen jünger also die Ulmer Bevölkerung**:
+Die Junge Ulmer Liste (JUL) mit `r median(listen$Alter[listen$Liste == "JUL"])` und die Tierschutzpartei mit `r median(listen$Alter[listen$Liste == "Tierschutzpartei"])` Jahren (relativ zur Bevölkerung sind sie `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "JUL"]))` bzw. `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "Tierschutzpartei"]))` Jahre jünger).
+Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen: die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`.
+Austeigend nach Median-Alter sotiert sind das die Listen BLO, ... TODO, ... UfA.
+Auch mit einem um fünf Jahr nach unten korrgierten Median-Alter von 57 Jahren liegt der aktuelle Gemeindrat über dem  Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
+
+Um ein runderes Bild zu bekommen, sollte man neben den Mittlwerten, auch die Altersverteilung betrachten. ^[
+Zur Veranschaulitung des Themas Verteilungen ein Gedankenexperiment:
+Zuerst sortiert man die Listen nach per Median und dabei den jüngsten zuerst nach Alter und merkt sich aus dieser die ersten fünf Plätze.
+Dann nochmal umgekehrt sortieren, also mit den ältesten Listen zuerst.
+Schaut man nun wieder auf die ersten fünf Plätze, seht man im Vergleich, dass FIXME (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen mit dabei sind.
+Schaut man wiederum auf den Median sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren (relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre älter) sehr "mittig" sind, UfA aber die "älteste" Liste im Feld stellt (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`).
+Beide haben also eine sehr weite Bandbreit beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert.
+Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester ist damit aber auch noch nichts gesagt.
+An diesem Gedankenexperiment erkannt man wie einfach es ist mit "Statsitiken zu lügen" (wie das Sprichwort sagt), wenn man nur ganz bestimmte Werte auswählt und wiedergibt.]
+In der folgenden Grafik sind die Altersverteilungen aller Listen dargestellt, aufsteigend nach Median sortiert und im Verlgeich zur Ulmer Bevölkerung (oben).
 
 ```{r fig.width=10, fig.asp=1.5, warning=FALSE, fig.align = 'center'}
 
@@ -465,45 +419,178 @@ plotAgeListen <- listen %>%
 
 ```
 
-```{r fig.width=10, fig.asp=1.5, warning=FALSE, fig.align = 'center'}
+```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
-# PLOT LISTEN EINZELN VS BEVOELKERUNG
-
-plotAgeListenVSBevoelkerung <- listen %>%
-  rbind(demografieUlm2023Distr %>%
-          mutate(Liste = paste0('Ulm\n(n = ', length(demografieUlm2023Distr$Alter), ')'))) %>%
-  ggplot(aes(x = Alter, y = Liste)) +
-  geom_density_ridges_gradient(
-    scale = 2.1, 
-    rel_min_height = 0.01, 
-    bandwidth = 1.5,
-    quantile_lines = TRUE,
-    vline_color = c("#56B4E9"),
-    vline_width = 1.5,
-    quantile_fun = median,
-    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
-    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7#,
-    ) +
-  #scale_colour_manual(values = c("#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999")) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
-  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 1, show.legend = TRUE) +
-  scale_fill_viridis() +
-  scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
-  #labs(title = 'Altersverteilungen') +
-  theme_ipsum() +
-  theme(
-    legend.position="none",
-    panel.spacing = unit(0.1, "lines"),
-    strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c(NA, NA),
+  widths = c(0.1, 1),
+  nrow = 1, ncol = 2
   )
-#plotAgeListenVSBevoelkerung
+
+plotUnten <- ggarrange(
+  NA, plotAgeListen,
+  labels = c(NA, NA),
+  widths = c(0, 1),
+  nrow = 1, ncol = 2
+  )
+
+suppressWarnings( #TODO Wird das noch benötigt?
+ggarrange(
+  plotOben, plotUnten,
+  vjust = 0,
+  heights = c(2,12),
+  nrow = 2, ncol = 1
+  )
+)
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+```
+
+
+Beruflicher Hintergrund/Tätigkeit: TODO
+
+
+
+# Ausführlicher Bericht
+
+
+## Altersstruktur
+
+Da der Gemeinderat uns Ulmer:innen vertreten soll, ziehen wir die Bevölkerungsdaten aus der Ulmer Statistik 2023 [2] zum Vergleich heran.
+Diese enthält Daten mit dem Stichtag 31.12.2023 mit den folgenden Eckpunkten (weiter unten findest du noch etwas mehr Analyse).
+
+* Personen insgesamt: `r length(demografieUlm2023Distr$Alter)`
+* Median-Alter: `r demografieUlm2023Median`
+
+Grafisch dargestellt ergibt sich folgendes Bild für die Altersverteilung:
+
+```{r echo=FALSE}
+#, message=FALSE, warning=FALSE, results='hide',fig.keep='all'} TODO Zeile könnte evtl. gelöscht werden?
+
+# NOTIZEN ZUM CODE
+# ================
+
+# Knittr Options für Chunks:
+# https://yihui.org/knitr/options/
+
+
+# Fabenblindenfreundliche Farbpaletten:
+
+#http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/#a-colorblind-friendly-palette
+# The palette with grey:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# The palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+#https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/#set-custom-color-palettes
+anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#52854C", "#4E84C4", "#293352")
 
 ```
+
+```{r fig.width=10, fig.height=2.3, fig.align = 'center'}
+
+plotDemografieUlmDistr
+
+```
+
+TODO Bildunterschrift: orange = Wahlalter 16; blau = Medianalter `r demografieUlm2023Median`
+
+
+### Kandidat:innen zur Ulmer Gemeinderatswahl
+
+Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029).
+
+<!-- TODO evtl. off by one, da keine Geburtstage, sondern nur -jahre vorliegen. -->
+
+Tabelle mit statistischen Altersangaben **über alle Kandidat_innen**:
+
+```{r}
+
+# TABELLE ALTERSSTATISTIK ALLE KANDIDAT_INNEN
+# ===========================================
+
+listen %>%
+ summarise(
+    "Kandidat_innen" = n(),
+    "min. Alter" = min(Alter),
+    "max. Alter" = max(Alter),
+    "Alter, Median" = median(Alter),
+    "Alter, Durchschnitt" = round(mean(Alter),1),
+    "Alter, Standardabw." = round(sd(Alter))
+    ) %>%
+  kable(style = 'bootstrap')
+  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
+  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
+
+```
+
+
+#### Vergleich Bevölkerung und alle Kanditat_innen
+
+Grafische Darstellung der Alterstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
+
+```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+
+# PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
+
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c(NA, NA),
+  nrow = 1, ncol = 2,
+  widths = c(0.062, 1) #TODO (nice to have) Verhältnis berechnen.
+  )
+
+plotUnten <- ggarrange(
+  NA, plotAgeListenAlle,
+  labels = c(NA, NA),
+  nrow = 1, ncol = 2,
+  widths = c(0, 1)
+  )
+
+suppressWarnings(
+ggarrange(
+  plotOben,
+  plotUnten,
+  nrow = 2, ncol = 1,
+  heights = c(1,1),
+  vjust = 0
+  )
+)
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+```
+
+
+#### Vergleich der Listen
+
+
+Tabelle mit Anzahl der Kandidatin_innen und statistischen Altersangaben **je Liste**:
+
+```{r}
+
+# TABELLE ALTERSSTATISTIK LISTEN
+# ==============================
+
+listen %>%
+  group_by(Liste) %>%
+  #TODO (nice to have) Nicht nach Median, z.B. alphabetisch sortieren? mutate(Liste = fct_reorder(Liste, Liste, .fun='sort(unique())')) %>%
+  summarise(
+    "Kandidat_innen" = n(),
+    "min. Alter" = min(Alter),
+    "max. Alter" = max(Alter),
+    "Alter, Median" = median(Alter),
+    "Alter, Durchschnitt" = round(mean(Alter),1),
+    "Alter, Standardabw." = round(sd(Alter))
+    ) %>%
+  datatable(style = 'bootstrap', options = list(pageLength = 16))
+  #TODO Statt hart gecodetem 16 wäre eine Funktion schöner.
+  # https://stackoverflow.com/questions/64684661/can-you-change-the-r-default-table-length-when-outputting-with-the-dt-package
+
+```
+
+Grafische Darstellung je Liste (unten, `r length(levels(listen$Liste))` Kurven) im Vergleich mit der Ulmer Bevölkerung (oberes Diagramm). *TODO beschreiben, ausformulieren: Kurve -> Annährung zur bessere Darstellung. Normierung auf Fläche unter der Kurve. Da es sich um eine Annäherung und nicht um eine exakt Reprästentazion der Alterswerte handelt, verläuft die Kurz bspw. teilw. in Bereiche < 16 Jahre, also unter das Wahlalter.*
 
 ```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
@@ -563,38 +650,6 @@ aktRat %>%
 Grafische Darstellung im Vergleich mit der Ulmer Bevölkerung (oben) der Altersstruktur des aktuellen Gemeinderats (mitte) und des aktuellen Gemeinderats, wenn er dieses Jahr gewählt werden würde ("-5 Jahre", unten):
 
 ```{r fig.width=10, fig.asp=1, fig.align = 'center'}
-#options(repr.plot.width = 5, repr.plot.height = 2) 
-plotAktRat <- aktRat %>%
-  mutate(Fraktion = paste0('Gemeinderat\n2019-2024\n(n = ', length(Alter), ',\nMedian = ', median(Alter), ')')) %>%
-  ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
-  geom_density_ridges_gradient(
-    scale = 45,
-    rel_min_height = 0.01,
-    bandwidth = 1.5,
-    quantile_lines = TRUE,
-    vline_color = c("#56B4E9"),
-    vline_width = 1.5,
-    quantile_fun = median,
-    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
-    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7
-    ) +
-  geom_vline(xintercept = 16, colour="#E69F00", linetype = "longdash", linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
-  #scale_fill_viridis() +
-  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
-  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
-  theme_ipsum() +
-  theme(
-    legend.position="none",
-    panel.spacing = unit(0.1, "lines"),
-    strip.text.x = element_text(size = 8),
-    axis.title.y = element_blank(),
-    axis.title.x = element_blank()
-  )
-#plotAktRat
 
 plotAktRatMinus5 <- aktRat %>%
   mutate(Alter = Alter - 5) %>%
@@ -660,7 +715,7 @@ ggarrange(
   plotGanzUnten,
   nrow = 3, ncol = 1,
   vjust = 0,
-  heights = c(2,2,2)
+  heights = c(1,1,1)
   )
 )
 
@@ -814,7 +869,7 @@ Tausend Dank an alle Autor_innen der unzähligen genutzten freien Softwarepakte!
 
 Daten und nachvollziehbare Datenverarbeitung auf GitHub: <https://github.com/semaphor/politische-demografie-ulm>
 
-<!-- TODO (nice to have) automatische und verlinkte Referenzen zu den Quellen. -->
+<!-- TODO (nice to have) automatische und verlinkte Referenzen zu den Quellen, https://bookdown.org/ewhayewon1123/seoyewon/footnotes-and-citations.html#citations. -->
 
 Quellen:
 
@@ -837,3 +892,6 @@ Von: Jakob Pietron, Simon Lüke ([datalove/UlmAPI](http://www.ulmapi.de/) im [te
 Kontakt: datenanalyse-gemeinderat ÄTT resolution1.net
 
 TODO Können wir hier die Anschrift vom temporärhaus oder die vn der Open Knowledge Foundation Deutschland e.V. (wie beim https://www.ulmapi.de/mobil-o-mat/#impressum) angeben?
+
+
+**Fußnoten**
