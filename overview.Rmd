@@ -3,6 +3,9 @@ title: "ENTWURF! Datenanalyse zur Ulmer Gemeinderatswahl 2024"
 subtitle: "Vergleich Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat"
 date: "28.5.2024"
 author: "Jakob Pietron, Simon Lüke"
+bibliography: quellen.bib
+csl: ieee-with-url.csl
+link-citations: true
 output:
   html_document:
     toc: true
@@ -62,7 +65,7 @@ listenLabels <- listen %>%
 
 # WAHLBERECHTIGTE:
 #TODO offizielle Quelle finden/anfragen
-wahlberechtigte=92000 # SWP-Artikel [6]
+wahlberechtigte=92000 # SWP-Artikel [@swp:wahlunterlagen]
 
 
 #AKTUELLER GEMEINDERAT:
@@ -135,7 +138,7 @@ Dabei ist jeder Mensch natürlich erstmal sehr inidviudell.
 Bei einer größeren Gruppe, wie den 40 am 9. Juni zu wählenden Gemeinderät:innen, kann der Blick in die Statistik aber helfen, sich vor der Stimmangabe ein noch detaillierteres Bild zu verschaffen.
 
 TODO Motivation:
-Anstehende Probleme der nächsten Jahrzehnte: Klimawandel/notwendige -anpassung und Überalterung unserer Gesellschaft (dabei wird auch Ulm erstmal immer älter, bleibt aber eine vergleichsweise junge Stadt [8]).
+Anstehende Probleme der nächsten Jahrzehnte: Klimawandel/notwendige -anpassung und Überalterung unserer Gesellschaft (dabei wird auch Ulm erstmal immer älter, bleibt aber eine vergleichsweise junge Stadt [@demogrportal:bw_demogr]).
 + Frage der Repräsentation der Bevölkerung bei den Entscheidungen/Antworten auf diese Fragen in Ulm.
 
 Vorab möchten wir hier aber erstmal allen Kandidat_innen, die unsere Demokratie und die Menschenrechte ernst nehmen, danken!
@@ -146,7 +149,7 @@ Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleich
 Diesen Median erhält man, wenn man alle Personen der gewünschten Gruppe dem Alter nach in einer Reihe aufstellt und die Person genau in der Mitte nach ihrem Alter fragt.
 **Die mittlere Ulmerin ist aktuell `r demografieUlm2023Median` Jahre alt**.
 Ein weiterer wichtiger Wert ist natürlich das **Wahlalter von 16 Jahren**, ab dem man bei dieser Wahl in Baden-Württemberg wählen gehen darf und gewählt werden kann.
-(Baden-Württemberg geht mit diesem neidrigen Wahlater übrigens bundesweit voran [5].)
+(Baden-Württemberg geht mit diesem neidrigen Wahlater übrigens bundesweit voran [@statlabw:kommwahlen2024].)
 
 Die **`r nrow(listen)` zur Wahl stehenden Kandidat_innen sind im Mittel `r median(listen$Alter)` Jahre alt** bzw. `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung.
 Die jüngste Kandidatin ist `r min(listen$Alter)`, die älteste `r max(listen$Alter)`.
@@ -460,9 +463,9 @@ Beruflicher Hintergrund/Tätigkeit: TODO
 Als Datengrundlage haben wir für diesen Bericht nur öffentlich zugängliche Quellen verwendet.
 Insbesondere waren dies:
 
-* die bekannt gemachten Wahlvorschläge [1],
-* die Zusammensetzung des aktuellen Gemeinderats [4] und 
-* zum Vergleich die aktuelle Ulmer Statistik 2023 [2], mit Daten zu den `r length(demografieUlm2023Distr$Alter)` Ulmer:innen [2].
+* die bekannt gemachten Wahlvorschläge [@ulm:wahlvorschlaege_grat_2024],
+* die Zusammensetzung des aktuellen Gemeinderats [@ulm:aktrat; @ulm:aktrat_gebjahr] und 
+* zum Vergleich die aktuelle Ulmer Statistik 2023 [@ulm:statistik2023], mit Daten zu den `r length(demografieUlm2023Distr$Alter)` Ulmer:innen.
 
 Diese Daten haben wir soweit vor allem bzgl. der Altersstruktur ausgewertet.
 Zeit ist immer knapp und deshalb haben wir auf die in den Wahlvorschlägen gemachten Berufsangaben bisher nur einen sehr kurzen Blick geworfen.
@@ -482,7 +485,7 @@ Ansatzpunkte, über die wir bisher nachgedacht haben und auch direkte Kontaktdat
 
 ## Altersstruktur
 
-Da der Gemeinderat uns Ulmer:innen vertreten soll, ziehen wir die Bevölkerungsdaten aus der Ulmer Statistik 2023 [2] zum Vergleich heran.
+Da der Gemeinderat uns Ulmer:innen vertreten soll, ziehen wir die Bevölkerungsdaten aus der Ulmer Statistik 2023 [@ulm:statistik2023] zum Vergleich heran.
 Diese enthält Daten mit dem Stichtag 31.12.2023 mit den folgenden Eckpunkten (weiter unten findest du noch etwas mehr Analyse).
 
 * Personen insgesamt: `r length(demografieUlm2023Distr$Alter)`
@@ -525,7 +528,7 @@ TODO Bildunterschrift: orange = Wahlalter 16; blau = Medianalter `r demografieUl
 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl
 
-Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029).
+Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029) [@ulm:wahlvorschlaege_grat_2024].
 
 <!-- TODO evtl. off by one, da keine Geburtstage, sondern nur -jahre vorliegen. -->
 
@@ -769,20 +772,20 @@ Wahlberechtigte:
   * Von der Wohnbevölkerung ab 16 Jahren/im Wahlalter sind `r round(( wahlberechtigte / imWahlalter )*100, 1)` % wahlberechtigt.
 
 
-Vergleich mit Baden-Württemberg, nach Schätzungen des Statistischen Landesamtes [5] (Werte also ungefähr):
+Vergleich mit Baden-Württemberg, nach Schätzungen des Statistischen Landesamtes [@statlabw:kommwahlen2024] (Werte also ungefähr):
 
-* Gesamtbevölkerung: 11,3 Millionen [6]
+* Gesamtbevölkerung: 11,3 Millionen [@statlabw:bevoelkerung_viertelj]
 * Wahlberechtigte: 8,6 Millionen (`r round(( 8.6 / 11.3 )*100, 1)` %; 7,8 Mio. Deutsche, 0,8 Mio. Unionsbürger_innen).
 * Wahlberechtigte unter 18 Jahren: 190.000 (2,3 % der Wahlberechtigten).
 * "Insgesamt sind ca. 10,9 % der wahlberechtigten Bevölkerung Baden-Württembergs zwischen 16 und 24 Jahren. In den Parlamenten ist diese Altersgruppe allerdings kaum vertreten, so sind derzeit im Landtag nur 0,6 % und im Bundestag nur 0,8 % der Abgeordneten unter 25 Jahren."
-* Informationen zur Bevölkerungsentwicklung in Baden-Württemberg finden sich z.B. im Demografieportal des Bundes und der Länder [8].
+* Informationen zur Bevölkerungsentwicklung in Baden-Württemberg finden sich z.B. im Demografieportal des Bundes und der Länder [@demogrportal:bw_demogr].
 
 Zum Datensatz:
 
-* Quelle Wohnbevölkerung: Ulmer Statistik 2023 [2], mit Stichtag 31.12.2023.
+* Quelle Wohnbevölkerung: Ulmer Statistik 2023 [@ulm:statistik2023], mit Stichtag 31.12.2023.
   * Auflösung der Daten: Altersgruppen von je 1 Jahr, ab 0 Jahren.
   * Letzter Datenpunkt enthält alle Personen 90 Jahre und älter, deshalb sieht man hier ein Ausreißer nach oben.
-* Quelle Anzahl Wahlberechtigten: SWP [6].
+* Quelle Anzahl Wahlberechtigten: SWP [@swp:wahlunterlagen].
 
 
 Grafische Darstellung der Altersstruktur der Ulmer Wohnbevölkerung:
@@ -795,7 +798,7 @@ plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) +
 
 plotAgeUlm2023Distr
 
-# Zum Vergleich hier optional eine Darstellung der ursprünglichen Daten aus [2]:
+# Zum Vergleich hier optional eine Darstellung der ursprünglichen Daten aus [@ulm:statistik2023]:
 #plotAgeUlm2023 <- ggplot(demografieUlm2023, aes(Alter.von, Wohnbevölkerung)) + 
 #  geom_col(width = 0.5)
 #
@@ -804,7 +807,7 @@ plotAgeUlm2023Distr
 
 ```
 
-Alternativ stellt das Statstische Bundesamt (DESTATIS) in der GENESIS-Datenbank folgende Altersdaten mit akttuell letztem Stand vom 31.12.2022 [3] zur Verfügung. Diese Daten sind also etwas älter und vor allem weniger fein aufgelöst. Alle Auswertungen in diesem Bericht basieren auf den Daten der Ulmer Statistik 2023, für Interessierte dennoch eine kurze Vorstellung:
+Alternativ stellt das Statstische Bundesamt (DESTATIS) in der GENESIS-Datenbank folgende Altersdaten mit akttuell letztem Stand vom 31.12.2022 [@destatis:12411-0018_ulm] zur Verfügung. Diese Daten sind also etwas älter und vor allem weniger fein aufgelöst. Alle Auswertungen in diesem Bericht basieren auf den Daten der Ulmer Statistik 2023, für Interessierte dennoch eine kurze Vorstellung:
 
 Wohnbevölkerung DESTATIS:
 
@@ -856,7 +859,7 @@ listen <- listen %>%
 #Psychologische Beraterin i.R.? Psychologische Psychotherapeutin?
 ```
 
-In der Bekanntmachung der Wahlvorschläge [1] wird "Beruf oder Stand" angegeben.
+In der Bekanntmachung der Wahlvorschläge ulm:wahlvorschlaege_grat_2024 wird "Beruf oder Stand" angegeben.
 Wertet man dieses Datenfeld aus, ergeben sich für die `r nrow(listen)` Kandidat_innen erstmal `r length(unique(listen$BerufAngabe))` verschiedene Berufsangaben.
 Nach unserer ersten redaktionellen Bereinigung (siehe Code) erhalten wir `r length(unique(listen$Beruf))` verschiedene Angaben zu Ausbildung, Beruf bzw. Tätigkeit, die in der folgenden Tabelle zusammengefasst werden.
 Diese Bereinigung haben wir noch nicht vollständig abgeschlossen.
@@ -899,23 +902,6 @@ Unsere Ansatzpunkte für weitere Arbeit mit den Daten wären:
   * Evtl. direkt mit R vom Statistischen Bundesamt (DESTATIS) [abrufen](https://cran.r-project.org/web/packages/wiesbaden/vignettes/wiesbaden.html); diese Daten sind allerdings vermutlich schlechter aufgelöst, als die Daten aus der Ulmer Statistik.
 
 
-<!-- TODO (nice to have) automatische und verlinkte Referenzen zu den Quellen, https://bookdown.org/ewhayewon1123/seoyewon/footnotes-and-citations.html#citations. -->
-
-Quellen:
-
-* [1] Öffentliche Bekanntmachung der Wahlvorschläge zur Wahl des Gemeinderats und der Ortschaftsräte am 09. Juni 2024, Stadt Ulm, 04.04.2024, [PDF](https://www.ulm.de/-/media/ulm/zdv/downloads/oeffentliche-bekanntmachungen/2024/april-2024/20240404zugelassene-wahlvorschlge-zur-wahl-des-gemeinderats-und-der-ortschaftsrte-am-09-juni-2024sig.pdf)
-* [2] Die "Ulmer Statistik 2023" würde noch feiner aufgelöste und aktuellere Daten zur Alterstruktur enthalten [PDF](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf)
-* [3] Tabelle 12411-0018 "Bevölkerung: Kreise, Stichtag, Geschlecht, Altersgruppen" für "Ulm, kreisfreie Stadt" (Code 08421), per 31.12.2022, Statistisches Bundesamt, [Website](https://www-genesis.destatis.de/genesis//online?operation=table&code=12411-0018&bypass=true&levelindex=0&levelid=1716154099952#abreadcrumb)
-* [4] Zusammensetzung Ulmer Gemeinderat Wahlperiode 2019-2024:
-  * Webseiten der Stadt Ulm, [Website](https://www.ulm.de/rathaus/stadtpolitik/gemeinderat)
-  * Alter: Internetrecherche, diverse Quellen (auf Nachfrage bei den Autor\*innen)
-* [5] Baden-Württemberg vor den Kommunalwahlen 2024, Monja Rinderle, Dirk Eisenreich, 
-Statistisches Monatsheft Februar 2024, Statistisches Landesam Baden-Württemberg, [PDF](https://www.statistik-bw.de/Service/Veroeff/Monatshefte/PDF/Beitrag24_02_01.pdf)/ [Website](https://www.statistik-bw.de/Service/Veroeff/Monatshefte/20240201)
-* [6] Es geht los! Die Unterlagen werden verschickt, 10.5.2024, Chirin Kolb, SWP, [Website](https://www.swp.de/lokales/ulm/kommunalwahl-in-ulm-es-geht-los-mit-der-wahl-73755939.html?refreshSession=1)
-* [7] Bevölkerung nach Nationalität – vierteljährlich, Statistisches Landesam Baden-Württemberg, [Website](https://www.statistik-bw.de/BevoelkGebiet/Bevoelkerung/01035055.tab?R=LA)
-* [8] Themenartikel Baden-Württemberg demografisch, Demografieportal des Bundes und der Länder, Bundesinstitut für Bevölkerungsforschung, [Artikel auf Website](https://www.demografie-portal.de/DE/Politik/Baden-Wuerttemberg/baden-wuerttemberg-demografisch.html)
-
-
 Lizenz: [CC BY 4.0, Namensnennung und Verlinkung](https://creativecommons.org/licenses/by/4.0/)
 
 Von: Jakob Pietron, Simon Lüke ([datalove/UlmAPI](http://www.ulmapi.de/) und sowieso [temporärhaus](https://temporaerhaus.de/), Augsburger Straße 25, 89231 Neu-Ulm)
@@ -926,4 +912,8 @@ Kontakt: datenanalyse-gemeinderat ÄTT resolution1.net
 \
 \
 \
-**Fußnoten**
+**Quellen und Fußnoten**
+
+---
+nocite: '@*'
+---

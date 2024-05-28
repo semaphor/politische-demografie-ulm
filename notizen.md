@@ -1,7 +1,3 @@
-## Evtl. TODO für später
-
-* Aktuellere feiner aufgelöste Altersverteilung für Ulm, https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/statistik/downloads/2023-ulmer-statistik-red/2023-ulmer-statistik-red1.pdf
-
 ## Interaktive Visualisierung mit...?
 
 r-markdown + html-widgets
@@ -19,6 +15,17 @@ bokeh
 * https://hafen.github.io/rbokeh/articles/rbokeh.html
 * https://docs.bokeh.org/en/latest/docs/first_steps/first_steps_1.html
 
-
 Shiny (serverseitig)
 * https://shiny.posit.co/r/getstarted/shiny-basics/lesson7/
+
+
+
+## Doku/Links
+
+### Zu Quellenangaben/Bibliographie
+
+* https://bookdown.org/ewhayewon1123/seoyewon/footnotes-and-citations.html
+* https://rstudio.github.io/visual-markdown-editing/citations.html
+* https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
+  * https://www.zotero.org/styles
+* https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management#BibTeX
