@@ -4,7 +4,7 @@ subtitle: "Vergleich Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat
 date: "28.5.2024"
 author: "Jakob Pietron, Simon Lüke"
 bibliography: quellen.bib
-csl: ieee-with-url.csl
+csl: eva-berlin-konferenz.csl
 link-citations: true
 output:
   html_document:
