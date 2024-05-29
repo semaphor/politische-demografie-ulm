@@ -454,8 +454,70 @@ ggarrange(
 ```
 
 
-Beruflicher Hintergrund/Tätigkeit: TODO
+Die folgende Tabelle erlaubt abschließend noch einen kurzen Blick auf die von den Kandidat*innen angegebenen Berufe.
+Sie ist nach der Häufigkeit der Anzahl der Berufe sortiert.
 
+```{r}
+
+# BERUFSANGABEN REDAKTIONELL BEREINIGEN:
+#  * gegenderte Bezeichnungen
+#  * rausschmeißen "i.R." etc.
+#  * rausschmeißen "selbständidg", "selbst." etc.
+#  * rausschmeißen "gepr.". "staatl. anerkannte" etc.
+
+listen <- listen %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Arzt" | Beruf == 'Ärztin' | Beruf == 'Ärztin i.R.', "Ärzt_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Kinderarzt" | Beruf == 'Kinderarzt i.R.' | Beruf == 'Kinderärztin i.R.', "Kinderärzt_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Architekt" | Beruf == 'Architektin' | Beruf == "Freie Architektin", "Architekt_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Fraktionsgeschäftsführer" | Beruf == 'Fraktionsgeschäftsführerin', "Fraktionsgeschäftsführer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Lehrer" | Beruf == 'Lehrerin' | Beruf == "Lehrer i.R." | Beruf == "Gymnasiallehrer" | Beruf == "Gymnasiallehrerin" | Beruf == "Kunstlehrerin", "Lehrer_in")) %>%
+    mutate(Beruf = replace(Beruf,Beruf == "techn. Oberlehrer i.R." | Beruf == "techn. Oberlehrerin", "Berufsschullehrer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Dipl. Betriebswirt (BA)" | Beruf == 'Dipl.- Betriebswirt (BA)' | Beruf == "	Dipl.-Betriebswirt (BA)", "Dipl. Betriebswirt_in (BA)")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "selbst. Dipl.-Informatiker" | Beruf == 'Dipl.-Informatikerin', "Dipl.-Informatiker_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "selbständig", "selbstständig")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Unternehmer" | Beruf == "Einzelunternehmer" | Beruf == "selbst. Unternehmer" | Beruf == "selbst. Unternehmerin" | Beruf == "Unternehmer IT-Services", "Unternehmer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Geschäftsführer" | Beruf == "Geschäftsführerin", "Geschäftsführer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Bankkaufmann" | Beruf == "Bankkauffrau", "Bankkaufleute")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwalt" | Beruf == "Rechtsanwältin" | Beruf == "Rechtsanwältin i.R.", "Rechtsanwält_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwaltsfach- angestellte", "Rechtsanwaltsfachangestellte")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "kaufm. Angestellter", "kaufm. Angestellte_r")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Kaufmann" | Beruf == "IT-Systemkaufmann" | Beruf == "Speditionskaufmann" | Beruf == "selbst. Kaufmann", "Kaufleute")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Zimmermeister", "Zimmerermeister")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Friseur" | Beruf == "Friseurin", "Friseur_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "selbst. Web- und AppProgrammierer", "selbst. Web- und App-Programmierer")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Erzieherin" | Beruf == "Erzieherin i.R." | Beruf == "gepr. Erzieherin" | Beruf == "staatl. anerkannte Erzieherin", "Erzieherin_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Rentner" | Beruf == "Rentnerin" | Beruf == "Pensionär", "Rentner_in/Pensionär_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Steuerberater" | Beruf == "Steuerberaterin", "Steuerberater_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Schulleiter" | Beruf == "Schulleiter i.R." | Beruf == "Schulleiterin" | Beruf == "Schulleiterin i.R.", "Schulleiter_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Hochschullehrerin" | Beruf == "Hochschulprofessor" | Beruf == "Hochschulprofessor a.D." | Beruf == "	Professor", "Hochschullehrer_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Kriminalbeamter" | Beruf == "Kriminalbeamter i.R.", "Kriminalbeamte_r")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Politikwissenschaftler" | Beruf == "Politologin", "Politikwissenschaftler_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Arbeiter" | Beruf == "Arbeiterin", "Arbeiter_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Chemiker" | Beruf == "Chemikerin", "Chemiker_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Krankenschwester" | Beruf == "Krankenschwester i.R." | Beruf == "Gesundheits- und Krankenpflegerin" | Beruf == "Gesundheits-und Krankheitspflegerin", "Gesundheits- und Krankenpfleger_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Systemadministrator" | Beruf == "IT-Systemadministrator", "IT-Systemadministrator_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Key-Account-Manager" | Beruf == "Key-Account-Managerin", "Key-Account-Manager_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Physiker" | Beruf == "Physikerin", "Physiker_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Lagerist" | Beruf == "Lagerist i.R.", "Lagerist_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Qulitätsmanagerin" | Beruf == "Qualitätsmanagerin", "Qualitätsmanager_in")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Sozialwissenschaftlerin" | Beruf == "Soziologe", "Soziolog_in")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
+  mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin' | Beruf == "Sportpsychologe" | Beruf == "Psychologin (B.sc.)", "Psycholog_in"))
+
+# Tabelle mit redaktioneller Zusammenfassung:
+berufe <- listen %>%
+            group_by(Beruf) %>%
+            summarise(Anzahl = n()) %>%
+            arrange(desc(Anzahl))
+
+berufe %>%
+  datatable(style = 'bootstrap', filter = 'top')
+```
 
 
 # Etwas Hintergrund
@@ -827,54 +889,45 @@ plotAgeUlm2022DES
 
 ## Beruflicher Hintergrund
 
-```{r}
-
-# BERUFSANGABEN REDAKTIONELL BEREINIGEN:
-#  * gegenderte Bezeichnungen
-#  * rausschmeißen "i.R." "selbst." 
-
-listen <- listen %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Student" | Beruf == 'Studentin', "Student_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Schüler" | Beruf == 'Schülerin', "Schüler_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Auszubildender" | Beruf == 'Auszubildende', "Auszubildende_r")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Arzt" | Beruf == 'Ärztin' | Beruf == 'Ärztin i.R.', "Ärzt_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Architekt" | Beruf == 'Architektin' | Beruf == "Freie Architektin", "Architekt_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Fraktionsgeschäftsführer" | Beruf == 'Fraktionsgeschäftsführerin', "Fraktionsgeschäftsführer_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Lehrer" | Beruf == 'Lehrerin' | Beruf == "Lehrer i.R." | Beruf == "Gymnasiallehrer" | Beruf == "Gymnasiallehrerin" | Beruf == "Kunstlehrerin", "Lehrer_in")) %>%
-    mutate(Beruf = replace(Beruf,Beruf == "techn. Oberlehrer i.R." | Beruf == "techn. Oberlehrerin", "Berufsschullehrer_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Dipl. Betriebswirt (BA)" | Beruf == 'Dipl.- Betriebswirt (BA)' | Beruf == "	Dipl.-Betriebswirt (BA)", "Dipl. Betriebswirt_in (BA)")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "selbst. Dipl.-Informatiker" | Beruf == 'Dipl.-Informatikerin', "Dipl.-Informatiker_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "selbständig", "selbstständig")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Unternehmer" | Beruf == "Einzelunternehmer" | Beruf == "selbst. Unternehmer" | Beruf == "selbst. Unternehmerin" | Beruf == "Unternehmer IT-Services", "Unternehmer_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Geschäftsführer" | Beruf == "Geschäftsführerin", "Geschäftsführer_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Bankkaufmann" | Beruf == "Bankkauffrau", "Bankkaufleute")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwalt" | Beruf == "Rechtsanwältin" | Beruf == "Rechtsanwältin i.R.", "Rechtsanwält_in")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Rechtsanwaltsfach- angestellte", "Rechtsanwaltsfachangestellte")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "kaufm. Angestellter", "kaufm. Angestellte_r")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Kaufmann" | Beruf == "IT-Systemkaufmann" | Beruf == "Speditionskaufmann" | Beruf == "selbst. Kaufmann", "Kaufleute")) %>%
-  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
-  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
-  #mutate(Beruf = replace(Beruf, Beruf == "" | Beruf == "", "")) %>%
-  mutate(Beruf = replace(Beruf, Beruf == "Psychologe" | Beruf == 'Psychologin' | Beruf == "Sportpsychologe" | Beruf == "Psychologin (B.sc.)", "Psycholog_in"))
-#Psychologische Beraterin i.R.? Psychologische Psychotherapeutin?
-```
-
-In der Bekanntmachung der Wahlvorschläge ulm:wahlvorschlaege_grat_2024 wird "Beruf oder Stand" angegeben.
+In der Bekanntmachung der Wahlvorschläge [@ulm:wahlvorschlaege_grat_2024] wird "Beruf oder Stand" angegeben.
 Wertet man dieses Datenfeld aus, ergeben sich für die `r nrow(listen)` Kandidat_innen erstmal `r length(unique(listen$BerufAngabe))` verschiedene Berufsangaben.
-Nach unserer ersten redaktionellen Bereinigung (siehe Code) erhalten wir `r length(unique(listen$Beruf))` verschiedene Angaben zu Ausbildung, Beruf bzw. Tätigkeit, die in der folgenden Tabelle zusammengefasst werden.
-Diese Bereinigung haben wir noch nicht vollständig abgeschlossen.
+Nach unserer ersten redaktionellen Bereinigung (siehe Code oben im Abschnitt Überblick) erhalten wir `r length(unique(listen$Beruf))` verschiedene Angaben zu Ausbildung, Beruf bzw. Tätigkeit, die in der folgenden Tabelle zusammengefasst werden.
+Diese Bereinigung kann je nach Ausreizen des Interpretationsspielraums unterschiedlich ausfallen und ist ggf. noch unvollständig.
 Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv).
 
 
 ``` {r}
-# Redaktionelle Zusammenfassung:
+
+# Tabelle mit redaktioneller Zusammenfassung:
 berufe <- listen %>%
             group_by(Beruf) %>%
-            summarise(n = n()) %>%
-            arrange(desc(n))
+            summarise(Anzahl = n()) %>%
+            arrange(desc(Anzahl))
 
 berufe %>%
-  datatable(style = 'bootstrap', filter = 'top')
+  datatable(style = 'bootstrap', filter = 'top',
+            options = list(
+              pageLength = 20,
+              autoWidth = TRUE
+            )
+  )
+
+```
+
+``` {r}
+
+# Tabelle mit Gegenüberstellung Angabe versus redakt. Bearbeitung:
+berufeBearbeitung <- listen %>%
+            group_by(Beruf, "Angabe Beruf" = BerufAngabe) %>%
+            summarise(Anzahl = n(), .groups = "keep")
+
+berufeBearbeitung %>%
+  datatable(style = 'bootstrap', filter = 'top',
+            options = list(
+              pageLength = 25,
+              autoWidth = TRUE
+              )
+  )
 
 ```
 
