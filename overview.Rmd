@@ -169,7 +169,7 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 # Überblick Altersstruktur
 
-Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleichen zu können wird in diesem Bericht als Alters-Mittelwert der Median verwendet (den umganssprachlich mit Mittelwert oft gemeinten Durchschnitt[^1] findet man zum Vergleich unter "Ausführlicher Bericht"). Diesen Median erhält man, wenn man alle Personen der gewünschten Gruppe dem Alter nach in einer Reihe aufstellt und die Person in der Mitte der Reihe nach ihrem Alter fragt. **Die mittlere Ulmerin ist damit aktuell `r demografieUlm2023Median` Jahre alt** und die eine Hälfte der Ulmer:innen ist jünger, die andere Hälfte älter als `r demografieUlm2023Median`. Ein weiterer wichtiger Wert ist natürlich das **Wahlalter von 16 Jahren**, ab dem man bei dieser Wahl in Baden-Württemberg wählen gehen darf und gewählt werden kann[^2].
+Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleichen zu können wird in diesem Bericht als Alters-Mittelwert der Median verwendet (den umgangssprachlich mit Mittelwert oft gemeinten Durchschnitt[^1] findet man zum Vergleich unter "Ausführlicher Bericht"). Diesen Median erhält man, wenn man alle Personen der gewünschten Gruppe dem Alter nach in einer Reihe aufstellt und die Person in der Mitte der Reihe nach ihrem Alter fragt. **Die mittlere Ulmerin ist damit aktuell `r demografieUlm2023Median` Jahre alt**. Die eine Hälfte der Ulmer:innen ist also jünger, die andere Hälfte älter als `r demografieUlm2023Median`. Ein weiterer wichtiger Wert ist natürlich das **Wahlalter von 16 Jahren**, ab dem man bei dieser Wahl in Baden-Württemberg wählen gehen darf und gewählt werden kann[^2].
 
 [^1]: Also die Summe der jeweiligen Werte geteilt durch ihre Anzahl; siehe [arithmetischer Mittelwert](#0).
 
@@ -179,15 +179,15 @@ Um die Altersstruktur der zur Wahl stehenden Listen und Kandidat_innen Vergleich
 
 Die **`r nrow(listen)` am 9. Juni zur Wahl stehenden Kandidat_innen sind im Mittel `r median(listen$Alter)` Jahre alt** bzw. gemittelt `r abs(demografieUlm2023Median - median(listen$Alter))` Jahre älter als die Ulmer Wohnbevölkerung. Die jüngste Kandidatin ist `r min(listen$Alter)`, der älteste `r max(listen$Alter)`.
 
-Zum Vergleich: Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt und der Alters-Median liegt bei `r median(aktRat$Alter)`. Also ist **der aktuelle Gemeinderat im Mittel um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**. Das gilt für dieses Jahr, in dem der nächste Rat gewählt wird. Bei seiner Wahl 2019 war der aktuelle Gemeinderat natürlich 5 Jahre jünger, wobei die Ulmer Bevölkerung annähreungsweise (TODO unten im ausführlichen Bericht noch belegen) dieselbe Altersstruktur wie heute hatte. <!-- ... und damit wäre er immer noch `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahre älter die aktuelle Ulmer Bevölkerung. --> Der Anfang Dezember neu gewählte Oberbürgermeister und damit das 41. Ratsmitglied ist übrigens `r aktRat$Alter[aktRat$Fraktion == "OB"]` Jahre alt.
+Zum Vergleich: Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt und der Alters-Median liegt bei `r median(aktRat$Alter)`. Also ist **der aktuelle Gemeinderat im Mittel um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**. Das gilt für dieses Jahr, in dem der nächste Rat gewählt wird. Bei seiner Wahl 2019 war der aktuelle Gemeinderat natürlich 5 Jahre jünger, wobei die Ulmer Bevölkerung annäherungsweise (TODO unten im ausführlichen Bericht noch belegen) dieselbe Altersstruktur wie heute hatte. <!-- ... und damit wäre er immer noch `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahre älter die aktuelle Ulmer Bevölkerung. --> Der Anfang Dezember neu gewählte Oberbürgermeister und damit das nicht in dieser Wahl gewählte 41. Ratsmitglied ist übrigens `r aktRat$Alter[aktRat$Fraktion == "OB"]` Jahre alt.
 
-Die folgenden Grafik zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und allen weiteren Grafiken die folgenden Informationen:
+Die folgenden Grafik zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (in der Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und allen weiteren Grafiken die folgenden Informationen:
 
 -   Die *schwarzen Punkte* auf der x-Achse markieren das Alter jeder einzelnen Person der jeweiligen Gruppe. Allerdings nicht für die Ulmer Bevölkerung, denn die Darstellung von `r length(demografieUlm2023Distr$Alter)` Punkten würde nur eine dicke schwarze Linie ergeben, die wenig aussagt.
--   Die *schwarzen Kurven* stellen annäherungsweise die jeweilige Altersverteilung dar, fassen also sozsuagen die Punkte auf der x-Achse zusammen.
+-   Die *schwarzen Kurven* stellen annäherungsweise die jeweilige Altersverteilung dar, fassen also sozusagen die Punkte auf der x-Achse zusammen.
 -   Die etwas *dickeren blauen Linien* zeigen das Median-Alter der jeweiligen Personengruppe an.
 -   Die *gestrichelte blaue Linie* markiert durchgehend das Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
--   Die orange Linie markiert das Wahlalter 16.
+-   Die *orange Linie* markiert das Wahlalter 16.
 
 ```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
@@ -322,7 +322,7 @@ plotMitte <- ggarrange(
 plotUnten <- ggarrange(
   NA, plotAktRat,
   labels = c(NA, NA),
-  widths = c(0.062, 1),
+  widths = c(0.071, 1),
   nrow = 1, ncol = 2
   )
 
@@ -339,15 +339,25 @@ ggarrange(
 
 ```
 
-An den Altersverteilung erkennt man, dass bei der Ulmer Bevölkerung ein Schwerpunkt bei den 20- bis 40-jährigen liegt. TODO Quantile. Bei den zur Wahl stehenden Kandidat:innen liegt der Schwerpunkt bei den 50- bis 70-jährigen liegt. Beim aktuellen Gemeinderat ... TODO
+Alternativ zur grafischen Darstellung kann man sich die Altersverteilungen auch noch zahlenmäßig detaillierter anschauen und dazu bspw. die unterschiedlichen Gruppen in jeweils gleich große Viertel aufteilen. Der Median teilt wie oben schon beschrieben die jeweilige Gruppe in dem Alter nach zwei gleich große Hälften auf. Er entspricht also der Altersgrenze für 50 % einer Gruppe. Zusammen mit dem schon genannten Medianwerten enthält die folgende Tabelle auch die Altersgrenzen für das untere (25 %) bzw. obere Viertel (75 %) der drei betrachten Gruppen. Die Werte in der Zeile 0% entsprechen dem jüngsten Alter in der jeweiligen. Gruppe, die Werte in der Zeile 100 % der ältesten Altersangabe (das maximale Alter für "Ulm" steht nicht für die ältesten Ulmer:innen, es ist im Datensatz als ältestes Alter enthalten, weil der Ulmer Statistik als älteste Gruppe "90 und älter" enthält).
+
+```{r}
+cbind(quantile(demografieUlm2023Distr$Alter), quantile(listen$Alter), quantile(aktRat$Alter))[1:5,] %>%
+  kable(
+    style = 'bootstrap',
+    col.names = c("Ulm", "Alle Kandidat_innen", "Gemeinderat 2019-2024")
+    )
+```
+
+Schaut man sich die obigen Kurven der Altersverteilungen an erkennt man direkt, wo bei der Ulmer Bevölkerung, den Kandidat:innen und dem aktuellen Gemeinderat die altersmäßigen Schwerpunkte liegen und wie stark verschiedene Altersgruppen ungefähr vertreten sind. Betrachtet man die Zahlenwerte in der Tabelle, erkennt man stärksten Viertel an den von den Altersgrenzen her kleinsten Gruppen: Das in der Ulmer Bevölkerung am stärksten vertretene Viertel ist zwischen 24 und 40 Jahre alt, bei den Kandidat:innen ist dieses Viertel zwischen 51 und 61 Jahre alt und beim aktuellen Gemeinderat zwischen 61 und 69.
 
 Für die anstehende Wahl und die Frage wie der Gemeinderat die Bevölkerung altersmäßig repräsentiert wäre interessant zu ermitteln, ob von den zur Wahl stehenden Kandidat:innen in Ulm üblicher Weise überproportional viele der älteren gewählt werden? Dafür liegen öffentlich auffindbar zwar die Wahlvorschläge von 2019 vor, allerdings leider ohne Angabe der Geburtsjahre. Damit kann zur Beantwortung dieser Fragestellung hier leider kein konkreter Vergleich anhand der letzten Wahl präsentiert werden und es stehen der Leser:in nur die oben stehenden Darstellungen zur Verfügung.
 
-Welches Bild ergibt sich nun, wenn man auf die Alterststruktur der `r length(levels(listen$Liste))` Listen schaut? **Im Median sind nur 2 der 16 Listen jünger als die Ulmer Bevölkerung**: Die Junge Ulmer Liste (JUL) mit `r median(listen$Alter[listen$Liste == "JUL"])` und die Partei für Mensch Umwelt Tierschutz (Tierschutzpartei TODO vielleicht besser "MUT"?) mit `r median(listen$Alter[listen$Liste == "Tierschutzpartei"])` Jahren (relativ zur Bevölkerung sind sie `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "JUL"]))` bzw. `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "Tierschutzpartei"]))` Jahre jünger). Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen. Die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`). Aufsteigend nach Median-Altersotiert sind das die Listen (TODO hier einmal die Namen der Listen Ausschreiben) Bündnis für Lebenswerte Ortschaften (BLO), (GRÜNE), (FDP), (FWG), (KlimalisteBW), (PIRATEN), (CFD), (AfD), (UWS), (UVL), (LINKE), (SPD), (WWG), Ulm für Alle (UfA). Auch mit einem um fünf Jahr nach unten korrgierten Median-Alter von `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahren liegt der aktuelle Gemeindrat über dem Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
+Welches Bild ergibt sich nun, wenn man auf die Alterststruktur der `r length(levels(listen$Liste))` Listen schaut? **Im Median sind nur 2 der 16 Listen jünger als die Ulmer Bevölkerung**: Die Junge Ulmer Liste (JUL) mit `r median(listen$Alter[listen$Liste == "JUL"])` und die Partei für Mensch Umwelt Tierschutz (Tierschutzpartei) mit `r median(listen$Alter[listen$Liste == "Tierschutzpartei"])` Jahren (relativ zur Bevölkerung sind sie `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "JUL"]))` bzw. `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "Tierschutzpartei"]))` Jahre jünger). Die 14 anderen Listen sind sozusagen älter als die Ulmer:innen. Die Median-Werte liegen zwischen `r median(listen$Alter[listen$Liste == "BLO"])` und `r median(listen$Alter[listen$Liste == "UfA"])` Jahren (relativ zur Bevölkerung also zwischen `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "BLO"]))` und `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`). Aufsteigend nach Median-Alter sortiert sind das die Listen (TODO hier einmal die Namen der Listen Ausschreiben) Bündnis für Lebenswerte Ortschaften (BLO), (GRÜNE), (FDP), (FWG), (KlimalisteBW), (PIRATEN), (CFD), (AfD), (UWS), (UVL), (LINKE), (SPD), (WWG), Ulm für Alle (UfA). Auch mit einem um fünf Jahr nach unten korrigierten Median-Alter von `r abs(demografieUlm2023Median - median(aktRat$Alter)) - 5` Jahren liegt der aktuelle Gemeinderat über dem Median-Alter der "ältesten" Liste Ulm für Alle (UfA).
 
-Um sich ein besseres Bild machen zu können, sollte man neben den Mittlwerten, auch beim Vergleich der Listen die Altersverteilungen[^3] betrachten. Diese sind in der folgenden Grafik dargestellt, aufsteigend nach Median sortiert und im Verlgeich mit der Ulmer Bevölkerung (oben).
+Um sich ein besseres Bild machen zu können, sollte man neben den Mittelwerten, auch beim Vergleich der Listen die Altersverteilungen[^3] betrachten. Diese sind in der folgenden Grafik dargestellt, aufsteigend nach Median sortiert und im Vergleich mit der Ulmer Bevölkerung (oben).
 
-[^3]: Zur Veranschaulitung des Themas Verteilungen ein Gedankenexperiment: Zuerst sortiert man die Listen nach per Median und dabei den jüngsten zuerst nach Alter und merkt sich aus dieser die ersten fünf Plätze. Dann nochmal umgekehrt sortieren, also mit den ältesten Listen zuerst. Schaut man nun wieder auf die ersten fünf Plätze, seht man im Vergleich, dass FIXME (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen mit dabei sind. Schaut man wiederum auf den Median sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren (relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre älter) sehr "mittig" sind, UfA aber die "älteste" Liste im Feld stellt (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`). Beide haben also eine sehr weite Bandbreit beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert. Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester ist damit aber auch noch nichts gesagt. An diesem Gedankenexperiment erkannt man wie einfach es ist mit "Statsitiken zu lügen" (wie das Sprichwort sagt), wenn man nur ganz bestimmte Werte auswählt und wiedergibt.
+[^3]: Zur Veranschaulichung der Wichtigkeit von Verteilungen eine beispielhafte Analyse: Sortiert man die Listen zuerst nach dem Alter der jeweils jüngsten Listen-Kandidat\*in von jung nach alt und dann umgekehrt nach dem Alter der jeweils ältesten Kandidat:in von alt nach jung, stellt man fest, dass Bündnis 90/Die Günen (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen mit dabei sind. Schaut man auf das Median-Alter sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren (relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre älter) sehr "mittig" sind, UfA aber die "älteste" Liste im Feld darstellt (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))`). Beide Listen haben also eine sehr große Bandbreite beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert. Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester hat man mit dieser Betrachtung aber noch nichts erfahren. Eine grafische Darstellung der Altersverteilung enthält aber auch diese Informationen, sozusagen auf einen Blick und hängt weniger davon ab, welche statistischen Kennzahlen die Autor:in auswählt und präsentiert.
 
 ```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
@@ -416,7 +426,7 @@ ggarrange(
 
 # Auflistung Berufe
 
-Die folgende Tabelle erlaubt einen kurzen Blick auf die von den Kandidat\*innen in den Wahlvorschlägen angegebenen Berufe. Sie ist nach Häufigkeit sortiert. Eine tiefergehende Auswertung der Berufsangaben wurde soweit aus Zeitgründen (noch) nicht vorgenommen, scheint aber machbar und könnte weitere Einblicke ermöglichen.
+Die folgende Tabelle erlaubt einen kurzen Blick auf die von den Kandidat\*innen in den Wahlvorschlägen angegebenen Berufe. Sie ist nach Häufigkeit sortiert. Eine tiefer gehende Auswertung der Berufsangaben wurde soweit aus Zeitgründen (noch) nicht vorgenommen, scheint aber machbar und könnte weitere Einblicke ermöglichen.
 
 ```{r}
 
@@ -480,38 +490,36 @@ berufe %>%
   datatable(style = 'bootstrap', filter = 'top')
 ```
 
-# Motivation und Hintergrund
+# Motivation
 
-## Motivation
+Für die eigene Wahlentscheidung können ganz verschiedene Faktoren herangezogen werden. Oft sind es die Inhalte und Ziele der antretenden Listen bzw. Parteien[^4]. Gerade bei Kommunalwahlen werden die zur Wahl antretenden Personen (Bekanntheit, bisherige Standpunkte, Aktivitäten etc.) als ein weiterer sehr wichtiger Faktor genannt. Nicht zuletzt werden die Entscheidungen und die Arbeit unserer Politiker:innen aber auch durch ihre jeweiligen persönlichen Perspektiven und Lebenserfahrungen geprägt.\
+Mit diesem Bericht versuchen wir diesen letzten Faktor mit öffentlich verfügbaren Daten zu analysieren. Dabei ist jeder einzelne Mensch natürlich erst einmal sehr individuell und wir sollten uns davor hüten ausgehend von Statistiken Einzelne zu beurteilen[^5]. Bei einer größeren Gruppe, wie den 40 am 9. Juni zu wählenden Gemeinderät:innen, werden statistische Faktoren wie Alter, Geschlecht, Beruf oder Herkunft aber zu einem Teil die Meinungsbildung bestimmen. Damit kann eine solche Statistik auch *einen* Beitrag zur persönlichen Wahlentscheidung leisten.
 
-Für die eigene Wahlentscheidung können ganz verschiedene Faktoren herangezogen werden. Oft sind es die Inhalte und Ziele der antretenden Listen bzw. Parteien[^4]. Gerade bei Kommunalwahlen werden die zur Wahl antretenden Personen (Bekanntheit, bisherige Standpunkte, Aktivitäten etc.) als ein weiterer sehr wichtiger Faktor genannt. Nicht zuletzt werden die Entscheidungen und die Arbeit unserer Politiker:innen aber auch durch ihre jeweiligen persönlichen Perspektiven und Lebenserfahrungen geprägt. Mit diesem Bericht versuchen wir auf diesen letzten Faktor einen "statistischen Blick" zu werfen. Auf Grundlage der öffentlich verfügbaren Daten versuchen wir grafisch und mit paar wenigen Kennzahen eine sachliche Darstellung zu präsentieren. Dabei ist jeder einzelne Mensch natürlich erstmal sehr inidviudell und wir sollten uns davor hüten ausgehend von Statistiken Urteile über Individuen zu fällen[^5]. Bei einer größeren Gruppe, wie den 40 am 9. Juni zu wählenden Gemeinderät:innen, kann ein Blick in die Statistik aber zur Meinungsbildung beitragen.
+[^4]: Für die Gemeinderatswahl gibt es [dieses Jahr](https://www.ulmapi.de/mobil-o-mat/) zwar leider keinen Wahl-o-Maten, über die Inhalte des Wahlkampfs kann man sich aber auf den Websites der Listen, bei Diskussionsveranstaltungen und in der Presse informieren.
 
-[^4]: Für die Gemeinderatswahl gibt es [dieses Jahr](https://www.ulmapi.de/mobil-o-mat/) zwar leider keinen Wahl-o-Maten, über die Inhalte des Wahlkampfs kann man sich aber auf den Websites der Listen, bei Diksussionsveranstaltungen und in der Presse informieren.
+[^5]: Beispiele dass es keine gute Idee ist von Statistiken auf Einzelne zu schließen gibt leider sehr viele. Ein sehr bekanntes Beispiel ist das [Scoring der Schufa](https://netzpolitik.org/2023/schufa-der-score-allein-darf-nicht-entscheidend-sein/).
 
-[^5]: TODO gutes Bsp., z.B. in einem Artikel zur Schufa
+Die Leitfrage lautet also: Wie ähnlich sind sich Ulmer Bevölkerung und Gemeinderat statistisch gesehen? Bzw. wie ähnlich werden sie im nächsten Gemeinderat sein? Zur Beantwortung dieser Frage haben wir in diesem Bericht den Schwerpunkt soweit nur auf die Altersstruktur gelegt. Diese Entscheidung hat einerseits einen rein praktischen Hintergrund (direkte Verfügbarkeit bzw. Qualität der entsprechenden Daten sowie Zeitaufwand für die Aufarbeitung und Analyse).\
+Viel wesentlicher erscheinen uns jedoch die wechselseitigen Beziehungen zwischen unserem Wohlergehen, der Altersstruktur unserer Gesellschaft und den längerfristigen globalen wie lokalen Entwicklungen durch den Klimawandel. Auch wenn Ulm vor dem Hintergrund der [Überalterung unserer Gesellschaft](#0) eine vergleichsweise junge Stadt bleibt [@demogrportal:bw_demogr], wird der Gemeinderat immer wieder Entscheidungen treffen müssen, die unsere Stadt für jung *und* alt lebenswert machen. <!-- Hier evtl. Grafik Demographie Ulm oder DE ca. 2040 --> Dabei wird der Klimawandel auch uns in Süddeutschland vor weitere (Anpassungs-)Herausforderungen stellen. <!-- Hier evtl. noch Bild/Grafik zum Thema Klimawandelanpassung. --> Allein durch durch diese beiden übergroßen Trends und ihr Zusammenspiel werden sich in den nächsten Jahrzehnten viele der Randbedingungen beschleunigt verändern, die für eine nachhaltig funktionierende Stadt notwendig sind -- egal ob einfach nur bei der Freizeitgestaltung, für ein soziales (hoffentlich globales) Zusammenleben oder im Hinblick auf eine nachhaltig funktionierende wirtschaftliche Basis.\
+Ein Gemeinderat, der bei seiner Meinungsfindung die Perspektiven und Lebenssituationen möglichst aller Ulmer:innen in sich vereint, wird uns mit seinen Entscheidungen für eine lebenswerte Zukunft besser vertreten. Dabei deuten einige Anzeichen darauf hin, dass viele richtungsweisende Entscheidungen in der nächsten Wahlperiode getroffen werden müssen.
 
-TODO Frage der Motivation:
+# Hintergrund
 
--   Frage der Repräsentation (= Abbildung?) der Ulmer Bevölkerung im Gemeinderat.
--   Evtl. ergänzen mit letztendlicher/inhalticher Motivation: Rat trifft die Ulmer Entscheidungen/Antworten auf Fragen wie die folgenden...
-    -   Die großen Themen und Probleme der nächsten Jahrzehnte:
-        -   Klimawandel/notwendige Anpassung daran.
-        -   Überalterung unserer Gesellschaft (dabei wird auch Ulm erstmal immer älter, bleibt aber eine *vergleichsweise* junge Stadt [@demogrportal:bw_demogr]).
-    -   Und damit letztendlich Ulm als lebenswerte Stadt für alle.
-
-Bevor wir in die Daten einsteigen möchten wir hier aber erstmal allen Kandidat_innen, die unsere Demokratie und die Menschenrechte ernst nehmen, danken! Und zwar schon dafür, dass Sie sich zur Wahl aufgestellt haben und damit bereit sind, sich zu engagieren und sich auch in der Öffentlichkeit den Diskussionen zu stellen. Aber nicht zuletzt auch für die Bereitschaft, in den nächsten fünf Jahren die herausfordernden und verantwortungsvollen Aufgaben einer Gemeinderät:in zu übernehmen.
-
-## Hintergrund
-
-Als Datengrundlage haben wir für diesen Bericht nur öffentlich zugängliche Quellen verwendet. Insbesondere waren dies:
+Für diesen Bericht haben wir nur Daten aus öffentlich zugänglichen Quellen verwendet. Im Kern waren dies:
 
 -   die bekannt gemachten Wahlvorschläge [@ulm:wahlvorschlaege_grat_2024],
 -   die Zusammensetzung des aktuellen Gemeinderats [@ulm:aktrat; @ulm:aktrat_gebjahr] und
 -   zum Vergleich die aktuelle Ulmer Statistik 2023 [@ulm:statistik2023], mit Daten zu den `r length(demografieUlm2023Distr$Alter)` Ulmer:innen.
 
-Diese Daten haben wir soweit vor allem bzgl. der Altersstruktur ausgewertet. Zeit ist immer knapp und deshalb haben wir auf die in den Wahlvorschlägen gemachten Berufsangaben bisher nur einen sehr kurzen Blick geworfen. Eine tiefergehende Analyse der beruflichen Hintergründe und evtl. auch der aktuellen Tätigkeiten der Kandidat:innen könnte sich lohnen. Ebenso haben wir noch keine Auswertung nach Stadtteilen versucht.
+Neben der Auswertung bzgl. der Altersstruktur haben wir auf die in den Wahlvorschlägen gemachten Berufsangaben bisher nur einen sehr kurzen Blick geworfen. Eine tiefer gehende Analyse der beruflichen Hintergründe und evtl. auch der aktuellen Tätigkeiten der Kandidat:innen scheint uns möglich und potentiell lohnenswert. Ebenso könnte eine Auswertung nach Geschlechtern weitere Einblicke liefern. Möglich ist mit dem vorliegenden Datensatz in Verbindung mit einer weiteren Auswertung der Quellen auch eine Analyse nach Stadtteilen.
 
-Dabei sind wir keine bezahlten Profis aus Journalismus, Verwaltung, Wissenschafft oder dergleichen, sondern im sogenannten [digitalen Ehrenamt](https://codefor.de/blog/fuenf-jahre-code-for-germany/) [engagierte](https://temporaerhaus.de/geschichte/) Bürger:innen. Wir möchten mit diesem Bericht dazu einladen auch Darstellungen zu blättern und an den Stellen tiefer reinzuschauen, die Dich interessieren. [Im Projekt auf GitHub](https://github.com/semaphor/politische-demografie-ulm) findest Du die aus den Quellen aufbereiteten Datensätze (Unterordner `/daten`) sowie den vollständigen Programmcode zur Auswertungen der Daten und Erstellung dieses Berichts (Startpunkt `overview.Rmd`). <!-- Kenntnisse in R --> Wir möchten also nicht nur zum reinschauen, sondern gerne auch zum [Mitmachen einladen](https://temporaerhaus.de/gruppen/ulmapi/)! Ansatzpunkte, über die wir bisher nachgedacht haben und auch direkte Kontaktdaten findst Du ganz unten.
+Dabei sind wir keine bezahlten Profis aus beispielsweise Journalismus, Verwaltung oder Wissenschaft, sondern im sogenannten [digitalen](https://temporaerhaus.de/gruppen/ulmapi/) [Ehrenamt](https://temporaerhaus.de/offene-wahldaten-mit-wikidata/) [engagierte](https://temporaerhaus.de/geschichte/) [Bürger:innen](https://codefor.de/blog/fuenf-jahre-code-for-germany/). Wir möchten mit diesem Bericht alle zur politischen Debatte einladen. Und dazu immer selber an den Stellen tiefer reinzuschauen, die für Dich relevant sind. [Im Projekt auf GitHub](#0) findest Du dazu die aus den Quellen aufbereiteten Datensätze. In die Tabellen im Unterordner [`/daten`](https://github.com/semaphor/politische-demografie-ulm/tree/main/daten) kann man sich direkt im Webbrowser reinklicken.
+
+Bist Du noch tiefer an der Technik, die unseren Alltag so sehr prägt und an der Arbeit mit Daten interessiert, kannst du auch ein Blick in den vollständigen Programmcode zur Auswertungen der Daten und Erstellung dieses Berichts/dieser Website werfen (Startpunkt `overview.Rmd`).\
+Möchtest hierzu (oder zu anderen Technik-Themen) direkt mit Gleichgesinnten in Kontakt kommen könnte sich ein [Besuch im temporärhaus](https://temporaerhaus.de/termine-und-oeffnungszeiten/) lohnen – egal ob einfach mal so oder ob Du bereits Programmierkenntnisse besitzt oder vielleicht den Wunsch hast [Programmieren zu lernen](#0). Wenn du direkt einsteigen willst (und dich mit der Statistik-Programmiersprache R ein bisschen auskennst) findest Du ganz unten Ansatzpunkte, über die wir bisher nachgedacht haben. Wir freuen uns über pull requests.\
+Wir möchten also nicht nur zum Reinschauen, sondern auch immer zum Mitmachen einladen – ob nun mit der Kandidatur für ein politisches Amt oder auch einfach als aktive Bürger:in!
+
+In diesem Sinne möchten wir an dieser Stelle auch kurz aber herzlichst allen Kandidat_innen danken, die unsere repräsentative Demokratie und die Menschenrechte hoch halten! Allein schon die Bereitschaft, sich politisch zu engagieren und den Mut aufzubringen, sich damit auch in die Öffentlichkeit zu stellen, stellt einen enormen Wert dar. Den Wahlsiegern wünschen wir schon jetzt das nötige Durchhaltevermögen, aber hoffentlich auch viel Freude an den herausfordernden und verantwortungsvollen Aufgaben im nächsten Gemeinderat.
 
 # Ausführlicher Bericht
 
@@ -529,7 +537,7 @@ Zur Fragestellung der altersmäßigen Repräsentation der Ulmer Bevölkerung im 
 
 Grafisch dargestellt ergibt sich folgendes Bild für die Altersverteilung:
 
-```{r fig.width=10, fig.height=2.7, fig.align = 'center'}
+```{r fig.width=10, fig.height=4, fig.align = 'center'}
 
 plotDemografieUlmDistr
 
@@ -539,7 +547,7 @@ plotDemografieUlmDistr
 
 Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen auf `r length(levels(listen$Liste))` Listen für den nächsten Ulmer Gemeinderat (Wahlperiode 2024-2029) [@ulm:wahlvorschlaege_grat_2024].
 
-<!-- TODO evtl. off by one, da keine Geburtstage, sondern nur -jahre vorliegen. -->
+<!-- TODO Pontentieller Fehler off by one kurz erklären, da keine Geburtstage, sondern nur -jahre vorliegen. -->
 
 Tabelle mit statistischen Altersangaben **über alle Kandidat_innen**:
 
@@ -563,7 +571,7 @@ listen %>%
 
 #### Vergleich Bevölkerung und alle Kanditat_innen
 
-Grafische Darstellung der Alterstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
+Grafische Darstellung der Altersstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
 
 ```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
@@ -621,7 +629,7 @@ listen %>%
 
 ```
 
-Grafische Darstellung je Liste (untere `r length(levels(listen$Liste))` Kurven) im Vergleich mit der Ulmer Bevölkerung (oben). Da es sich bei den Kurzen um eine Annäherung und nicht um eine exakte Reprästentation der Alterswerte handelt, verlaufen die Kurven z.B. teilweise in den Bereiche unterhalb des Wahlalters von 16 Jahren.
+Grafische Darstellung je Liste (untere `r length(levels(listen$Liste))` Kurven) im Vergleich mit der Ulmer Bevölkerung (oben). Da es sich bei den Kurzen um eine Annäherung und nicht um eine exakte Repräsentation der Alterswerte handelt, verlaufen die Kurven z.B. teilweise in den Bereiche unterhalb des Wahlalters von 16 Jahren.
 
 ```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
 
@@ -674,7 +682,7 @@ aktRat %>%
 
 ```
 
-Grafische Darstellung im Vergleich mit der Ulmer Bevölkerung (oben) der Altersstruktur des aktuellen Gemeinderats (mitte) und des aktuellen Gemeinderats, wenn er dieses Jahr gewählt werden würde ("-5 Jahre", unten):
+Grafische Darstellung im Vergleich mit der Ulmer Bevölkerung (oben) der Altersstruktur des aktuellen Gemeinderats (Mitte) und des aktuellen Gemeinderats, wenn er dieses Jahr gewählt werden würde ("-5 Jahre", unten):
 
 ```{r fig.width=10, fig.asp=1, fig.align = 'center'}
 
@@ -810,9 +818,9 @@ plotAgeUlm2023Distr
 
 ```
 
-#TODO besser DESTATIS von 2019 und 2022?! Und damit Vgl. zum Zeitpunkt der Wahl des aktuellen Rats von 2019.
+<!-- TODO besser DESTATIS von 2019 und 2022?! Und damit Vgl. zum Zeitpunkt der Wahl des aktuellen Rats von 2019. -->
 
-Alternativ stellt das Statstische Bundesamt (DESTATIS) in der GENESIS-Datenbank für Ulm [@destatis:12411-0018_ulm] folgende Altersdaten mit aktuell letztem Stand vom 31.12.2022 zur Verfügung. Diese Daten sind also etwas älter und vor allem weniger fein aufgelöst. Alle Auswertungen in diesem Bericht basieren auf den Daten der Ulmer Statistik 2023, für Interessierte dennoch eine kurze Vorstellung:
+Alternativ stellt das Statistische Bundesamt (DESTATIS) in der GENESIS-Datenbank für Ulm [@destatis:12411-0018_ulm] folgende Altersdaten mit aktuell letztem Stand vom 31.12.2022 zur Verfügung. Diese Daten sind also etwas älter und vor allem weniger fein aufgelöst. Alle Auswertungen in diesem Bericht basieren auf den Daten der Ulmer Statistik 2023, für Interessierte dennoch eine kurze Vorstellung:
 
 Wohnbevölkerung DESTATIS:
 
@@ -831,7 +839,7 @@ plotAgeUlm2022DES
 
 ```
 
-## Beruflicher Hintergrund
+## Beruflicher Hintergrund/Tätigkeit
 
 In der Bekanntmachung der Wahlvorschläge [@ulm:wahlvorschlaege_grat_2024] wird in einem Feld "Beruf oder Stand" angegeben. Wertet man diese Angabe aus, erhält man für die `r nrow(listen)` Kandidat_innen `r length(unique(listen$BerufAngabe))` verschiedene Berufsangaben. Nach einer ersten Bearbeitung erhalten wir immerhin nur noch `r length(unique(listen$Beruf))` verschiedene Angaben, die in der folgenden Tabelle zusammengefasst werden.
 
@@ -859,13 +867,13 @@ Diese erste Bearbeitung sollte möglichst rein redaktionellen Charakter haben. D
 
 -   Angaben zu Ruhestand und ehem. Funktion (z.B. "i.R.", "a.D.")
 
--   Selbstständigkeit (z.B. "selbständidg", "selbst.")
+-   Selbstständigkeit (z.B. "selbständig", "selbst.")
 
 -   Art der Anerkennung (z.B. "gepr.", "staatl. anerkannte")
 
 -   teilw. Berufszweige (z.B. "Lehrer", "Gymnasiallehrerin", "Kunstlehrerin" zusammengefasst zu "Lehrer_in").
 
-An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung breits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv) die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code im Abschnitt Auflistung Berufe. Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben und der Berufsangaben nach der ersten Bearbeitung findet sich in dieser Tabelle:
+An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung bereits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei kandidat_innen-2024-09-06.csv auf GitHub](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv) die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code im Abschnitt Auflistung Berufe. Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben und der Berufsangaben nach der ersten Bearbeitung findet sich in dieser Tabelle:
 
 ```{r}
 
@@ -888,16 +896,16 @@ berufeBearbeitung %>%
 
 Datenverarbeitung und Visualisierung mit der Statistiksoftware R. Automatisierte Erstellung des reproduzier- und nachvollziehbaren Berichts (diese Website) mit R Markdown. Veröffentlichung im Web mit GitHub (Actions). Tausend Dank an alle Autor_innen der unzähligen genutzten freien Softwarepakte!
 
-Daten und im Code nachvollziehbare Datenverarbeitung auf GitHub, [https://github.com/semaphor/politische-demografie-ulm](#0){.uri}. Leider müssen die Daten (insbesonder der öffentlichen Stellen) immer noch weitgehend manuell bzw. maximal teilatomatisiert aus Quellen wie PDF-Dokumenten und übertrieben ungünstig formatierten Excel-Tabellen "exportiert" werden. Das in 2024 nun wirklich [nicht mehr zeitgemäß](https://okfn.de/blog/2024/05/opendataranking/) und einfach nervig!
+Daten und im Code nachvollziehbare Datenverarbeitung auf GitHub, [https://github.com/semaphor/politische-demografie-ulm](#0){.uri}. Leider müssen die Daten (insbesondere der öffentlichen Stellen) immer noch weitgehend manuell bzw. maximal teilautomatisiert aus Quellen wie PDF-Dokumenten und übertrieben ungünstig formatierten Excel-Tabellen "exportiert" werden. Das in 2024 nun wirklich [nicht mehr zeitgemäß](https://okfn.de/blog/2024/05/opendataranking/) und einfach nervig!
 
 Unsere Ansatzpunkte für weitere Arbeit mit den Daten wären:
 
--   Auswertung der Berufe nach Kategorien, wie bspw. nach den Lebensphasen (Ausbildung/Erwerbstätigkeitsphase/Ruhstand) und nach Sektoren (Dienstleistung/Industrie/Gesundheit/Bildung und Erziehung/etc.). Evtl. kann dieser Teil mit Hilfe der [O\*Net-Datenbank](https://www.onetonline.org/) automatisiert werden, die auch eine API bietet, zu der es eine [entsprechende R-Bibliothek](https://github.com/eknud/ONETr) gibt. Hierfür müssten die Berufsangaben allerdings vorher ins Englische übersetzt werden, was ggf. über die [DeepL-API](https://cran.r-project.org/web/packages/deeplr/index.html) automatitisert werden könnte.
+-   Auswertung der Berufe nach Kategorien, wie bspw. nach den Lebensphasen (Ausbildung/Erwerbstätigkeitsphase/Ruhestand) und nach Sektoren (Dienstleistung/Industrie/Gesundheit/Bildung und Erziehung/etc.). Evtl. kann dieser Teil mit Hilfe der [O\*Net-Datenbank](https://www.onetonline.org/) automatisiert werden, die auch eine API bietet, zu der es eine [entsprechende R-Bibliothek](https://github.com/eknud/ONETr) gibt. Hierfür müssten die Berufsangaben allerdings vorher ins Englische übersetzt werden, was ggf. über die [DeepL-API](https://cran.r-project.org/web/packages/deeplr/index.html) automatisiert werden könnte.
 -   Ausgangspunkte für eine Auswertung nach Stadtteilen:
     -   [Altes ulmAPI-Projekt Clickthathood](http://www.ulmapi.de/project/2013/03/23/clickthathood.html), mit leider totem Link auf die Stadtviertel-Shapefiles im Datenportal der Stadt (auch wenn man den [Link repariert](https://datenportal.ulm.de/client/daten/single/stadtviertel-generalisiert)); die Shapefiles müssten aber sicher irgendwo zu finden sein.
     -   [Statistik-App "Statistik to go"](https://www.ulm.de/rathaus/stadtverwaltung/statistiken-und-offene-daten/statistik-app) bzw. <https://www.statistikapp-kosis.de/>
 -   Weitere Demografiedaten?
-    -   Gibt es da was bei [Wegweise Kommune](https://www.wegweiser-kommune.de/)? Dort bekommt man zumindest schonmal eine [PDF mit interessanten Daten](https://www.wegweiser-kommune.de/data-api/rest/export/demografische-entwicklung+ulm+2012-2021+tabelle.pdf) und das anscheinend aus einer REST API.
+    -   Gibt es da was bei [Wegweise Kommune](https://www.wegweiser-kommune.de/)? Dort bekommt man zumindest schon mal eine [PDF mit interessanten Daten](https://www.wegweiser-kommune.de/data-api/rest/export/demografische-entwicklung+ulm+2012-2021+tabelle.pdf) und das anscheinend aus einer REST API.
     -   Evtl. direkt mit R vom Statistischen Bundesamt (DESTATIS) [abrufen](https://cran.r-project.org/web/packages/wiesbaden/vignettes/wiesbaden.html); diese Daten sind allerdings vermutlich schlechter aufgelöst, als die Daten aus der Ulmer Statistik.
 
 Lizenz: [CC BY 4.0, Namensnennung und Verlinkung](https://creativecommons.org/licenses/by/4.0/)
@@ -910,7 +918,7 @@ Direkter Kontakt: datenanalyse-gemeinderat ÄTT resolution1.net
 \
 \
 
-***
+------------------------------------------------------------------------
 
 **Quellen und Fußnoten**
 
