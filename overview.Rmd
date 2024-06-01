@@ -215,7 +215,7 @@ Die folgenden Grafik zeigt die Altersverteilung der zur Wahl stehenden Kandidat_
 -   Die *gestrichelte blaue Linie* markiert durchgehend das aktuelle Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
 -   Die *orange Linie* markiert das Wahlalter 16.
 
-```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 # PLOT ULMER BEVÖLKERUNG
 # ======================
@@ -245,8 +245,10 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotDemografieUlmDistr
 
@@ -266,7 +268,7 @@ plotAgeListenAlle <- listen %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
     ) +
@@ -281,7 +283,9 @@ plotAgeListenAlle <- listen %>%
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+    axis.title.x=element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAgeListenAlle
 
@@ -302,7 +306,7 @@ plotAktRat <- aktRat %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
@@ -312,13 +316,16 @@ plotAktRat <- aktRat %>%
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  xlab("Alter") +
   theme_ipsum() +
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y = element_blank(),
-    axis.title.x = element_blank()
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAktRat
 
@@ -329,7 +336,7 @@ plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
   nrow = 1, ncol = 2,
-  widths = c(0.062, 1)
+  widths = c(0.0615, 1)
   )
 
 plotMitte <- ggarrange(
@@ -463,7 +470,7 @@ tab %>%
 
 ```
 
-```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 # PLOT ULMER BEVÖLKERUNG >= 16
 # ============================
@@ -494,7 +501,9 @@ plotDemografieUlmDistrAb16 <- demografieUlm2023Distr[demografieUlm2023Distr$Alte
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+    axis.title.x=element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotDemografieUlmDistrAb16
 
@@ -514,7 +523,7 @@ plotAgeListenAlleAb16 <- listen %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
     ) +
@@ -529,7 +538,9 @@ plotAgeListenAlleAb16 <- listen %>%
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+    axis.title.x=element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAgeListenAlleAb16
 
@@ -550,7 +561,7 @@ plotAktRatAb16 <- aktRat %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
@@ -560,13 +571,16 @@ plotAktRatAb16 <- aktRat %>%
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(15,100), breaks=seq(15, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  xlab("Alter") +
   theme_ipsum() +
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y = element_blank(),
-    axis.title.x = element_blank()
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAktRat
 
@@ -577,7 +591,7 @@ plotOben <- ggarrange(
   NA, plotDemografieUlmDistrAb16,
   labels = c(NA, NA),
   nrow = 1, ncol = 2,
-  widths = c(0.062, 1)
+  widths = c(0.0615, 1)
   )
 
 plotMitte <- ggarrange(
@@ -619,7 +633,7 @@ Um sich ein besseres Bild machen zu können, sollte man neben den Mittelwerten, 
 
 [^4]: Zur Veranschaulichung der Aussagekraft von (grafischen Darstelllungen von) Verteilungen im Gegensatz zu einzelnen statistischen Zahlenwerten eine beispielhafte Analyse: Sortiert man die Wahllisten zuerst nach dem Alter der jeweils jüngsten Listen-Kandidat\*in von jung nach alt und dann umgekehrt nach dem Alter der jeweils ältesten Kandidat:in von alt nach jung, stellt man fest, dass Bündnis 90/Die Günen (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen dieser Sortierung mit dabei sind. Schaut man auf das Median-Alter sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren sehr "mittig" sind, verglichen mit dem Umer Median-Alter ist diese Liste `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre "älter". UfA stellt die in dieser Betrachtungsweise "älteste" Liste im Feld (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))` "älter"). Beide Listen haben also eine sehr große Bandbreite beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert. Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester hat man mit dieser Betrachtung aber noch nichts erfahren. Eine grafische Darstellung der Altersverteilung enthält aber auch diese Informationen, sozusagen auf einen Blick und hängt weniger davon ab, welche statistischen Kennzahlen die Autor:in auswählt und präsentiert.
 
-```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 # PLOT LISTEN EINZELN
 # ===================
@@ -635,7 +649,7 @@ plotAgeListen <- listen %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7#,
     ) +
@@ -646,13 +660,16 @@ plotAgeListen <- listen %>%
   scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilungen') +
+  xlab("Alter") +
   theme_ipsum() +
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y=element_blank(),
-    axis.title.x=element_blank()
+    #axis.title.x=element_blank(),
+    äaxis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAgeListen
 
@@ -662,7 +679,7 @@ plotAgeListen <- listen %>%
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
-  widths = c(0.1, 1),
+  widths = c(0.1005, 1),
   nrow = 1, ncol = 2
   )
 
@@ -810,10 +827,22 @@ Bemerkung: Diese Werte basieren auf den folgenden beiden Einschränkungen des zu
 
 Grafisch dargestellt ergibt sich folgendes Bild für die Altersverteilung:
 
-```{r fig.width=10, fig.height=4, fig.align = 'center', warning=FALSE }
+```{r fig.width=10, fig.height=4, fig.align = 'center', warning=FALSE, out.extra='style="display: block; margin: 40px;"'}
+
+plotDemografieUlmDistr <- plotDemografieUlmDistr +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_text(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
 
 plotDemografieUlmDistr
-
 ```
 
 ### Kandidat:innen zur Ulmer Gemeinderatswahl
@@ -846,15 +875,35 @@ listen %>%
 
 Grafische Darstellung der Altersstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
 
-```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 # PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
+
+plotDemografieUlmDistr <- plotDemografieUlmDistr +
+  #theme_ipsum() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points')
+  )
+
+plotAgeListenAlle <- plotAgeListenAlle +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_text(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
 
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
   nrow = 1, ncol = 2,
-  widths = c(0.062, 1) #TODO (nice to have) Verhältnis berechnen.
+  widths = c(0.0615, 1) #TODO (nice to have) Verhältnis berechnen.
   )
 
 plotUnten <- ggarrange(
@@ -868,7 +917,7 @@ suppressWarnings(
 ggarrange(
   plotOben,
   plotUnten,
-  nrow = 2, ncol = 1,
+  nrow = 3, ncol = 1,
   heights = c(1,1),
   vjust = 0
   )
@@ -906,12 +955,26 @@ Grafische Darstellung je Liste (untere `r length(levels(listen$Liste))` Kurven) 
 
 Bemerkung: Da es sich bei den Kurven um eine Annäherung und nicht um eine exakte Repräsentation der Alterswerte handelt, verlaufen die Kurven z.B. teilweise in den Bereiche unterhalb des Wahlalters von 16 Jahren.
 
-```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+
+plotAgeListen <- plotAgeListen +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_text(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+
 
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
-  widths = c(0.1, 1),
+  widths = c(0.1003, 1),
   nrow = 1, ncol = 2
   )
 
@@ -959,7 +1022,16 @@ aktRat %>%
 
 Grafische Darstellung im Vergleich mit der Ulmer Bevölkerung (oben) der Altersstruktur des aktuellen Gemeinderats (Mitte) und des aktuellen Gemeinderats, wenn er dieses Jahr gewählt werden würde ("-5 Jahre", unten):
 
-```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center'}
+```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+
+
+plotAktRat <- plotAktRat +
+  #theme_ipsum() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-3,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
 
 plotAktRatMinus5 <- aktRat %>%
   mutate(Alter = Alter - 5) %>%
@@ -974,7 +1046,7 @@ plotAktRatMinus5 <- aktRat %>%
     vline_width = 1.5,
     quantile_fun = median,
     jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.7, height = 0),
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
     point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
     point_size = 2, point_alpha = .5, alpha = 0.7
     ) +
@@ -990,7 +1062,9 @@ plotAktRatMinus5 <- aktRat %>%
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y=element_blank(),
-    #axis.title.x=element_blank()
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAktRatMinus5
 
@@ -1004,7 +1078,7 @@ plotOben <- ggarrange(
 plotUnten <- ggarrange(
   NA, plotAktRat,
   labels = c(NA, NA),
-  widths = c(0, 1),
+  widths = c(0.0085, 1),
   nrow = 1, ncol = 2
   )
 
@@ -1076,12 +1150,13 @@ Erläuterungen zu den Daten:
 
 Grafische Darstellung der Altersstruktur der Ulmer Wohnbevölkerung als Histogramm mit einem Balken per Jahr:
 
-```{r fig.width=7, fig.asp=0.33, fig.align = 'center'}
+```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) + 
   geom_histogram(binwidth = 1) +
   scale_x_continuous(breaks=seq(0, 95, by=10)) +
-  ylab("Anzahl Personen")
+  ylab("Anzahl Personen") +
+  theme_ipsum()
 
 plotAgeUlm2023Distr
 
@@ -1104,12 +1179,14 @@ Wohnbevölkerung, Stand 31.12.2018:
 
 Grafische Darstellung:
 
-```{r fig.width=7, fig.asp=0.33, fig.align = 'center'}
+```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
 
 plotDemografieUlm2018regioDistr <- ggplot(demografieUlm2018regioDistr, aes(Alter)) + 
   geom_histogram(binwidth = 1) +
   scale_x_continuous(breaks=seq(0, 95, by=10)) +
-  ylab("Anzahl Personen")
+  ylab("Anzahl Personen") +
+  theme_ipsum()
+
 plotDemografieUlm2018regioDistr
 
 # Alternativer Plot mit den zusammengefassten Daten aus der Datenbank:
