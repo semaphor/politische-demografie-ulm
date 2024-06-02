@@ -621,7 +621,7 @@ ggarrange(
 
 ```
 
-Für die anstehende Wahl und die Frage wie der Gemeinderat die Bevölkerung altersmäßig repräsentiert wäre interessant zu ermitteln, ob von den zur Wahl stehenden Kandidat:innen in Ulm üblicher Weise überproportional viele der älteren gewählt werden? Dafür liegen öffentlich auffindbar zwar die Wahlvorschläge von 2019 vor, allerdings leider ohne Angabe der Geburtsjahre. Damit kann zur Beantwortung dieser Fragestellung hier leider kein konkreter Vergleich anhand der letzten Wahl präsentiert werden.
+Für die anstehende Wahl und die Frage wie der Gemeinderat die Bevölkerung altersmäßig repräsentiert wäre interessant zu ermitteln, ob von den zur Wahl stehenden Kandidat:innen in Ulm üblicher Weise überproportional viele der älteren gewählt werden? Dafür liegen öffentlich auffindbar zwar die [Musterstimmzettel von 2019](https://www.ulm.de/-/media/ulm/bd/bd-iv/statistik-und-wahlen/wahlen/kommunalwahl/downloads/sonderveroeffentlichung-gemeinderatwahl-2019.pdf) vor, allerdings enthalten diese im Ggs. zur Bekanntmachung der Wahlvorschläge keine Angabe der Geburtsjahre. Damit kann zur Beantwortung dieser Fragestellung hier leider [aktuell](https://fragdenstaat.de/anfrage/oeffentliche-bekanntmachung-der-wahlvorschlaege-zur-wahl-des-gemeinderats-und-der-ortschaftsraete-am-26-mai-2019/) kein konkreter Vergleich anhand der letzten Wahl präsentiert werden.
 
 Von den Ulmer:innen im Wahlalter sind übrigens ca. `r wahlberechtigte` bzw. `r round(( wahlberechtigte / imWahlalter )*100, 1)` %. **Von der gesamten Ulmer Bevölkerung dürfen `r round(( wahlberechtigte/gesamt )*100, 1)` % Wählen gehen.**
 
