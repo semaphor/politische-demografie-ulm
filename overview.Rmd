@@ -12,6 +12,7 @@ output:
     toc: true
     code_folding: hide
     number_sections: true
+    mathjax: null
   pdf_document:
     toc: true
     number_sections: true
