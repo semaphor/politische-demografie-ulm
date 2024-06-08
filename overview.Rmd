@@ -70,7 +70,7 @@ knit_hooks$set(inline = function(x) {
 
 # KANDIDAT_INNEN/LISTEN:
 #TODO Lfd.-Nr. wieder reinnehmen?
-listen <- read.csv('daten/kandidat_innen-2024-09-06.csv')
+listen <- read.csv('daten/kandidat_innen-2024-06-09.csv')
 colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
 listen$Stadtteil <- as.factor(listen$Stadtteil)
 listen$Liste <- as.factor(listen$Liste)
@@ -97,7 +97,7 @@ wahlberechtigte=92000 # SWP-Artikel [@swp:wahlunterlagen]
 
 
 #AKTUELLER GEMEINDERAT:
-aktRat <- read.csv('daten/aktueller_gemeinderat_2024-03.csv')
+aktRat <- read.csv('daten/gemeinderat_2024-03_aktueller.csv')
 aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
 
 
@@ -1235,7 +1235,7 @@ Diese erste Bearbeitung sollte möglichst rein redaktionellen Charakter haben. D
 
 -   teilw. Berufszweige (z.B. "Lehrer", "Gymnasiallehrerin", "Kunstlehrerin" zusammengefasst zu "Lehrer_in").
 
-An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung bereits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei `kandidat_innen-2024-09-06.csv`](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv) auf GitHub. Die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code-Block im Abschnitt "Auflistung Berufe". Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben (mittlere Spalte) und der Berufsangaben nach unserer ersten Bearbeitung (linke Spalte) findet sich in dieser Tabelle:
+An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung bereits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei kandidat_innen-2024-06-09.csv](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-06-09.csv) auf GitHub. Die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code-Block im Abschnitt "Auflistung Berufe". Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben (mittlere Spalte) und der Berufsangaben nach unserer ersten Bearbeitung (linke Spalte) findet sich in dieser Tabelle:
 
 ```{r}
 
@@ -1295,7 +1295,6 @@ nocite: '@*'
 ---
 --->
 ```
-
 ```{css, echo=FALSE}
 .caption {
   padding: .5em;
