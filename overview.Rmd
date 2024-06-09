@@ -209,7 +209,7 @@ Die **`r nrow(listen)` am 9. Juni zur Wahl stehenden Kandidat_innen sind im Mitt
 
 Zum Vergleich: Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt und der Alters-Median liegt bei `r median(aktRat$Alter)`. Also ist **der aktuelle Gemeinderat im Mittel um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**. Das gilt für dieses Jahr, in dem der nächste Rat gewählt wird. Bei seiner Wahl 2019 war der aktuelle Gemeinderat natürlich 5 Jahre jünger, wobei die Ulmer Bevölkerung annäherungsweise dieselbe Altersstruktur wie heute hatte (das Ulmer Median-Alter lag 2019 bei `r median(demografieUlm2018regioDistr$Alter)`). Der Anfang Dezember neu gewählte Oberbürgermeister und damit das qua Amt 41. Ratsmitglied ist übrigens `r aktRat$Alter[aktRat$Fraktion == "OB"]` Jahre alt.
 
-Die folgende Abbildung \@ref(fig:altersVergleich) zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (in der Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und alle weiteren Grafiken die folgenden Informationen:
+Die folgende Grafik (Abbildung \@ref(fig:altersVergleich)) zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (in der Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und alle weiteren Grafiken die folgenden Informationen:
 
 -   Die *schwarzen Punkte* auf der x-Achse markieren das Alter jeder einzelnen Person der jeweiligen Gruppe. (Allerdings nicht für die Ulmer Bevölkerung, denn die Darstellung von `r length(demografieUlm2023Distr$Alter)` Punkten würde nur eine dicke schwarze Linie ergeben und damit nichts weiter aussagen.)
 -   Die *schwarzen Kurven* stellen annäherungsweise die jeweilige Altersverteilung dar, fassen also sozusagen die Punkte auf der x-Achse zusammen.
@@ -217,7 +217,7 @@ Die folgende Abbildung \@ref(fig:altersVergleich) zeigt die Altersverteilung der
 -   Die *gestrichelte blaue Linie* markiert durchgehend das aktuelle Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
 -   Die *orange Linie* markiert das Wahlalter 16.
 
-```{r altersVergleich, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), der zur Wahl stehenden Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blau durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+```{r altersVergleich, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
 
 # PLOT ULMER BEVÖLKERUNG
 # ======================
@@ -472,7 +472,7 @@ tab %>%
 
 ```
 
-```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für >= 16 Jahre der Ulmer Bevölkerung (oben), der zur Wahl stehenden Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blau durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für Ulmer Bevölkerung >= 16 Jahre (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blauf durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
 
 # PLOT ULMER BEVÖLKERUNG >= 16
 # ============================
@@ -905,7 +905,7 @@ plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
   nrow = 1, ncol = 2,
-  widths = c(0.0615, 1) #TODO (nice to have) Verhältnis berechnen.
+  widths = c(0, 1) #TODO (nice to have) Verhältnis berechnen.
   )
 
 plotUnten <- ggarrange(
@@ -976,14 +976,14 @@ plotAgeListen <- plotAgeListen +
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
-  widths = c(0.1003, 1),
+  widths = c(0, 1),
   nrow = 1, ncol = 2
   )
 
 plotUnten <- ggarrange(
   NA, plotAgeListen,
   labels = c(NA, NA),
-  widths = c(0, 1),
+  widths = c(0.02495, 1),
   nrow = 1, ncol = 2
   )
 
@@ -1080,14 +1080,14 @@ plotOben <- ggarrange(
 plotUnten <- ggarrange(
   NA, plotAktRat,
   labels = c(NA, NA),
-  widths = c(0.0085, 1),
+  widths = c(0.034, 1),
   nrow = 1, ncol = 2
   )
 
 plotGanzUnten <- ggarrange(
   NA, plotAktRatMinus5,
   labels = c(NA, NA),
-  widths = c(0, 1),
+  widths = c(0.062, 1),
   nrow = 1, ncol = 2
   )
 
@@ -1295,7 +1295,6 @@ nocite: '@*'
 ---
 --->
 ```
-
 ```{css, echo=FALSE}
 .caption {
   padding: .5em;
