@@ -1,24 +1,11 @@
 ---
-title: "Datenanalyse zur Ulmer Gemeinderatswahl 2024"
-subtitle: "Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat"
-date: "30.5.2024"
+title: "Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat"
+date: 2024-05-30
 author: "Simon Lüke, Jakob Pietron"
-bibliography: quellen.bib
-csl: eva-berlin-konferenz.csl
-link-citations: true
-lang: de-DE
+bibliography: ../../titelei-anhang/quellen.bib
 output:
   bookdown::html_document2:
     toc: true
-    code_folding: hide
-    number_sections: true
-    mathjax: null
-  pdf_document:
-    toc: true
-    number_sections: true
-header-includes:
-  - \renewcommand{\abstractname}{xxx}
-  - \usepackage{icomma}
 ---
 
 ```{r source-header, message=FALSE}
@@ -43,7 +30,7 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 ```
 
-Zur anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.
+Zurx anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.
 
 Diese Analyse soll zusätzlich zu den Inhalten und Kandidat:innen der verschiedenen Listen eine ergänzende Informationen bieten. Außerdem möchten wir mit diesem Projekt auch zum selber Machen einladen. Interessierten stehen die Datensätze für eigene Auswertungen zur Verfügung – z.B. nach Geschlecht oder Stadtteilen oder Ausgangspunkt für die Analyse zurückliegender Wahlen.
 

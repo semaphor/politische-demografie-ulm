@@ -1,3 +1,22 @@
+## blogdown
+
+https://bookdown.org/yihui/blogdown/
+
+Kommandos:
+```
+install.packages("blogdown")
+blogdown::install_hugo()
+
+blogdown::serve_site()
+blogdown::stop_server()
+
+blogdown::check_content()
+blogdown::check_site()
+
+blogdown::build_site(build_rmd = 'newfile')
+```
+
+
 ## Interaktive Visualisierung mit...?
 
 r-markdown + html-widgets

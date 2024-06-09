@@ -45,7 +45,7 @@ knit_hooks$set(inline = function(x) {
 
 # KANDIDAT_INNEN/LISTEN:
 #TODO Lfd.-Nr. wieder reinnehmen?
-listen <- read.csv('daten/kandidat_innen-2024-06-09.csv')
+listen <- read.csv('../../daten/kandidat_innen-2024-06-09.csv')
 colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
 listen$Stadtteil <- as.factor(listen$Stadtteil)
 listen$Liste <- as.factor(listen$Liste)
@@ -72,17 +72,17 @@ wahlberechtigte=92000 # SWP-Artikel [@swp:wahlunterlagen]
 
 
 #AKTUELLER GEMEINDERAT:
-aktRat <- read.csv('daten/gemeinderat_2024-03_aktueller.csv')
+aktRat <- read.csv('../../daten/gemeinderat_2024-03_aktueller.csv')
 aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
 
 
 #AKTUELLER GEMEINDERAT:
-ratNeu <- read.csv('daten/gemeinderat_2024-06-09-neuer.csv')
+ratNeu <- read.csv('../../daten/gemeinderat_2024-06-09-neuer.csv')
 ratNeu <- ratNeu %>% mutate(Alter = 2024 - Geburtsjahr)
 
 
 # ALTER ULM, Ulmer Statisitik 2023:
-demografieUlm2023 <- read.csv('daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
+demografieUlm2023 <- read.csv('../../daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
 names(demografieUlm2023)[11] <- "Wohnbevölkerung"
 # Upsampling, so irgendwie (das geht sicher besser?)
 demografieUlm2023Distr <- vector()
@@ -110,7 +110,7 @@ unterWahlalter = sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.
 
 # ALTER ULM, 2018, RDB;
 # (Regionaldatenbank Deutschland, regionalstatistik.de):
-demografieUlm2018regio <- read.csv(file="daten/demografie_ulm-2018-12-31-rdb.csv")
+demografieUlm2018regio <- read.csv(file="../../daten/demografie_ulm-2018-12-31-rdb.csv")
 # Upsampling, so irgendwie (das geht sicher besser?)
 demografieUlm2018regioDistr <- vector()
 for (i in seq_along(demografieUlm2018regio$Wohnbevölkerung)) {
@@ -124,7 +124,7 @@ names(demografieUlm2018regioDistr) <- c('Tätigkeit', 'BerufAngabe', 'Beruf', 'G
 
 
 # ALTER ULM, 2022, DESTATIS:
-demografieUlm2022deGenderBi <- read.csv('daten/demografie_ulm-2022-12-31-statistisches_bundesamt.csv')
+demografieUlm2022deGenderBi <- read.csv('../../daten/demografie_ulm-2022-12-31-statistisches_bundesamt.csv')
 demografieUlm2022deGenderBi$Geschlecht <- as.factor(demografieUlm2022deGenderBi$Geschlecht)
 # Nur zwei Geschlechter? Raus damit:
 demografieUlmAnzAltersgruppen <- length(unique(demografieUlm2022deGenderBi$Altersgruppe))

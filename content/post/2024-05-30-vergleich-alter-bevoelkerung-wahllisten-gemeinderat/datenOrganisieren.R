@@ -42,5 +42,5 @@ rm(i, j, k)
 demografieUlm2018regio$Alter.von <- as.numeric(demografieUlm2018regio$Alter.von)
 demografieUlm2018regio$Wohnbevölkerung <- demografieUlm2018regio$Wohnbevölkerung..weiblich + demografieUlm2018regio$Wohnbevölkerung..männlich
 
-write.csv(demografieUlm2018regio, file="daten/demografie_ulm-2018-12-31-rdb.csv")
+write.csv(demografieUlm2018regio, file="../../daten/demografie_ulm-2018-12-31-rdb.csv")
 
