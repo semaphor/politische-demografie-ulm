@@ -18,7 +18,115 @@ header-includes:
   - \usepackage{icomma}
 ---
 
+<<<<<<< HEAD:content/post/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/index.Rmd
 ```{r source-header, message=FALSE, echo=FALSE}
+=======
+```{r message=FALSE}
+
+# DIE SCHULTERN VIELER ANDERER, DANKE
+# ===================================
+
+library(ggridges)
+library(ggplot2)
+library(knitr)
+library(viridis)
+library(hrbrthemes)
+library(dplyr)
+library(DT)
+library(forcats)
+library(ggpubr)
+library(ragg)
+
+
+# OPTIONEN
+# ========
+
+# R:
+# https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html
+options(
+  OutDec = ",",
+  #warn = 10, # Auf negativen Wert setzen, um alle Warnungen zu unterdrücken.
+  #TODO in den R chunks Einstellung für warn, error, message prüfen und sauber setzen.
+  useFancyQuotes = "UTF-8"
+  )
+
+# Knittr:
+# https://yihui.org/knitr/options/
+# https://yihui.org/knitr/hooks/
+knit_hooks$set(inline = function(x) {
+  prettyNum(x, big.mark=".")
+})
+
+
+#TODO Funktioniert das auch global für den output der R chunks?
+
+# DATEN EINLESEN UND AUFBEREITEN
+# ==============================
+
+# Ausgangsdaten im Unterordner /daten.
+# Zur Datenminimierung wurde vor dem Hochladen clean.R auf unseren Ausgangsdaten ausgeführt.
+# Das Skript für den Download von Demografiedaten über die API der Statistischen Ämter findet sich in datenOrganisieren.R.
+
+
+# KANDIDAT_INNEN/LISTEN:
+#TODO Lfd.-Nr. wieder reinnehmen?
+listen <- read.csv('daten/kandidat_innen-2024-09-06.csv')
+colnames(listen) <- c('Beruf', 'Geburtsjahr', 'Stadtteil', 'Liste')
+listen$Stadtteil <- as.factor(listen$Stadtteil)
+listen$Liste <- as.factor(listen$Liste)
+# Alter aus Geburtsjahr errechnen:
+listen <- listen %>% mutate(Alter = 2024 - Geburtsjahr)
+# Urspr. Berufsangabe in neue Spalte sichern:
+listenHelper <- cbind(NA, listen$Beruf, listen)
+names(listenHelper) <- c("Tätigkeit", "BerufAngabe", names(listen))
+listen <- listenHelper
+rm(listenHelper)
+# Nach Median aufsteigend sortieren (schonmal hier, wird in den meisten Plots so gemacht):
+listen <- listen %>% 
+  mutate(Liste = fct_reorder(Liste, Alter, .fun='median'))
+# n zählen:
+listenLabels <- listen %>%
+  group_by(Liste) %>%
+  summarise(n = n(), md = median(Alter)) %>%
+  mutate(text = paste0(Liste, '\n(n=', n, ', MD=', md, ')'))
+
+
+# WAHLBERECHTIGTE:
+#TODO offizielle Quelle finden/anfragen
+wahlberechtigte=92000 # SWP-Artikel [@swp:wahlunterlagen]
+
+
+#AKTUELLER GEMEINDERAT:
+aktRat <- read.csv('daten/aktueller_gemeinderat_2024-03.csv')
+aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
+
+
+# ALTER ULM, Ulmer Statisitik 2023:
+demografieUlm2023 <- read.csv('daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
+names(demografieUlm2023)[11] <- "Wohnbevölkerung"
+# Upsampling, so irgendwie (das geht sicher besser?)
+demografieUlm2023Distr <- vector()
+for (i in seq_along(demografieUlm2023$Wohnbevölkerung)) {
+  demografieUlm2023Distr <- c(demografieUlm2023Distr, rep(demografieUlm2023$Alter.von[i], round(demografieUlm2023$Wohnbevölkerung[i])))
+}
+demografieUlm2023Distr <- as.data.frame(demografieUlm2023Distr)
+demografieUlm2023Distr <- cbind(demografieUlm2023Distr,'Ulm')
+names(demografieUlm2023Distr) <- c('Alter', 'Liste')
+demografieUlm2023Distr <- cbind(NA, NA, NA, NA, NA, demografieUlm2023Distr)
+names(demografieUlm2023Distr) <- c('Tätigkeit', 'BerufAngabe', 'Beruf', 'Geburtsjahr', 'Stadtteil', 'Alter', 'Liste')
+
+# Extra data.frame: listen + demografieUlmDistr:
+listenMitDemografieUlm2023 <- rbind(demografieUlm2023Distr, listen)
+
+# Median:
+demografieUlm2023Median = median(demografieUlm2023Distr$Alter)
+
+# Gesamtzahl, mit einem kleinen Check:
+if (sum(demografieUlm2023$Wohnbevölkerung) != length(demografieUlm2023Distr$Alter)) print("FEHLER: Ups, da ist was schief gegangen.")
+gesamt <- sum(demografieUlm2023$Wohnbevölkerung)
+
+unterWahlalter = sum(demografieUlm2023$Wohnbevölkerung[demografieUlm2023$Alter.von <= 15]);
+>>>>>>> 7e8682041dded60b887f43751ca77f4bc87a9d8f:overview.Rmd
 
 source("headerGemeinderat2024.R")
 
@@ -66,7 +174,11 @@ Die folgende Grafik (Abbildung \@ref(fig:altersVergleich)) zeigt die Altersverte
 -   Die *gestrichelte blaue Linie* markiert durchgehend das aktuelle Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
 -   Die *orange Linie* markiert das Wahlalter 16.
 
+<<<<<<< HEAD:content/post/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/index.Rmd
 ```{r altersVergleich, echo=FALSE, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
+=======
+```{r altersVergleich, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+>>>>>>> 7e8682041dded60b887f43751ca77f4bc87a9d8f:overview.Rmd
 
 # PLOT ULMER BEVÖLKERUNG
 # ======================
@@ -221,7 +333,11 @@ An diesen Kurven erkennt man direkt, wo bei der Ulmer Bevölkerung, den Kandidat
 
 [^3]: Das maximale Alter von 90 Jahren für "Ulm" bedeutet nicht dass die ältesten Ulmer:innen nur 90 Jahre alt sind. Der Datensatz aus der Ulmer Statistik führt leider alle "90 und älter" in nur einer einzigen Gruppe auf.
 
+<<<<<<< HEAD:content/post/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/index.Rmd
 ```{r quartile, fig.align = 'center', echo=FALSE}
+=======
+```{r quartile, fig.align = 'center'}
+>>>>>>> 7e8682041dded60b887f43751ca77f4bc87a9d8f:overview.Rmd
 
 # TABELLE QUARTILE
 # ================
@@ -321,7 +437,11 @@ tab %>%
 
 ```
 
+<<<<<<< HEAD:content/post/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/index.Rmd
 ```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für Ulmer Bevölkerung >= 16 Jahre (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blauf durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
+=======
+```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für Ulmer Bevölkerung >= 16 Jahre (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blauf durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+>>>>>>> 7e8682041dded60b887f43751ca77f4bc87a9d8f:overview.Rmd
 
 # PLOT ULMER BEVÖLKERUNG >= 16
 # ============================
@@ -484,7 +604,11 @@ Um sich ein besseres Bild machen zu können, sollte man neben den Mittelwerten, 
 
 [^4]: Zur Veranschaulichung der Aussagekraft von (grafischen Darstelllungen von) Verteilungen im Gegensatz zu einzelnen statistischen Zahlenwerten eine beispielhafte Analyse: Sortiert man die Wahllisten zuerst nach dem Alter der jeweils jüngsten Listen-Kandidat\*in von jung nach alt und dann umgekehrt nach dem Alter der jeweils ältesten Kandidat:in von alt nach jung, stellt man fest, dass Bündnis 90/Die Günen (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen dieser Sortierung mit dabei sind. Schaut man auf das Median-Alter sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren sehr "mittig" sind, verglichen mit dem Umer Median-Alter ist diese Liste `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre "älter". UfA stellt die in dieser Betrachtungsweise "älteste" Liste im Feld (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))` "älter"). Beide Listen haben also eine sehr große Bandbreite beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert. Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester hat man mit dieser Betrachtung aber noch nichts erfahren. Eine grafische Darstellung der Altersverteilung enthält aber auch diese Informationen, sozusagen auf einen Blick und hängt weniger davon ab, welche statistischen Kennzahlen die Autor:in auswählt und präsentiert.
 
+<<<<<<< HEAD:content/post/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/index.Rmd
 ```{r vergleichListen, fig.cap="Vergleich der Alterstruktur der einzelnen Listen mit der Ulmer Gesamtbevölkerung (oben). Geordnet nach Altersmedian.", fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
+=======
+```{r vergleichListen, fig.cap="Vergleich der Alterstruktur der einzelnen Listen mit der Ulmer Gesamtbevölkerung (oben). Geordnet nach Altersmedian.", fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+>>>>>>> 7e8682041dded60b887f43751ca77f4bc87a9d8f:overview.Rmd
 
 # PLOT LISTEN EINZELN
 # ===================
