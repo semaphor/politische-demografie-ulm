@@ -24,9 +24,9 @@ permalinks:
 menu:
   main:
     - name: Neuer Gemeinderat
-      url: /2024/06/10/2024-06-10-neuer_gemeinderat_2024/
+      url: /2024/06/10/neuer-gemeinderat-2024/
     - name: Analyse Listen
-      url: /2024/05/30/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/
+      url: /2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/
     - name: Über dieses Projekt
       url: /ueber/
 #    - name: GitHub
