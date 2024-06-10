@@ -19,13 +19,18 @@ ignoreFiles:
   - renv\\.lock$
   - (^|/)renv$
 permalinks:
-  post: /:year/:month/:day/:slug/
+  #post: /:year/:month/:day/:slug/
+  post: /:year/:month/:day/:filename/
 menu:
   main:
-    - name: Über und Kontakt
-      url: /about/
-    - name: GitHub
-      url: https://github.com/semaphor/politische-demografie-ulm
+    - name: Neuer Gemeinderat
+      url: /2024/06/10/2024-06-10-neuer_gemeinderat_2024/
+    - name: Analyse Listen
+      url: /2024/05/30/2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat/
+    - name: Über dieses Projekt
+      url: /ueber/
+#    - name: GitHub
+#      url: https://github.com/semaphor/politische-demografie-ulm
 params:
   # TODO remove MathJaxCDN?!
   MathJaxCDN: //cdnjs.cloudflare.com/ajax/libs

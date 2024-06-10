@@ -3,12 +3,21 @@ title: "Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeindera
 date: 2024-05-30
 author: "Simon Lüke, Jakob Pietron"
 bibliography: ../../titelei-anhang/quellen.bib
+csl: ../../titelei-anhang/eva-berlin-konferenz.csl
+link-citations: true
+lang: de-DE
 output:
   bookdown::html_document2:
     toc: true
+    code_folding: hide
+    number_sections: true
+    mathjax: null
+header-includes:
+  - \renewcommand{\abstractname}{xxx}
+  - \usepackage{icomma}
 ---
 
-```{r source-header, message=FALSE}
+```{r source-header, message=FALSE, echo=FALSE}
 
 source("headerGemeinderat2024.R")
 
@@ -30,7 +39,7 @@ anotherPalette <- c("#FFDB6D", "#C4961A", "#F4EDCA", "#D16103", "#C3D7A4", "#528
 
 ```
 
-Zurx anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.
+Zur anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.
 
 Diese Analyse soll zusätzlich zu den Inhalten und Kandidat:innen der verschiedenen Listen eine ergänzende Informationen bieten. Außerdem möchten wir mit diesem Projekt auch zum selber Machen einladen. Interessierten stehen die Datensätze für eigene Auswertungen zur Verfügung – z.B. nach Geschlecht oder Stadtteilen oder Ausgangspunkt für die Analyse zurückliegender Wahlen.
 
@@ -48,7 +57,7 @@ Die **`r nrow(listen)` am 9. Juni zur Wahl stehenden Kandidat_innen sind im Mitt
 
 Zum Vergleich: Die 41 Mitglieder des aktuellen Gemeinderats (Wahlperiode 2019-2024) sind zwischen `r min(aktRat$Alter)` und `r max(aktRat$Alter)` Jahre alt und der Alters-Median liegt bei `r median(aktRat$Alter)`. Also ist **der aktuelle Gemeinderat im Mittel um `r abs(demografieUlm2023Median - median(aktRat$Alter))` Jahre älter als die Ulmer:innen**. Das gilt für dieses Jahr, in dem der nächste Rat gewählt wird. Bei seiner Wahl 2019 war der aktuelle Gemeinderat natürlich 5 Jahre jünger, wobei die Ulmer Bevölkerung annäherungsweise dieselbe Altersstruktur wie heute hatte (das Ulmer Median-Alter lag 2019 bei `r median(demografieUlm2018regioDistr$Alter)`). Der Anfang Dezember neu gewählte Oberbürgermeister und damit das qua Amt 41. Ratsmitglied ist übrigens `r aktRat$Alter[aktRat$Fraktion == "OB"]` Jahre alt.
 
-Die folgende Abbildung \@ref(fig:altersVergleich) zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (in der Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und alle weiteren Grafiken die folgenden Informationen:
+Die folgende Grafik (Abbildung \@ref(fig:altersVergleich)) zeigt die Altersverteilung der zur Wahl stehenden Kandidat_innen (in der Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und dem aktuellen Gemeinderat (unten). Dazu enthalten diese und alle weiteren Grafiken die folgenden Informationen:
 
 -   Die *schwarzen Punkte* auf der x-Achse markieren das Alter jeder einzelnen Person der jeweiligen Gruppe. (Allerdings nicht für die Ulmer Bevölkerung, denn die Darstellung von `r length(demografieUlm2023Distr$Alter)` Punkten würde nur eine dicke schwarze Linie ergeben und damit nichts weiter aussagen.)
 -   Die *schwarzen Kurven* stellen annäherungsweise die jeweilige Altersverteilung dar, fassen also sozusagen die Punkte auf der x-Achse zusammen.
@@ -56,7 +65,7 @@ Die folgende Abbildung \@ref(fig:altersVergleich) zeigt die Altersverteilung der
 -   Die *gestrichelte blaue Linie* markiert durchgehend das aktuelle Median-Alter der Ulmer Bevölkerung (`r demografieUlm2023Median` Jahre).
 -   Die *orange Linie* markiert das Wahlalter 16.
 
-```{r altersVergleich, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), der zur Wahl stehenden Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blau durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+```{r altersVergleich, echo=FALSE, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
 
 # PLOT ULMER BEVÖLKERUNG
 # ======================
@@ -211,7 +220,7 @@ An diesen Kurven erkennt man direkt, wo bei der Ulmer Bevölkerung, den Kandidat
 
 [^3]: Das maximale Alter von 90 Jahren für "Ulm" bedeutet nicht dass die ältesten Ulmer:innen nur 90 Jahre alt sind. Der Datensatz aus der Ulmer Statistik führt leider alle "90 und älter" in nur einer einzigen Gruppe auf.
 
-```{r quartile, fig.align = 'center'}
+```{r quartile, fig.align = 'center', echo=FALSE}
 
 # TABELLE QUARTILE
 # ================
@@ -262,7 +271,7 @@ Betrachtet man die Zahlenwerte in der Tabelle, erkennt man die "gewichtigsten" V
 
 Nimmt man die Ulmer:inen unter dem Wahlalter von 16 Jahren aus der Betrachtung heraus verbleiben `r { imWahlalter = gesamt - unterWahlalter; imWahlalter }` Ulmer:innen bzw. `r round(( imWahlalter/gesamt )*100, 1)` % der Bevölkerung. Damit ergeben sich die folgenden neuen Werte bzw. Alterskurven und die Bevölkerung rückt selbstverständlich wesentlich näher an die Listen und auch näher an den aktuellen Gemeinderat heran.
 
-```{r}
+```{r, echo=FALSE}
 
 # TABELLE QUARTILE >= 16
 # ======================
@@ -311,7 +320,7 @@ tab %>%
 
 ```
 
-```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für >= 16 Jahre der Ulmer Bevölkerung (oben), der zur Wahl stehenden Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blau durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+```{r altersVergleichAb16, fig.cap='Vergleich Altersverteilung für Ulmer Bevölkerung >= 16 Jahre (oben), zur Wahl stehende Kandidat_innen (Mitte) und aktueller Gemeinderat (unten). Jeweils mind. Wahlalter (orange), Altersmedian (blauf durchgehend) und Altersmedian Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
 
 # PLOT ULMER BEVÖLKERUNG >= 16
 # ============================
@@ -423,7 +432,7 @@ plotAktRatAb16 <- aktRat %>%
     #axis.text.x = element_blank(),
     plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
-#plotAktRatAb16
+#plotAktRat
 
 
 # Darstellung aller drei Plos in einer Grafik:
@@ -474,7 +483,7 @@ Um sich ein besseres Bild machen zu können, sollte man neben den Mittelwerten, 
 
 [^4]: Zur Veranschaulichung der Aussagekraft von (grafischen Darstelllungen von) Verteilungen im Gegensatz zu einzelnen statistischen Zahlenwerten eine beispielhafte Analyse: Sortiert man die Wahllisten zuerst nach dem Alter der jeweils jüngsten Listen-Kandidat\*in von jung nach alt und dann umgekehrt nach dem Alter der jeweils ältesten Kandidat:in von alt nach jung, stellt man fest, dass Bündnis 90/Die Günen (GRÜNE) und Ulm für Alle (UfA) beides mal in den ersten fünf Plätzen dieser Sortierung mit dabei sind. Schaut man auf das Median-Alter sieht man dass GRÜNE mit `r median(listen$Alter[listen$Liste == "GRÜNE"])` Jahren sehr "mittig" sind, verglichen mit dem Umer Median-Alter ist diese Liste `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "GRÜNE"]))` Jahre "älter". UfA stellt die in dieser Betrachtungsweise "älteste" Liste im Feld (`r median(listen$Alter[listen$Liste == "UfA"])`; relativ `r abs(demografieUlm2023Median - median(listen$Alter[listen$Liste == "UfA"]))` "älter"). Beide Listen haben also eine sehr große Bandbreite beim Alter ihrer Kandidat:innen, aber jeweils einen ganz unterschiedlichen Mittelwert. Über das Alter der anderen Kandidat:innen zwischen jüngstem, mittlerer und ältester hat man mit dieser Betrachtung aber noch nichts erfahren. Eine grafische Darstellung der Altersverteilung enthält aber auch diese Informationen, sozusagen auf einen Blick und hängt weniger davon ab, welche statistischen Kennzahlen die Autor:in auswählt und präsentiert.
 
-```{r vergleichListen, fig.cap="Vergleich der Alterstruktur der einzelnen Listen mit der Ulmer Gesamtbevölkerung (oben). Geordnet nach Altersmedian.", fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"'}
+```{r vergleichListen, fig.cap="Vergleich der Alterstruktur der einzelnen Listen mit der Ulmer Gesamtbevölkerung (oben). Geordnet nach Altersmedian.", fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
 
 # PLOT LISTEN EINZELN
 # ===================
@@ -546,7 +555,7 @@ ggarrange(
 
 Die folgende Tabelle erlaubt einen kurzen Blick auf die von den Kandidat\*innen in den Wahlvorschlägen angegebenen Berufe. Sie ist nach Häufigkeit sortiert. Eine tiefer gehende Auswertung der Berufsangaben wurde soweit (noch) nicht vorgenommen.
 
-```{r}
+```{r, echo=FALSE}
 
 # BERUFSANGABEN REDAKTIONELL BEREINIGEN:
 #  * gegenderte Bezeichnungen
@@ -649,7 +658,7 @@ Auf jeden Fall möchten wir an dieser Stelle auch noch kurz aber sehr herzlich a
 
 Zur Fragestellung der altersmäßigen Repräsentation der Ulmer Bevölkerung im Gemeinderat dienen die Bevölkerungsdaten aus der Ulmer Statistik 2023 [@ulm:statistik2023] als Vergleichsgrundlage. Diese Statistik enthält Daten mit dem Stichtag 31.12.2023 und bspw. die folgenden Kennzahlen:
 
-```{r}
+```{r, echo=FALSE}
 
 # TABELLE ALTERSSTATISTIK BEVÖLKERUNG
 # ===================================
@@ -668,7 +677,7 @@ Bemerkung: Diese Werte basieren auf den folgenden beiden Einschränkungen des zu
 
 Grafisch dargestellt ergibt sich folgendes Bild für die Altersverteilung:
 
-```{r fig.width=10, fig.height=4, fig.align = 'center', warning=FALSE, out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=10, fig.height=4, fig.align = 'center', warning=FALSE, out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 plotDemografieUlmDistr <- plotDemografieUlmDistr +
   xlab("Alter") +
@@ -694,7 +703,7 @@ Insgesamt kandidieren für die Wahl am 9. Juni `r nrow(listen)` Kandidat_innen a
 
 Tabelle mit statistischen Altersangaben **über alle Kandidat_innen**:
 
-```{r}
+```{r, echo=FALSE}
 
 # TABELLE ALTERSSTATISTIK ALLE KANDIDAT_INNEN
 # ===========================================
@@ -716,7 +725,7 @@ listen %>%
 
 Grafische Darstellung der Altersstruktur aller Kandidat:innen zusammengefasst (unten) im Vergleich mit der Ulmer Bevölkerung (oben):
 
-```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=10, fig.asp=0.5, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 # PLOT ULMER BEVÖLKERUNG versus ALLE KANDIDAT_INNEN (Variante: einzelne Diagramme)
 
@@ -744,7 +753,7 @@ plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
   nrow = 1, ncol = 2,
-  widths = c(0.0615, 1) #TODO (nice to have) Verhältnis berechnen.
+  widths = c(0, 1) #TODO (nice to have) Verhältnis berechnen.
   )
 
 plotUnten <- ggarrange(
@@ -770,7 +779,7 @@ ggarrange(
 
 Tabelle mit Anzahl der Kandidatin_innen und statistischen Altersangaben **je Liste**:
 
-```{r}
+```{r, echo=FALSE}
 
 # TABELLE ALTERSSTATISTIK LISTEN
 # ==============================
@@ -796,7 +805,7 @@ Grafische Darstellung je Liste (untere `r length(levels(listen$Liste))` Kurven) 
 
 Bemerkung: Da es sich bei den Kurven um eine Annäherung und nicht um eine exakte Repräsentation der Alterswerte handelt, verlaufen die Kurven z.B. teilweise in den Bereiche unterhalb des Wahlalters von 16 Jahren.
 
-```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=10, fig.asp=1.6, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 plotAgeListen <- plotAgeListen +
   xlab("Alter") +
@@ -815,14 +824,14 @@ plotAgeListen <- plotAgeListen +
 plotOben <- ggarrange(
   NA, plotDemografieUlmDistr,
   labels = c(NA, NA),
-  widths = c(0.1003, 1),
+  widths = c(0, 1),
   nrow = 1, ncol = 2
   )
 
 plotUnten <- ggarrange(
   NA, plotAgeListen,
   labels = c(NA, NA),
-  widths = c(0, 1),
+  widths = c(0.02495, 1),
   nrow = 1, ncol = 2
   )
 
@@ -843,7 +852,7 @@ Der aktuelle Gemeinderat (Wahlperiode 2019-2024) setzt sich aus `r length(aktRat
 
 Tabelle mit statistischen Altersangaben **zum aktuellen Gemeinderat**:
 
-```{r}
+```{r, echo=FALSE}
 
 # TABELLE ALTERSSTATISTIK ALLE KANDIDAT_INNEN
 # ===========================================
@@ -863,7 +872,7 @@ aktRat %>%
 
 Grafische Darstellung im Vergleich mit der Ulmer Bevölkerung (oben) der Altersstruktur des aktuellen Gemeinderats (Mitte) und des aktuellen Gemeinderats, wenn er dieses Jahr gewählt werden würde ("-5 Jahre", unten):
 
-```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 
 plotAktRat <- plotAktRat +
@@ -919,14 +928,14 @@ plotOben <- ggarrange(
 plotUnten <- ggarrange(
   NA, plotAktRat,
   labels = c(NA, NA),
-  widths = c(0.0085, 1),
+  widths = c(0.034, 1),
   nrow = 1, ncol = 2
   )
 
 plotGanzUnten <- ggarrange(
   NA, plotAktRatMinus5,
   labels = c(NA, NA),
-  widths = c(0, 1),
+  widths = c(0.062, 1),
   nrow = 1, ncol = 2
   )
 
@@ -991,7 +1000,7 @@ Erläuterungen zu den Daten:
 
 Grafische Darstellung der Altersstruktur der Ulmer Wohnbevölkerung als Histogramm mit einem Balken per Jahr:
 
-```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 plotAgeUlm2023Distr <- ggplot(demografieUlm2023Distr, aes(Alter)) + 
   geom_histogram(binwidth = 1) +
@@ -1020,7 +1029,7 @@ Wohnbevölkerung, Stand 31.12.2018:
 
 Grafische Darstellung:
 
-```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r fig.width=7, fig.asp=0.45, fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 plotDemografieUlm2018regioDistr <- ggplot(demografieUlm2018regioDistr, aes(Alter)) + 
   geom_histogram(binwidth = 1) +
@@ -1044,7 +1053,7 @@ plotDemografieUlm2018regioDistr
 
 Der Bekanntmachung der Wahlvorschläge [@ulm:wahlvorschlaege_grat_2024] die Angaben der Kandidat:innen zu "Beruf oder Stand". Wertet man diese Angaben aus, erhält man für die `r nrow(listen)` Kandidat_innen `r length(unique(listen$BerufAngabe))` verschiedene Berufsangaben. Nach einer ersten Bearbeitung erhalten wir immerhin nur noch `r length(unique(listen$Beruf))` verschiedene Angaben, die in der folgenden Tabelle zusammengefasst werden.
 
-```{r}
+```{r, echo=FALSE}
 
 # Tabelle mit redaktioneller Zusammenfassung:
 berufe <- listen %>%
@@ -1074,9 +1083,9 @@ Diese erste Bearbeitung sollte möglichst rein redaktionellen Charakter haben. D
 
 -   teilw. Berufszweige (z.B. "Lehrer", "Gymnasiallehrerin", "Kunstlehrerin" zusammengefasst zu "Lehrer_in").
 
-An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung bereits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei kandidat_innen-2024-06-09.csv](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-06-09.csv) auf GitHub. Die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code-Block im Abschnitt "Auflistung Berufe". Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben (mittlere Spalte) und der Berufsangaben nach unserer ersten Bearbeitung (linke Spalte) findet sich in dieser Tabelle:
+An den letzten Punkten dieser Aufzählung erkennt man, dass sich diese Bereinigung bereits einen gewissen Interpretationsspielraum erlaubt. Die vollständige Liste, die alle angegebenen Berufe enthält, findet sich der [Datei `kandidat_innen-2024-09-06.csv`](https://github.com/semaphor/politische-demografie-ulm/blob/main/daten/kandidat_innen-2024-09-06.csv) auf GitHub. Die in der ersten Bearbeitung gemachten Zusammenfassungen findet man im Code-Block im Abschnitt "Auflistung Berufe". Eine Gegenüberstellung der in den Wahlvorschlägen im Feld "Beruf oder Stand" gemachten Angaben (mittlere Spalte) und der Berufsangaben nach unserer ersten Bearbeitung (linke Spalte) findet sich in dieser Tabelle:
 
-```{r}
+```{r, echo=FALSE}
 
 # Tabelle mit Gegenüberstellung Angabe versus redakt. Bearbeitung:
 berufeBearbeitung <- listen %>%

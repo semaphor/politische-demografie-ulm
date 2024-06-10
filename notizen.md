@@ -1,6 +1,6 @@
 ## blogdown
 
-https://bookdown.org/yihui/blogdown/
+Doku, Buch: https://bookdown.org/yihui/blogdown/
 
 Kommandos:
 ```
@@ -14,6 +14,7 @@ blogdown::check_content()
 blogdown::check_site()
 
 blogdown::build_site(build_rmd = 'newfile')
+blogdown::build_site()
 ```
 
 

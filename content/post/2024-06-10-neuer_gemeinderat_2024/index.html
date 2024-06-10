@@ -1,13 +1,18 @@
 ---
-title: "(Arbeitststitel) Altersverteilung neuer Gemeinderat"
-subtitle: "... der Wahl am 9.6.2024"
+title: "(Arbeitststitel) Altersverteilung neuer Gemeinderat, Wahl am 9.6.2024"
 date: 2024-06-10
-draft: false
+draft: true
 author: "Simon Lüke, Jakob Pietron"
 bibliography: ../../titelei-anhang/quellen.bib
 csl: ../../titelei-anhang/eva-berlin-konferenz.csl
 link-citations: true
 lang: de-DE
+output:
+  bookdown::html_document2:
+    toc: true
+    code_folding: hide
+    number_sections: true
+    mathjax: null
 header-includes:
   - \renewcommand{\abstractname}{xxx}
   - \usepackage{icomma}
@@ -17,175 +22,5 @@ header-includes:
 
 
 
-<p>TextTest. Test. Test.</p>
-<pre class="r"><code>suppressWarnings(
-setwd(&quot;../2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat&quot;)
-# setwd gilt nur für diesen code chunk, https://bookdown.org/yihui/rmarkdown-cookbook/working-directory.html
-)
-
-source(&quot;headerGemeinderat2024.R&quot;)</code></pre>
-<pre class="r"><code>plotDemografieUlmDistr &lt;- demografieUlm2023Distr %&gt;%
-  mutate(Liste = paste0(&#39;Ulm\n\nn = &#39;, length(demografieUlm2023Distr$Alter), &#39;\nMD=&#39;, median(Alter))) %&gt;%
-  ggplot(aes(x = Alter, y = Liste)) +
-  geom_density_ridges_gradient(
-    bandwidth = 1.5,
-    scale = 45,
-    rel_min_height = 0.01,
-    quantile_lines = TRUE,
-    vline_color = c(&quot;#56B4E9&quot;),
-    vline_width = 1.5,
-    quantile_fun = median
-    ) +
-  geom_vline(xintercept = 16, colour=&quot;#E69F00&quot;, linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlm2023Median, colour=&quot;#56B4E9&quot;, linetype = &quot;longdash&quot;, linewidth = 0.8) +
-  #scale_fill_viridis() +
-  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
-  #labs(title = &#39;Altersverteilung Ulmer Bevölkerung&#39;) +
-  theme_ipsum() +
-  theme(
-    legend.position=&quot;none&quot;,
-    panel.spacing = unit(0.1, &quot;lines&quot;),
-    strip.text.x = element_text(size = 8),
-    axis.title.y = element_blank(),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), &#39;points&#39;) #unit(c(top, right, bottom, left), units)
-  )
-#plotDemografieUlmDistr
-
-plotDemografieUlmDistr &lt;- plotDemografieUlmDistr +
-  xlab(&quot;Alter&quot;) +
-  theme_ipsum() +
-  theme(
-    legend.position=&quot;none&quot;,
-    panel.spacing = unit(0.1, &quot;lines&quot;),
-    strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    axis.title.x=element_text(),
-    #axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), &#39;points&#39;) #unit(c(top, right, bottom, left), units)
-  )
-
-plotDemografieUlmDistr &lt;- plotDemografieUlmDistr +
-  #theme_ipsum() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,-95,0), &#39;points&#39;)
-  )
-
-
-plotRatNeu &lt;- ratNeu %&gt;%
-  mutate(Fraktion = paste0(&#39;Gemeinderat\n2024-2029\n\nn = &#39;, length(Alter), &#39;\nMD=&#39;, median(Alter))) %&gt;%
-  # &#39;,\nMedian = &#39;, median(Alter),
-  ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
-  geom_density_ridges_gradient(
-    scale = 45,
-    rel_min_height = 0.01,
-    bandwidth = 1.5,
-    quantile_lines = TRUE,
-    vline_color = c(&quot;#56B4E9&quot;),
-    vline_width = 1.5,
-    quantile_fun = median,
-    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
-    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7
-    ) +
-  geom_vline(xintercept = 16, colour=&quot;#E69F00&quot;, linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlm2023Median, colour=&quot;#56B4E9&quot;, linetype = &quot;longdash&quot;, linewidth = 0.8) +
-  #scale_fill_viridis() +
-  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
-  #labs(title = &#39;Altersverteilung Ulmer Bevölkerung&#39;) +
-  xlab(&quot;Alter&quot;) +
-  theme_ipsum() +
-  theme(
-    legend.position=&quot;none&quot;,
-    panel.spacing = unit(0.1, &quot;lines&quot;),
-    strip.text.x = element_text(size = 8),
-    axis.title.y = element_blank(),
-    #axis.title.x = element_blank(),
-    #axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), &#39;points&#39;) #unit(c(top, right, bottom, left), units)
-  )
-#plotNeuerRat
-
-plotRatNeu &lt;- plotRatNeu +
-  #theme_ipsum() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,-20,0), &#39;points&#39;) #unit(c(top, right, bottom, left), units)
-  )
-
-
-plotAktRatMinus5 &lt;- aktRat %&gt;%
-  mutate(Alter = Alter - 5) %&gt;%
-  mutate(Fraktion = paste0(&#39;Gemeinderat\n2019-2024\n-5 Jahre\n\nn = &#39;, length(Alter), &#39;\nMD = &#39;, median(Alter))) %&gt;%
-  ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
-  geom_density_ridges_gradient(
-    scale = 45,
-    rel_min_height = 0.01,
-    bandwidth = 1.5,
-    quantile_lines = TRUE,
-    vline_color = c(&quot;#56B4E9&quot;),
-    vline_width = 1.5,
-    quantile_fun = median,
-    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
-    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
-    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
-    point_size = 2, point_alpha = .5, alpha = 0.7
-    ) +
-  geom_vline(xintercept = 16, colour=&quot;#E69F00&quot;, linewidth = 0.8) +
-  geom_vline(xintercept = demografieUlm2023Median, colour=&quot;#56B4E9&quot;, linetype = &quot;longdash&quot;, linewidth = 0.8) +
-  #scale_fill_viridis() +
-  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
-  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
-  #labs(title = &#39;Altersverteilung Ulmer Bevölkerung&#39;) +
-  theme_ipsum() +
-  theme(
-    legend.position=&quot;none&quot;,
-    panel.spacing = unit(0.1, &quot;lines&quot;),
-    strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    #axis.title.x = element_blank(),
-    #axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,-10,0), &#39;points&#39;) #unit(c(top, right, bottom, left), units)
-  )
-#plotAktRatMinus5
-
-
-plotOben &lt;- ggarrange(
-  NA, plotDemografieUlmDistr,
-  labels = c(NA, NA),
-  nrow = 1, ncol = 2,
-  widths = c(0.00835, 1)
-  )
-
-plotUnten &lt;- ggarrange(
-  NA, plotRatNeu,
-  labels = c(NA, NA),
-  widths = c(0, 1),
-  nrow = 1, ncol = 2
-  )
-
-plotGanzUnten &lt;- ggarrange(
-  NA, plotAktRatMinus5,
-  labels = c(NA, NA),
-  widths = c(0, 1),
-  nrow = 1, ncol = 2
-  )
-
-suppressWarnings(
-ggarrange(
-  plotOben,
-  plotUnten,
-  plotGanzUnten,
-  nrow = 3, ncol = 1,
-  vjust = 0,
-  heights = c(1,1,1)
-  )
-)</code></pre>
+<p>Die Wahlergebnisse sind da und…</p>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/plot-vgl-neuer-rat-1.png" width="960" style="display: block; margin: 40px;" style="display: block; margin: auto;" /></p>

@@ -1,21 +1,26 @@
 ---
-title: "(Arbeitststitel) Altersverteilung neuer Gemeinderat"
-subtitle: "... der Wahl am 9.6.2024"
+title: "(Arbeitststitel) Altersverteilung neuer Gemeinderat, Wahl am 9.6.2024"
 date: 2024-06-10
-draft: false
+draft: true
 author: "Simon Lüke, Jakob Pietron"
 bibliography: ../../titelei-anhang/quellen.bib
 csl: ../../titelei-anhang/eva-berlin-konferenz.csl
 link-citations: true
 lang: de-DE
+output:
+  bookdown::html_document2:
+    toc: true
+    code_folding: hide
+    number_sections: true
+    mathjax: null
 header-includes:
   - \renewcommand{\abstractname}{xxx}
   - \usepackage{icomma}
 ---
 
-TextTest. Test. Test.
+Die Wahlergebnisse sind da und...
 
-```{r source-header, message=FALSE}
+```{r source-header, message=FALSE, echo=FALSE}
 
 suppressWarnings(
 setwd("../2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat")
@@ -26,7 +31,7 @@ source("headerGemeinderat2024.R")
 
 ```
 
-```{r plot-vgl-neuer-rat, fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"'}
+```{r plot-vgl-neuer-rat, fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
 
 
 plotDemografieUlmDistr <- demografieUlm2023Distr %>%
