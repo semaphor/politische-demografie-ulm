@@ -1,6 +1,7 @@
 ---
 title: "Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat"
 date: 2024-05-30
+slug: vergleich-alter-bevoelkerung-wahllisten-gemeinderat
 author: "Simon Lüke, Jakob Pietron"
 bibliography: ../../titelei-anhang/quellen.bib
 csl: ../../titelei-anhang/eva-berlin-konferenz.csl

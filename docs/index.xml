@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Politische Demografie Ulm: Datenanalyse zur Ulmer Gemeinderatswahl 2024</title>
+    <link>/</link>
+    <description>Recent content on Politische Demografie Ulm: Datenanalyse zur Ulmer Gemeinderatswahl 2024</description>
+    <generator>Hugo</generator>
+    <language>de-DE</language>
+    <lastBuildDate>Thu, 30 May 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kontakt/Impressum</title>
+      <link>/kontakt/</link>
+      <pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate>
+      <guid>/kontakt/</guid>
+      <description>Von Simon Lüke, Jakob Pietron&#xA;datalove/UlmAPI und sowieso temporärhaus, Augsburger Straße 25, 89231 Neu-Ulm&#xA;E-Mail datenanalyse-gemeinderat ÄTT resolution1.net&#xA;Lizenz CC BY 4.0, Namensnennung und Verlinkung. Die verwendeten Datensätze stehen ggf. unter anderer Lizenz, siehe jeweilige Quelle.</description>
+    </item>
+    <item>
+      <title>Über dieses Projekt</title>
+      <link>/ueber/</link>
+      <pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate>
+      <guid>/ueber/</guid>
+      <description>Wir sind keine bezahlten Profis aus beispielsweise Journalismus, Verwaltung oder Wissenschaft, sondern im sogenannten digitalen Ehrenamt engagierte Bürger:innen. Wir möchten mit diesem Projekt Euch alle zur politischen Debatte einladen. Und dazu motivieren immer selber an den Stellen tiefer reinzuschauen, die für Dich relevant sind. Im Projekt auf GitHub findest Du die aus den Quellen aufbereiteten Datensätze. In die Tabellen im Unterordner /content/daten kann man sich direkt im Webbrowser reinklicken.&#xA;Bist Du noch tiefer an der Technik, die unseren Alltag so sehr prägt und an der Arbeit mit Daten interessiert, kannst du auch ein Blick in den vollständigen Programmcode zur Auswertungen der Daten und Erstellung dieses Berichts/dieser Website werfen (Startpunkt sind die .</description>
+    </item>
+    <item>
+      <title>Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat</title>
+      <link>/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/</link>
+      <pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate>
+      <guid>/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/</guid>
+      <description>Zur anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.&#xA;Diese Analyse soll zusätzlich zu den Inhalten und Kandidat:innen der verschiedenen Listen eine ergänzende Informationen bieten.</description>
+    </item>
+  </channel>
+</rss>
