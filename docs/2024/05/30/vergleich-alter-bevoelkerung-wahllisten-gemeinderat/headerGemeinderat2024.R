@@ -76,11 +76,6 @@ aktRat <- read.csv('../../daten/gemeinderat_2024-03_aktueller.csv')
 aktRat <- aktRat %>% mutate(Alter = 2024 - Geburtsjahr)
 
 
-#AKTUELLER GEMEINDERAT:
-ratNeu <- read.csv('../../daten/gemeinderat_2024-06-09-neuer.csv')
-ratNeu <- ratNeu %>% mutate(Alter = 2024 - Geburtsjahr)
-
-
 # ALTER ULM, Ulmer Statisitik 2023:
 demografieUlm2023 <- read.csv('../../daten/demografie_ulm-2023-12-31-ulmer_statistik.csv')
 names(demografieUlm2023)[11] <- "Wohnbevölkerung"
