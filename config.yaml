@@ -1,0 +1,58 @@
+baseurl: /
+title: "Politische Demografie Ulm: Datenanalyse zur Ulmer Gemeinderatswahl 2024"
+languageCode: de-DE
+#lang: de-DE
+#language:
+#  label:
+#    fig: "Abbildung "
+#    tab: "Tabelle "
+#csl: ../../titelei-anhang/eva-berlin-konferenz.csl
+#link-citations: true
+#header-includes:
+#  - \renewcommand{\abstractname}{xxx}
+#  - \usepackage{icomma}
+theme: hugo-lithium
+ignoreFiles:
+  - \.Rmd$
+  - \.Rmarkdown$
+  - _cache$
+  - renv\\.lock$
+  - (^|/)renv$
+permalinks:
+  post: /:year/:month/:day/:slug/
+  #post: /:year/:month/:day/:filename/
+menu:
+  main:
+    - name: Neuer Gemeinderat
+      url: /2024/06/12/neuer-gemeinderat-2024/
+    - name: Analyse Listen
+      url: /2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/
+    - name: Über dieses Projekt
+      url: /ueber/
+#    - name: GitHub
+#      url: https://github.com/semaphor/politische-demografie-ulm
+params:
+  # TODO remove MathJaxCDN?!
+  MathJaxCDN: //cdnjs.cloudflare.com/ajax/libs
+  MathJaxVersion: 2.7.5
+  #mathjax: null
+  description: A website built through Hugo and blogdown.
+  favicon: favicon.ico
+  highlightjsCDN: //cdnjs.cloudflare.com/ajax/libs
+  highlightjsLang:
+    - r
+    - yaml
+  highlightjsTheme: github
+  highlightjsVersion: 9.12.0
+  logo:
+    alt: Logo
+    height: 50
+    url: logo.png
+    width: 50
+markup:
+  defaultMarkdownHandler: goldmark
+  goldmark:
+    renderer:
+      unsafe: yes
+  highlight:
+    codeFences: no

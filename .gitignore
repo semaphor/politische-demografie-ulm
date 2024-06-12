@@ -58,8 +58,19 @@ rsconnect/
 
 # End of https://www.toptal.com/developers/gitignore/api/r
 
+# Vorschläge von blogdown::check_site()
+.DS_Store
+Thumbs.db
+.hugo_build.lock
+/public/
+/resources/
+
+# Unser Sonstiges:
+
 raw_kandidat_innen.csv
 raw_*.csv
 
 overview.html
 overview.pdf
+alter_neuer_gemeinderat_2024.html
+alter_neuer_gemeinderat_2024.pdf

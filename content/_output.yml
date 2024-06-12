@@ -1,0 +1,5 @@
+bookdown::html_document2:
+  toc: true
+  #code_folding: hide
+  number_sections: true
+  mathjax: null

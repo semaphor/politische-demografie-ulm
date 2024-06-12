@@ -1,0 +1,418 @@
+---
+title: "Wie alt wird unser neuer Gemeinderat? Kurzer Blick auf die Altersstruktur nach der Wahl"
+date: 2024-06-12
+slug: neuer-gemeinderat-2024
+author: "Simon Lüke, Jakob Pietron"
+bibliography: ../../titelei-anhang/quellen.bib
+csl: ../../titelei-anhang/eva-berlin-konferenz.csl
+link-citations: true
+lang: de-DE
+output:
+  bookdown::html_document2:
+    toc: true
+    code_folding: hide
+    number_sections: true
+    mathjax: null
+header-includes:
+  - \renewcommand{\abstractname}{xxx}
+  - \usepackage{icomma}
+---
+
+```{r source-header, message=FALSE, echo=FALSE}
+
+suppressWarnings(
+setwd("../2024-05-30-vergleich-alter-bevoelkerung-wahllisten-gemeinderat")
+# setwd gilt nur für diesen code chunk, https://bookdown.org/yihui/rmarkdown-cookbook/working-directory.html
+)
+
+source("headerGemeinderat2024.R")
+
+#AKTUELLER GEMEINDERAT:
+ratNeu <- read.csv('../../daten/gemeinderat_2024-06-09-neuer.csv')
+ratNeu <- ratNeu %>% mutate(Alter = 2024 - Geburtsjahr)
+
+```
+
+*Weitere Statistiken, die verwendeten Quellen und ein paar Erläuterungen und Hintergrundinformationen findest Du in* [unserer Analyse der Kandidat:innen vor der Wahl](/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/)*.*
+
+Die Wahlergebnisse der Ulmer Gemeinderatswahl vom 9.6.2024 sind da und wir haben auf Basis der [vorläufigen amtlichen Ergebnisse](https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20240609/08421000/praesentation/ergebnis.html?wahl_id=2496&stimmentyp=0&id=ebene_-8900_id_14330) eine erste Analyse erstellt. Abbildung \@ref(fig:plot-vgl-neuer-rat) stellt die Altersstruktur des neuen Gemeinderats (Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und des noch aktuellen Gemeinderats (Wahlperiode 2019-2024, unten) dar. Für die Vergleiche in diesem Artikel verschieben wir die Altersstruktur des aktuellen Gemeinderats auf den Zeitpunkt seiner Wahl 2019. Damals hatte dieser Rat ein mittleres Alter ([Median](/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat#Bevölkerung%20und%20Kandidat:innen)) von `r median(aktRat$Alter) - 5` Jahren. **Der neue Gemeinderat ist mit einem mittleren Alter von `r median(ratNeu$Alter)` Jahren um `r abs(median(aktRat$Alter)-median(ratNeu$Alter) - 5)` Jahre älter als der aktuelle Rat bei seinem Start 2019.** Zum Vergleich: Die Ulmer Bevölkerung ist aktuell im Mittel `r demografieUlm2023Median` Jahre alt.
+
+**Das jüngste Ratsmitglied ist nun `r min(ratNeu$Alter)` Jahre alt** und damit [eine der ersten 16-jährigen Gemeinderrät:innen](https://www.stuttgarter-nachrichten.de/inhalt.gewaehlt-mit-16-jahren-teenager-erobern-die-gemeinderaete.da4f161c-e974-47bd-bfcd-09b73b2a6ce9.html) in Baden-Württemberg (im noch aktuellen Rat ist die jüngste Rät:in momentan `r min(aktRat$Alter)`). **Das älteste Mitglied im neuen Rat ist `r max (ratNeu$Alter)` Jahre alt** (`r max(aktRat$Alter)` Jahre momentan im aktuellen Rat).
+
+```{r plot-vgl-neuer-rat, fig.cap='Vergleich Altersverteilung Ulmer Bevölkerung (oben), am 9.6.2024 neu gewählter Gemeinderat (Mitte) und bisheriger/aktueller Gemeinderat (unten). Jeweils Wahlalter (orange), jeweiliger Alters-Median (blau durchgehend) und Alters-Median der Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block; margin: 40px;"', echo=FALSE}
+
+
+
+plotDemografieUlmDistr <- demografieUlm2023Distr %>%
+  mutate(Liste = paste0('Ulm\n\nn = ', length(demografieUlm2023Distr$Alter), '\nMD=', median(Alter))) %>%
+  ggplot(aes(x = Alter, y = Liste)) +
+  geom_density_ridges_gradient(
+    bandwidth = 1.5,
+    scale = 45,
+    rel_min_height = 0.01,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  #scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+#plotDemografieUlmDistr
+
+plotDemografieUlmDistr <- plotDemografieUlmDistr +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_text(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+
+plotDemografieUlmDistr <- plotDemografieUlmDistr +
+  #theme_ipsum() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-95,0), 'points')
+  )
+
+
+plotRatNeu <- ratNeu %>%
+  mutate(Liste = paste0('Gemeinderat\n2024-2029\n\nn = ', length(Alter), '\nMD=', median(Alter))) %>%
+  # ',\nMedian = ', median(Alter),
+  ggplot(aes(x = Alter, y = Liste)) + #, fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    scale = 45,
+    rel_min_height = 0.01,
+    bandwidth = 1.5,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  #scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y = element_blank(),
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+#plotNeuerRat
+
+plotRatNeu <- plotRatNeu +
+  #theme_ipsum() +
+  theme(
+    #axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(0,0,-20,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+
+
+plotAktRatMinus5 <- aktRat %>%
+  mutate(Alter = Alter - 5) %>%
+  mutate(Fraktion = paste0('Gemeinderat\n2019-2024\n-5 Jahre\n\nn = ', length(Alter), '\nMD = ', median(Alter))) %>%
+  ggplot(aes(x = Alter, y = Fraktion)) + #, fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    scale = 45,
+    rel_min_height = 0.01,
+    bandwidth = 1.5,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  #scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    #plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+#plotAktRatMinus5
+
+
+plotOben <- ggarrange(
+  NA, plotDemografieUlmDistr,
+  labels = c(NA, NA),
+  nrow = 1, ncol = 2,
+  widths = c(0.00835, 1)
+  )
+
+plotUnten <- ggarrange(
+  NA, plotRatNeu,
+  labels = c(NA, NA),
+  widths = c(0, 1),
+  nrow = 1, ncol = 2
+  )
+
+plotGanzUnten <- ggarrange(
+  NA, plotAktRatMinus5,
+  labels = c(NA, NA),
+  widths = c(0, 1),
+  nrow = 1, ncol = 2
+  )
+
+suppressWarnings(
+ggarrange(
+  plotOben,
+  plotUnten,
+  plotGanzUnten,
+  nrow = 3, ncol = 1,
+  vjust = 0,
+  heights = c(1,1,1)
+  )
+)
+
+```
+
+Wie man in der obigen Grafik erkennen kann hat sich durch die Wahl die Altersstruktur etwas verändert: Der **Altersschwerpunkt liegt beim neuen Rat im Bereich zwischen 60 und 66 Jahren**. In dieser relativ kleinen Altersgruppe mit einer Breite von nur 6 Jahren findet man ein Viertel der `r nrow(ratNeu)` Ratsmiglieder. Dieser Schwerpunkt hat sich im Vergleich mit dem letzten Rat um zwei bis drei Jahre nach oben verschoben. Auf der anderen Seite findet man: **Das jüngste Viertel des neuen Rates repräsentiert altersmäßig die jüngere Hälfte der Ulmer Bevölkerung** (`r count(ratNeu[ratNeu$Alter < median(demografieUlm2023Median), ])` Ratsmigleider sind jünger als `r demografieUlm2023Median`).
+
+In der folgenden Tabelle (Abbildung \@ref(fig:quartile-neuer-rat)) findet man für den Vergleich die unterschiedlichen Gruppen in jeweils gleich große Viertel aufgeteilt. Neben dem mittleren Alter (Median, 50 %) sind auch die Grenzen zum unteren (25 %) und oberen Viertel (75 %) sowie das jüngste (0 %) und älteste (100 %) Alter in je einer Zeile angegeben.
+
+```{r quartile-neuer-rat, fig.cap='Aufteilung in gleich große Viertel (sogenannte Quartile) nach Alter. Die Zeile 0 % enthält das jeweils jüngste Alter, die Zeile 100 % das älteste (Anmerkung: 90 Jahre bei "Ulm, ab 16" resultiert aus der Darstellung im vorliegenden Datensätzen, es gibt ältere Ulmer:innen). Die Zeilen 25, 50 und 75 % enthalten die Altersgrenzen zwischen den Vierteln. Die Spalte a enthält die Spannweiten der Viertel für "Ulm, ab 16", b die Spannweiten für "Neuer Gemeinderat" und c die Spannweiten für "Gemeinderat 2019-2024 (-5 Jahre)".', fig.align = 'center', echo=FALSE}
+
+# TABELLE QUARTILE
+# ================
+
+tab <- cbind(
+  quantile(demografieUlm2023Distr$Alter),
+  c(
+    "0%" = '',
+    quantile(demografieUlm2023Distr$Alter)[2] - quantile(demografieUlm2023Distr$Alter)[1],
+    + quantile(demografieUlm2023Distr$Alter)[3] - quantile(demografieUlm2023Distr$Alter)[2],
+    + quantile(demografieUlm2023Distr$Alter)[4] - quantile(demografieUlm2023Distr$Alter)[3],
+    quantile(demografieUlm2023Distr$Alter)[5] - quantile(demografieUlm2023Distr$Alter)[4]
+  ),
+  quantile(ratNeu$Alter),
+    c(
+    "0%" = '',
+    quantile(ratNeu$Alter)[2] - quantile(ratNeu$Alter)[1],
+    + quantile(ratNeu$Alter)[3] - quantile(ratNeu$Alter)[2],
+    + quantile(ratNeu$Alter)[4] - quantile(ratNeu$Alter)[3],
+    quantile(ratNeu$Alter)[5] - quantile(ratNeu$Alter)[4]
+  ),
+  quantile(aktRat$Alter - 5),
+  c(
+    "0%" = '',
+    quantile(aktRat$Alter)[2] - quantile(aktRat$Alter)[1],
+    + quantile(aktRat$Alter)[3] - quantile(aktRat$Alter)[2],
+    + quantile(aktRat$Alter)[4] - quantile(aktRat$Alter)[3],
+    quantile(aktRat$Alter)[5] - quantile(aktRat$Alter)[4]
+  )
+  ) %>%
+  as.data.frame() %>%
+  rename("Ulm, ab 16" = "V1", "a" = "V2", "Neuer Gemeinderat" = "V3", "b" = "V4", "Gemeinderat 2019-2024 (-5 Jahre)" = "V5", "c" = "V6")
+
+tab %>%
+  datatable(
+    options = list(
+      dom = 't',
+      autoWidth = FALSE,
+      columnDefs = list(list(width = '10%', targets = "_all"))
+      ),
+    style = 'bootstrap'
+    ) %>%
+  formatStyle(columns = c(2, 4, 6), fontSize = '70%')
+
+```
+
+Abschließend (Abbildung \@ref(fig:altersVergleichKandidatinnenRat)) noch eine Gegenüberstellung der Altersverteilung der zur Wahl stehenden Kandidat:innen mit den nun gewählten Gemeinderät:innen.
+
+```{r altersVergleichKandidatinnenRat, echo=FALSE, fig.cap='Vergleich Altersverteilung zur Wahl stehende Kandidat_innen (oben) und am 9.6.2024 gewählter Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
+
+
+# PLOT ALLE KANDIDAT_INNEN
+# ========================
+
+plotAgeListenAlle <- listen %>%
+  mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ', MD=', median(Alter), ')')) %>%
+  ggplot(aes(x = Alter, y = Liste)) +
+  geom_density_ridges_gradient(
+    scale = 45, 
+    rel_min_height = 0.01, 
+    bandwidth = 4,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7#,
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8, show.legend = TRUE) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8, show.legend = TRUE) +
+  scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0, 100), breaks=seq(0, 90, by=5)) +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(10,0,-40,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+#plotAgeListenAlle
+
+
+plotRatNeuGlatt <- ratNeu %>%
+  mutate(Liste = paste0('Gemeinderat\n2024-2029\n\nn = ', length(Alter), '\nMD=', median(Alter))) %>%
+  # ',\nMedian = ', median(Alter),
+  ggplot(aes(x = Alter, y = Liste)) + #, fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    scale = 45,
+    rel_min_height = 0.01,
+    bandwidth = 4,
+    quantile_lines = TRUE,
+    vline_color = c("#56B4E9"),
+    vline_width = 1.5,
+    quantile_fun = median,
+    jittered_points = TRUE, #https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+    position = position_points_jitter(width = 0.5, height = 0, seed = 42),
+    point_shape = 20, #https://ggplot2.tidyverse.org/reference/aes_linetype_size_shape.html
+    point_size = 2, point_alpha = .5, alpha = 0.7
+    ) +
+  geom_vline(xintercept = 16, colour="#E69F00", linewidth = 0.8) +
+  geom_vline(xintercept = demografieUlm2023Median, colour="#56B4E9", linetype = "longdash", linewidth = 0.8) +
+  #scale_fill_viridis() +
+  #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
+  scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
+  #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
+  xlab("Alter") +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    panel.spacing = unit(0.1, "lines"),
+    strip.text.x = element_text(size = 8),
+    axis.title.y = element_blank(),
+    #axis.title.x = element_blank(),
+    #axis.text.x = element_blank(),
+    #plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+#plotNeuerRat
+
+plotRatNeuGlatt <- plotRatNeuGlatt +
+  #theme_ipsum() +
+  theme(
+    #axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(-50,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+  )
+
+
+
+# Darstellung aller zwei Plots in einer Grafik:
+
+plotMitte <- ggarrange(
+  NA, plotAgeListenAlle,
+  labels = c(NA, NA),
+  nrow = 1, ncol = 2,
+  widths = c(0, 1)
+  )
+
+plotUnten <- ggarrange(
+  NA, plotRatNeuGlatt,
+  labels = c(NA, NA),
+  widths = c(0.071, 1),
+  nrow = 1, ncol = 2
+  )
+
+suppressWarnings(
+ggarrange(
+  plotMitte,
+  plotUnten,
+  nrow = 2, ncol = 1,
+  vjust = 0,
+  heights = c(1,1)
+  )
+)
+```
+
+**Unser Fazit:** Mit der Wahl hat sich der nächste Ulmer Gemeinderat im Mittel nur um ein Jahr verjüngt. Das genügt angesichts einer Wahlperiode von fünf Jahren nicht, um das Alter sozsuagen zu halten – **statistisch gesehen startet der neue Rat als älteres Gremium**. Aus den jüngeren Hälfte der Bevölkerung **unter 40 sind nur relativ wenige zur Wahl angetreten**. Aus diesem also bereits älteren Feld der Kandidat:innen wurden **eher die Älteren gewählt**.
+
+------------------------------------------------------------------------
+
+Unsere Ansatzpunkte für weitere Analsen/Recherchen wären:
+
+-   Vergleich Altersverteilung Kandidat:innen 2019 mit damals gewähltem Rat.
+-   Wo in Baden-Württemberg wurden auch 16-jährige gewählt?
+
+------------------------------------------------------------------------
+
+Für Interessierte noch ein Vergleich von Median und Durchschnitt:
+
+```{r, statwerte-neuer-rat, echo=FALSE}
+
+rbind(
+  ratNeu %>%
+  summarise(
+    "Gemeinderat" = "2024-2029",
+    "Mitglieder" = n(),
+    "min. Alter" = min(Alter),
+    "max. Alter" = max(Alter),
+    "Alter, Median" = median(Alter),
+    "Alter, Durchschnitt" = round(mean(Alter),1),
+    "Alter, Standardabw." = round(sd(Alter))
+    ),
+  aktRat %>%
+  summarise(
+    "Gemeinderat" = "2019-2024 (-5 Jahre)",
+    "Mitglieder" = n(),
+    "min. Alter" = min(Alter) - 5,
+    "max. Alter" = max(Alter) - 5,
+    "Alter, Median" = median(Alter) - 5,
+    "Alter, Durchschnitt" = round(mean(Alter),1) - 5,
+    "Alter, Standardabw." = round(sd(Alter))
+    )
+  ) %>%
+kable(style = 'bootstrap')
+```
