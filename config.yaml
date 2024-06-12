@@ -16,11 +16,10 @@ ignoreFiles:
   - \.Rmd$
   - \.Rmarkdown$
   - _cache$
-  - renv\\.lock$
+  - renv\.lock$
   - (^|/)renv$
 permalinks:
   post: /:year/:month/:day/:slug/
-  #post: /:year/:month/:day/:filename/
 menu:
   main:
     - name: Neuer Gemeinderat

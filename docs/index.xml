@@ -29,5 +29,12 @@
       <guid>https://semaphor.github.io/politische-demografie-ulm/ueber/</guid>
       <description>Wir sind keine bezahlten Profis aus beispielsweise Journalismus, Verwaltung oder Wissenschaft, sondern im sogenannten digitalen Ehrenamt engagierte Bürger:innen. Wir möchten mit diesem Projekt Euch alle zur politischen Debatte einladen. Und dazu motivieren immer selber an den Stellen tiefer reinzuschauen, die für Dich relevant sind. Im Projekt auf GitHub findest Du die aus den Quellen aufbereiteten Datensätze. In die Tabellen im Unterordner /content/daten kann man sich direkt im Webbrowser reinklicken.&#xA;Bist Du noch tiefer an der Technik, die unseren Alltag so sehr prägt und an der Arbeit mit Daten interessiert, kannst du auch ein Blick in den vollständigen Programmcode zur Auswertungen der Daten und Erstellung dieses Berichts/dieser Website werfen (Startpunkt sind die .</description>
     </item>
+    <item>
+      <title>Vergleich der Altersstruktur von Bevölkerung, Wahllisten und Gemeinderat vor der Wahl am 9.6.2024</title>
+      <link>https://semaphor.github.io/politische-demografie-ulm/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/</link>
+      <pubDate>Thu, 30 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://semaphor.github.io/politische-demografie-ulm/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/</guid>
+      <description>Zur anstehenden Wahl haben wir uns gefragt, wie gut der Gemeinderat die Ulmer Bevölkerung repräsentiert bzw. inwiefern die zur Wahl stehenden Listen der Bevölkerung statistisch ähnlich sehen. Dazu haben wir vor allem die Altersstruktur aller Kanditat:innen sowie der einzelnen Listen mit der gesamten Ulmer Bevölkerung und dem aktuellen Gemeinderat verglichen. Außerdem bietet dieser Bericht einen kurzen Einblick in die auf den Wahlzetteln angegebenen Berufe der Kandidat:innen.&#xA;Diese Analyse soll zusätzlich zu den Inhalten und Kandidat:innen der verschiedenen Listen eine ergänzende Informationen bieten.</description>
+    </item>
   </channel>
 </rss>
