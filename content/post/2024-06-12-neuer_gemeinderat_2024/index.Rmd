@@ -33,9 +33,9 @@ ratNeu <- ratNeu %>% mutate(Alter = 2024 - Geburtsjahr)
 
 ```
 
-*Weitere Statistiken, die verwendeten Quellen und ein paar Erläuterungen und Hintergrundinformationen findest Du in* [unserer Analyse der Kandidat:innen vor der Wahl](/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/)*.*
+*Weitere Statistiken, die verwendeten Quellen und ein paar Erläuterungen und Hintergrundinformationen findest Du in* [unserer Analyse der Kandidat:innen vor der Wahl](2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/)*.*
 
-Die Wahlergebnisse der Ulmer Gemeinderatswahl vom 9.6.2024 sind da und wir haben auf Basis der [vorläufigen amtlichen Ergebnisse](https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20240609/08421000/praesentation/ergebnis.html?wahl_id=2496&stimmentyp=0&id=ebene_-8900_id_14330) eine erste Analyse erstellt. Abbildung \@ref(fig:plot-vgl-neuer-rat) stellt die Altersstruktur des neuen Gemeinderats (Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und des noch aktuellen Gemeinderats (Wahlperiode 2019-2024, unten) dar. Für die Vergleiche in diesem Artikel verschieben wir die Altersstruktur des aktuellen Gemeinderats auf den Zeitpunkt seiner Wahl 2019. Damals hatte dieser Rat ein mittleres Alter ([Median](/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat#Bevölkerung%20und%20Kandidat:innen)) von `r median(aktRat$Alter) - 5` Jahren. **Der neue Gemeinderat ist mit einem mittleren Alter von `r median(ratNeu$Alter)` Jahren um `r abs(median(aktRat$Alter)-median(ratNeu$Alter) - 5)` Jahre älter als der aktuelle Rat bei seinem Start 2019.** Zum Vergleich: Die Ulmer Bevölkerung ist aktuell im Mittel `r demografieUlm2023Median` Jahre alt.
+Die Wahlergebnisse der Ulmer Gemeinderatswahl vom 9.6.2024 sind da und wir haben auf Basis der [vorläufigen amtlichen Ergebnisse](https://wahlergebnisse.komm.one/lb/produktion/wahltermin-20240609/08421000/praesentation/ergebnis.html?wahl_id=2496&stimmentyp=0&id=ebene_-8900_id_14330) eine erste Analyse erstellt. Abbildung \@ref(fig:plot-vgl-neuer-rat) stellt die Altersstruktur des neuen Gemeinderats (Mitte) im Vergleich mit der Ulmer Bevölkerung (oben) und des noch aktuellen Gemeinderats (Wahlperiode 2019-2024, unten) dar. Für die Vergleiche in diesem Artikel verschieben wir die Altersstruktur des aktuellen Gemeinderats auf den Zeitpunkt seiner Wahl 2019. Damals hatte dieser Rat ein mittleres Alter ([Median](2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat#Bevölkerung%20und%20Kandidat:innen)) von `r median(aktRat$Alter) - 5` Jahren. **Der neue Gemeinderat ist mit einem mittleren Alter von `r median(ratNeu$Alter)` Jahren um `r abs(median(aktRat$Alter)-median(ratNeu$Alter) - 5)` Jahre älter als der aktuelle Rat bei seinem Start 2019.** Zum Vergleich: Die Ulmer Bevölkerung ist aktuell im Mittel `r demografieUlm2023Median` Jahre alt.
 
 **Das jüngste Ratsmitglied ist nun `r min(ratNeu$Alter)` Jahre alt** und damit [eine der ersten 16-jährigen Gemeinderrät:innen](https://www.stuttgarter-nachrichten.de/inhalt.gewaehlt-mit-16-jahren-teenager-erobern-die-gemeinderaete.da4f161c-e974-47bd-bfcd-09b73b2a6ce9.html) in Baden-Württemberg (im noch aktuellen Rat ist die jüngste Rät:in momentan `r min(aktRat$Alter)`). **Das älteste Mitglied im neuen Rat ist `r max (ratNeu$Alter)` Jahre alt** (`r max(aktRat$Alter)` Jahre momentan im aktuellen Rat).
 
@@ -69,30 +69,9 @@ plotDemografieUlmDistr <- demografieUlm2023Distr %>%
     axis.title.y = element_blank(),
     axis.title.x = element_blank(),
     axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+    plot.margin = unit(c(0,0,-95,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotDemografieUlmDistr
-
-plotDemografieUlmDistr <- plotDemografieUlmDistr +
-  xlab("Alter") +
-  theme_ipsum() +
-  theme(
-    legend.position="none",
-    panel.spacing = unit(0.1, "lines"),
-    strip.text.x = element_text(size = 8),
-    axis.title.y=element_blank(),
-    axis.title.x=element_text(),
-    #axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
-  )
-
-plotDemografieUlmDistr <- plotDemografieUlmDistr +
-  #theme_ipsum() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,-95,0), 'points')
-  )
 
 
 plotRatNeu <- ratNeu %>%
@@ -102,7 +81,7 @@ plotRatNeu <- ratNeu %>%
   geom_density_ridges_gradient(
     scale = 45,
     rel_min_height = 0.01,
-    bandwidth = 1.5,
+    bandwidth = 3,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -118,26 +97,18 @@ plotRatNeu <- ratNeu %>%
   #scale_y_discrete(limits=rev, labels=rev(listenLabels$text)) +
   scale_x_continuous(limits=c(0,100), breaks=seq(0, 90, by=5)) +
   #labs(title = 'Altersverteilung Ulmer Bevölkerung') +
-  xlab("Alter") +
+  #xlab("Alter") +
   theme_ipsum() +
   theme(
     legend.position="none",
     panel.spacing = unit(0.1, "lines"),
     strip.text.x = element_text(size = 8),
     axis.title.y = element_blank(),
-    #axis.title.x = element_blank(),
-    #axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    plot.margin = unit(c(-10,0,-30,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotNeuerRat
-
-plotRatNeu <- plotRatNeu +
-  #theme_ipsum() +
-  theme(
-    #axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    plot.margin = unit(c(0,0,-20,0), 'points') #unit(c(top, right, bottom, left), units)
-  )
 
 
 plotAktRatMinus5 <- aktRat %>%
@@ -147,7 +118,7 @@ plotAktRatMinus5 <- aktRat %>%
   geom_density_ridges_gradient(
     scale = 45,
     rel_min_height = 0.01,
-    bandwidth = 1.5,
+    bandwidth = 3,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -172,7 +143,7 @@ plotAktRatMinus5 <- aktRat %>%
     axis.title.y=element_blank(),
     #axis.title.x = element_blank(),
     #axis.text.x = element_blank(),
-    #plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+    plot.margin = unit(c(0,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 #plotAktRatMinus5
 
@@ -262,9 +233,9 @@ tab %>%
 
 ```
 
-Abschließend (Abbildung \@ref(fig:altersVergleichKandidatinnenRat)) noch eine Gegenüberstellung der Altersverteilung der zur Wahl stehenden Kandidat:innen mit den nun gewählten Gemeinderät:innen.
+Abschließend in Abbildung \@ref(fig:altersVergleichKandidatinnenRat) noch eine Gegenüberstellung der Altersverteilung der zur Wahl stehenden Kandidat:innen mit den nun gewählten Gemeinderät:innen. Um den Vergleich zu erleichtern haben wir für die schwarzen Kurven der Altersverteilungen eine stärkere Glättung als bei den bisherigen Kurzven gewählt.
 
-```{r altersVergleichKandidatinnenRat, echo=FALSE, fig.cap='Vergleich Altersverteilung zur Wahl stehende Kandidat_innen (oben) und am 9.6.2024 gewählter Gemeinderat (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
+```{r altersVergleichKandidatinnenRat, echo=FALSE, fig.cap='Vergleich Altersverteilung zur Wahl stehende Kandidat_innen (oben) und am 9.6.2024 gewählte Gemeinderatsmitglieder (unten). Jeweils Wahlalter (orange), Altersmedian (blau durchgehend) und Alters-Median Ulmer Bevölkerung (blau gestrichelt)', fig.width=10, fig.asp=0.8, message=FALSE, warning=FALSE, results='hide', fig.keep='all', fig.align = 'center', out.extra='style="display: block;"', echo=FALSE}
 
 
 # PLOT ALLE KANDIDAT_INNEN
@@ -274,9 +245,9 @@ plotAgeListenAlle <- listen %>%
   mutate(Liste = paste0('Alle Kandidat_innen\n(n = ', length(listen$Alter), ', MD=', median(Alter), ')')) %>%
   ggplot(aes(x = Alter, y = Liste)) +
   geom_density_ridges_gradient(
-    scale = 45, 
+    scale = 25,
     rel_min_height = 0.01, 
-    bandwidth = 4,
+    bandwidth = 3,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -309,9 +280,9 @@ plotRatNeuGlatt <- ratNeu %>%
   # ',\nMedian = ', median(Alter),
   ggplot(aes(x = Alter, y = Liste)) + #, fill = after_stat(x))) +
   geom_density_ridges_gradient(
-    scale = 45,
+    scale = 25,
     rel_min_height = 0.01,
-    bandwidth = 4,
+    bandwidth = 3,
     quantile_lines = TRUE,
     vline_color = c("#56B4E9"),
     vline_width = 1.5,
@@ -345,7 +316,7 @@ plotRatNeuGlatt <- plotRatNeuGlatt +
   theme(
     #axis.title.x = element_blank(),
     axis.text.x = element_blank(),
-    plot.margin = unit(c(-50,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
+    plot.margin = unit(c(-80,0,0,0), 'points') #unit(c(top, right, bottom, left), units)
   )
 
 
@@ -415,4 +386,12 @@ rbind(
     )
   ) %>%
 kable(style = 'bootstrap')
+```
+
+```{css, echo=FALSE}
+.caption {
+  padding: .5em;
+  font-size: 0.8em;
+  font-weight: bold;
+}
 ```
