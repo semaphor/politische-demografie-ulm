@@ -2,26 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/</loc>
     <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/post/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/post/</loc>
     <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/2024/06/12/neuer-gemeinderat-2024/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/2024/06/12/neuer-gemeinderat-2024/</loc>
     <lastmod>2024-06-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/kontakt/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/kontakt/</loc>
     <lastmod>2024-05-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/ueber/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/ueber/</loc>
     <lastmod>2024-05-30T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/2024/05/30/vergleich-alter-bevoelkerung-wahllisten-gemeinderat/</loc>
-    <lastmod>2024-05-30T00:00:00+00:00</lastmod>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/categories/</loc>
   </url><url>
-    <loc>/categories/</loc>
-  </url><url>
-    <loc>/tags/</loc>
+    <loc>https://semaphor.github.io/politische-demografie-ulm/tags/</loc>
   </url>
 </urlset>

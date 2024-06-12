@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Politische Demografie Ulm: Datenanalyse zur Ulmer Gemeinderatswahl 2024</title>
-    <link>/tags/</link>
+    <link>https://semaphor.github.io/politische-demografie-ulm/tags/</link>
     <description>Recent content in Tags on Politische Demografie Ulm: Datenanalyse zur Ulmer Gemeinderatswahl 2024</description>
     <generator>Hugo</generator>
     <language>de-DE</language>
-    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://semaphor.github.io/politische-demografie-ulm/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
