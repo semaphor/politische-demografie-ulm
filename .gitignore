@@ -44,7 +44,7 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/
+#docs/
 
 # translation temp files
 po/*~
@@ -58,12 +58,20 @@ rsconnect/
 
 # End of https://www.toptal.com/developers/gitignore/api/r
 
+
 # Vorschläge von blogdown::check_site()
 .DS_Store
 Thumbs.db
 .hugo_build.lock
 /public/
 /resources/
+
+
+# RMarkdown, bookdown, blogdown: caches, temporäre Dateien etc.
+
+/content/post/*/index.html
+/content/post/*/index_files/
+
 
 # Unser Sonstiges:
 
