@@ -345,7 +345,7 @@ ggarrange(
 )
 ```
 
-**Unser Fazit:** Mit der Wahl hat sich der nächste Ulmer Gemeinderat im Mittel nur um zwei Jahre verjüngt. Das genügt angesichts einer Wahlperiode von fünf Jahren nicht, um das Alter sozsuagen zu halten – **statistisch gesehen startet der neue Rat als älteres Gremium**. Aus den jüngeren Hälfte der Bevölkerung **unter 40 sind nur relativ wenige zur Wahl angetreten**. Aus diesem also bereits älteren Feld der Kandidat:innen wurden **eher die Älteren gewählt**.
+**Unser Fazit:** Mit der Wahl hat sich der nächste Ulmer Gemeinderat im Mittel nur um zwei Jahre verjüngt. Das genügt angesichts einer Wahlperiode von fünf Jahren nicht, um das Alter sozsuagen zu halten – **statistisch gesehen startet der neue Rat als älteres Gremium**. Aus der jüngeren Hälfte der Bevölkerung **unter 40 sind nur relativ wenige zur Wahl angetreten**. Aus diesem also bereits älteren Feld der Kandidat:innen wurden **eher die Älteren gewählt**.
 
 ------------------------------------------------------------------------
 
