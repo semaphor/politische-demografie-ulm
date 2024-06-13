@@ -186,7 +186,7 @@ ggarrange(
 
 ```
 
-Wie man in der obigen Grafik erkennen kann hat sich durch die Wahl die Altersstruktur etwas verändert: Der **Altersschwerpunkt liegt beim neuen Rat im Bereich zwischen 60 und 66 Jahren**. In dieser relativ kleinen Altersgruppe mit einer Spanne von nur 6 Jahren findet man ein Viertel der `r nrow(ratNeu)` Ratsmtiglieder. Dieser Schwerpunkt hat sich im Vergleich mit dem letzten Rat um zwei bis drei Jahre nach oben verschoben. Am anderen Ende des Altersspektrums stellt man fest: **Das jüngste Viertel des neuen Rates repräsentiert altersmäßig die jüngere Hälfte der Ulmer Bevölkerung.** `r count(ratNeu[ratNeu$Alter < median(demografieUlm2023Median), ])` Ratsmigleider sind jünger als `r demografieUlm2023Median` und dieses jüngste Viertel ist die Altersgruppe mit der größten Spanne von 24 Jahren[^2].
+Wie man in der obigen Grafik erkennen kann hat sich durch die Wahl die Altersstruktur etwas verändert: Der **Altersschwerpunkt liegt beim neuen Rat im Bereich zwischen 60 und 66 Jahren**. In dieser relativ kleinen Altersgruppe mit einer Spanne von nur 6 Jahren findet man ein Viertel der `r nrow(ratNeu)` Ratsmtiglieder. Dieser Schwerpunkt hat sich im Vergleich mit dem letzten Rat um zwei bis drei Jahre nach oben verschoben. Am anderen Ende des Altersspektrums stellt man fest: **Das jüngste Viertel des neuen Rates repräsentiert altersmäßig die jüngere Hälfte der Ulmer Bevölkerung** – `r count(ratNeu[ratNeu$Alter < median(demografieUlm2023Median), ])` Ratsmitglieder sind jünger als `r demografieUlm2023Median` und dieses jüngste Viertel ist die Altersgruppe mit der größten Spanne von 24 Jahren[^2].
 
 [^2]: Genau genommen liegt mit den insgesamt `r nrow(ratNeu$Alter)` Ratsmitgliedern, also inklusive des Oberbürgermeisters, der qua Amt das 41. Ratsmitglied ist, die Altersgrenze des jüngsten Viertels bei 44 Jahren; siehe Tabelle.
 
@@ -384,6 +384,16 @@ rbind(
   ) %>%
 kable(style = 'bootstrap')
 ```
+
+
+\
+\
+\
+
+------------------------------------------------------------------------
+
+**Quellen und Fußnoten**
+
 
 ```{css, echo=FALSE}
 .caption {
